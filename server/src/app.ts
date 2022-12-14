@@ -1,9 +1,10 @@
-import { NextFunction } from 'express';
 import { errorHandler } from './middleware/errorHandler';
 import createError from 'http-errors';
+import { port, mongoDBUri } from './utils/config';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 const logger = morgan;
@@ -14,11 +15,16 @@ const app = express();
 
 /* eslint-disable no-console */
 
-const port = process.env.PORT || '3000';
+const PORT = port || '3000';
 
 /**
  * Normalize a port into a number, string, or false.
  */
+
+mongoose.connect(mongoDBUri);
+mongoose.connection.on('connected', () => {
+  console.log(`Successfully connected to MongoDB: ${mongoDBUri}`);
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -34,9 +40,13 @@ app.use('/users', usersRouter);
 //   next(createError(404));
 // });
 
+app.use(function (req, res, next) {
+  next(createError(404));
+});
+
 // error handler
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server listening on port: ${port}`);
+  console.log(`Server listening on port: ${PORT}`);
 });
