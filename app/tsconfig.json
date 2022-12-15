@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "lib": ["es6", "dom"],
+    "lib": ["es5", "dom", "ES2015.Promise"],
     "rootDir": "src",
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
+    "allowJs": true,
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
