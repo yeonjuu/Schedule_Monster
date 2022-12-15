@@ -9,6 +9,15 @@ export interface RegisterInterface {
   password: string;
   nickname: string;
 }
+
+export interface UpdateInterface {
+  email: string;
+  password: string;
+  ori_nickname?: string;
+  nickname?: string;
+  ori_point?: number;
+  point?: number;
+}
 export interface UserInterface {
   email: string;
   password: string;

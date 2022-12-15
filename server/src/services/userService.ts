@@ -3,6 +3,7 @@ import {
   UserInterface,
   LoginInterface,
   RegisterInterface,
+  UpdateInterface,
 } from '../models/schemas/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -38,7 +39,37 @@ class UserService {
     return await this.User.create(RegisterInfo);
   }
 
-  async updateUser() {}
+  async updateUser(updateInfo: UpdateInterface) {
+    const { email, password, nickname, point } = updateInfo;
+    const user = await this.User.findOne({ email });
+    if (!user) {
+      throw new Error(
+        '비정상적인 요청으로 확인되어 해당 요청을 차단합니다 : Err_email',
+      );
+    }
+    const correctPasswordHash = user.password;
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      correctPasswordHash,
+    );
+
+    if (!isPasswordCorrect) {
+      throw new Error(
+        '비정상적인 요청으로 확인되어 해당 요청을 차단합니다. : Err_pw',
+      );
+    }
+
+    const updateData = {
+      ...(nickname && { nickname }),
+      ...(point && { point }),
+    };
+    const updatedUser = await this.User.findOneAndUpdate(
+      { email: user.email },
+      { ...updateData },
+      { returnOriginal: false },
+    );
+    return updatedUser;
+  }
 
   async deleteUser(email: string) {
     return await this.User.remove({ email });

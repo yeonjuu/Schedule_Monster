@@ -28,7 +28,11 @@ export const userController: userControllerInterface = {
     res.json(user);
   },
   // 계정 정보 수정
-  async updateUser(req, res) {},
+  async updateUser(req, res) {
+    const updateInfo = req.body;
+    const updateResult = await userService.updateUser(updateInfo);
+    res.json(updateResult);
+  },
   // 계정 삭제
   async deleteUser(req, res) {
     const email = req.body.email;

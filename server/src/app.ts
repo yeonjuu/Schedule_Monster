@@ -18,11 +18,11 @@ const app = express();
  * Normalize a port into a number, string, or false.
  */
 
+mongoose.set('strictQuery', true);
 mongoose.connect(mongoDBUri);
 mongoose.connection.on('connected', () => {
   console.log(`Successfully connected to MongoDB: ${mongoDBUri}`);
 });
-mongoose.set('strictQuery', true);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
