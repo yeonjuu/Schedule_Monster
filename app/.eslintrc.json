@@ -1,12 +1,8 @@
 {
   "env": {
     "browser": true,
-<<<<<<< HEAD
     "es2021": true,
     "node": true
-=======
-    "es2021": true
->>>>>>> 47b4a1bbe06377eb29bbdd108bcc525132e243fb
   },
   "extends": [
     "eslint:recommended",
