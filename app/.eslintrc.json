@@ -1,8 +1,12 @@
 {
   "env": {
     "browser": true,
+<<<<<<< HEAD
     "es2021": true,
     "node": true
+=======
+    "es2021": true
+>>>>>>> 47b4a1bbe06377eb29bbdd108bcc525132e243fb
   },
   "extends": [
     "eslint:recommended",
@@ -17,8 +21,13 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
+<<<<<<< HEAD
     "no-console": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-var-requires": 0
+=======
+    "no-console": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+>>>>>>> 47b4a1bbe06377eb29bbdd108bcc525132e243fb
   }
 }
