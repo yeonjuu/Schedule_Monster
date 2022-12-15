@@ -1,9 +1,10 @@
 import Router from 'express';
 
-const router = Router();
+const indexRouter = Router();
 /* GET home page. */
-router.get('/', function (req, res) {
+indexRouter.post('/', function (req, res) {
   res.json({ title: '12Team project1' });
 });
 
-module.exports = router;
+export { indexRouter };
+export * from './userRouter';

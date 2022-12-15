@@ -8,8 +8,7 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 const logger = morgan;
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/userRouter');
+import { indexRouter, userRouter } from './routes/index';
 
 const app = express();
 
@@ -25,20 +24,15 @@ mongoose.connect(mongoDBUri);
 mongoose.connection.on('connected', () => {
   console.log(`Successfully connected to MongoDB: ${mongoDBUri}`);
 });
-
+mongoose.set('strictQuery', true);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-// app.use('*', function (req: Request, res: Response, next: NextFunction) {
-//   next(createError(404));
-// });
+app.use('/users', userRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

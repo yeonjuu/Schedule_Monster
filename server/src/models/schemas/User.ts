@@ -10,8 +10,7 @@ export interface UserInterface {
   email: string;
   password: string;
   refreshToken?: string;
-  device: string;
-  auth: string;
+  auth?: string;
 }
 
 export const UserSchema = new Schema<UserInterface>(
@@ -36,7 +35,7 @@ export const UserSchema = new Schema<UserInterface>(
 
     auth: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {
