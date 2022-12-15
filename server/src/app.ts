@@ -14,8 +14,6 @@ const app = express();
 
 /* eslint-disable no-console */
 
-const PORT = port || '3000';
-
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -42,5 +40,5 @@ app.use(function (req, res, next) {
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server listening on port: ${PORT}`);
+  console.log(`Server listening on port: ${port}`);
 });
