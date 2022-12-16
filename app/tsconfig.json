@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "lib": ["es5", "dom", "ES2015.Promise"],
+    "jsx": "preserve",
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
     "rootDir": "src",
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
+    "target": "ES5",
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
@@ -14,11 +14,6 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules", "build"]
 }
