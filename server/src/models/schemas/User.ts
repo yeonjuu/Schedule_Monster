@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, SchemaType } from 'mongoose';
 
 export interface LoginInterface {
   email: string;
@@ -26,6 +26,14 @@ export interface UserInterface {
   auth: string;
   active: Boolean;
   point: number;
+  characterlist: Array<object>;
+}
+
+export interface CharaterListInterface {
+  email: string;
+  id: number;
+  level: number;
+  exp: number;
 }
 
 export const UserSchema = new Schema<UserInterface>(
@@ -58,6 +66,13 @@ export const UserSchema = new Schema<UserInterface>(
       type: Number,
       required: false,
     },
+    characterlist: [
+      {
+        id: Number,
+        level: Number,
+        exp: Number,
+      },
+    ],
   },
   {
     timestamps: true,

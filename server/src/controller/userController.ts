@@ -8,6 +8,7 @@ interface userControllerInterface {
   deleteUser: AsyncRequestHandler;
   loginUser: AsyncRequestHandler;
   logoutUser: AsyncRequestHandler;
+  addCharater: AsyncRequestHandler;
 }
 
 export const userController: userControllerInterface = {
@@ -51,5 +52,10 @@ export const userController: userControllerInterface = {
     const email = req.body.email;
     const logoutResult = await userService.logoutUser(email);
     res.json(logoutResult);
+  },
+
+  async addCharater(req, res) {
+    const addCharaterResult = await userService.addCharater(req.body);
+    res.json(addCharaterResult);
   },
 };
