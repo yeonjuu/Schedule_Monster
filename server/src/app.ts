@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 const logger = morgan;
-import { indexRouter, userRouter } from './routes/index';
+import { indexRouter, userRouter, characterRouter } from './routes/index';
 
 const app = express();
 
@@ -33,6 +33,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
+app.use('/characters', characterRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));
