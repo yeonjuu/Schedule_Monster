@@ -8,36 +8,35 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 const logger = morgan;
-import { indexRouter, userRouter } from './routes/index';
+import { indexRouter } from './routes/index';
+import { userRouter } from './routes/userRouter';
 
 const app = express();
-
-/* eslint-disable no-console */
-
-/**
- * Normalize a port into a number, string, or false.
- */
 
 mongoose.set('strictQuery', true);
 mongoose.connect(mongoDBUri);
 mongoose.connection.on('connected', () => {
   console.log(`Successfully connected to MongoDB: ${mongoDBUri}`);
 });
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/users', userRouter);
+app.use('/', indexRouter);
 
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
-// error handler
-app.use(errorHandler);
+// // // error handler
+// app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);

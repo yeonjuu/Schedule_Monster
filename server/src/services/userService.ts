@@ -158,9 +158,8 @@ class UserService {
     await this.User.findOneAndUpdate(filter, {
       $push: { characterlist: charaterList },
     });
-    user.characterlist.push(charaterSet);
-    await user.save();
-    return user;
+    const result = await this.User.findOne({ email });
+    return result;
   }
 }
 const userService = new UserService(userModel);
