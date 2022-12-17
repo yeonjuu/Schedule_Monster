@@ -17,8 +17,8 @@ class UserService {
     this.User = userModel;
   }
 
-  async getUser(uid: string) {
-    return await this.User.findOne({ uid });
+  async getUser(email: string) {
+    return await this.User.findOne({ email });
   }
   async getUsers() {
     return await this.User.find({});
