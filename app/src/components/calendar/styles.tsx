@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { DateData } from '../../types/calendarTypes';
 
 const Calendar = styled.div`
   display: flex;

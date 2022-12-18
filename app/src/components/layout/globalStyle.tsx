@@ -1,4 +1,3 @@
-import process from 'process';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
