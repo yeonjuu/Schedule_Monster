@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-
+import { DateData } from '../../types/calendarTypes';
 
 const Calendar = styled.div`
   display: flex;
@@ -17,6 +16,7 @@ const WeekContainer = styled.div`
   height: 100%;
 `;
 
+//Dates=> DateContainer
 const Dates = styled.div<{
   prevMonth: boolean;
   nextMonth: boolean;
@@ -29,6 +29,52 @@ const Dates = styled.div<{
   height: 100%;
   background-color: white;
   border: solid 0.5px lightgray;
+  ${(props) =>
+    !props.prevMonth &&
+    css`
+      color: rgba(0, 0, 0, 0.5);
+    `}
+  ${(props) =>
+    !props.nextMonth &&
+    css`
+      opacity: 0.3;
+    `}
+      ${(props) =>
+    props.today &&
+    css`
+      font-weight: bold;
+      font-size: large;
+      text-decoration: underline;
+    `}
+    ${(props) =>
+    props.week == 'Sun'
+      ? css`
+          color: red;
+        `
+      : props.week == 'Sat'
+      ? css`
+          color: blue;
+        `
+      : null}
+`;
+
+const DateContainer = styled.div`
+  border-radius: 4px;
+  padding: 0 6px;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border: solid 0.5px lightgray;
+`;
+
+const Day = styled.p<{
+  prevMonth: boolean;
+  nextMonth: boolean;
+  week: string;
+  today: boolean;
+}>`
+  display: block;
+  width: 100%;
   ${(props) =>
     !props.prevMonth &&
     css`
@@ -99,7 +145,7 @@ const CalendarController = styled.div`
 
 const MonsterBox = styled.div`
   display: flex;
-  background-color: #FFEECA;
+  background-color: #ffeeca;
   height: 150px;
   width: 100%;
   margin-top: 20px;
@@ -113,13 +159,38 @@ const Layout = styled.div`
   height: 100vh;
 `;
 
+const HolidayLabel = styled.div<{ description: string }>`
+  height: 15%;
+  width: 100%;
+  border-radius: 9px;
+  margin-top: 2px;
+  color: white;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 19px;
+  ${(props) =>
+    props.description === '공휴일'
+      ? css`
+          background-color: red;
+        `
+      : css`
+          background-color: gray;
+        `}
+`;
+
 export {
   Calendar,
   WeekContainer,
   Dates,
+  DateContainer,
   HeaderCalendar,
   Container,
   CalendarController,
   MonsterBox,
   Layout,
+  Day,
+  HolidayLabel,
 };

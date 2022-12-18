@@ -7,7 +7,6 @@ function App() {
     <>
       <GlobalStyle />
       <div className="App">
-        
         <CalendarPage />
       </div>
     </>
