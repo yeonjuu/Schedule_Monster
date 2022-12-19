@@ -35,17 +35,44 @@ const CalendarPage = () => {
   const [dateData, setDateData] = useState<DateData[]>([]);
   const startMonth = startOfMonth(date);
   const endMonth = endOfMonth(date);
-  const day = startOfWeek(startMonth); //day는 달력 기준에서 달이 시작하는 첫 주의 첫 날
-  const endDay = endOfWeek(endMonth); //달력의 마지막 날
+  const day = startOfWeek(startMonth);
+  const endDay = endOfWeek(endMonth);
+
+  const session = (date: Date) => {
+    const prevYear = format(sub(date, { years: 1 }), 'yyyy');
+    const nextYear = format(add(date, { years: 1 }), 'yyyy');
+    const thisYear = format(date, 'yyyy');
+    const prevMonth = format(sub(date, { months: 1 }), 'MM');
+    const nextMonth = format(add(date, { months: 1 }), 'MM');
+    const thisMonth = format(date, 'MM');
+    if (thisMonth === '12') {
+      return {
+        start: `${thisYear}-${prevMonth}-25`,
+        next: `${nextYear}-${nextMonth}-06`,
+      };
+    } else if (thisMonth === '01') {
+      return {
+        start: `${prevYear}-${prevMonth}-25`,
+        next: `${thisYear}-${nextMonth}-06`,
+      };
+    } else {
+      return {
+        start: `${thisYear}-${prevMonth}-25`,
+        next: `${thisYear}-${nextMonth}-06`,
+      };
+    }
+  };
 
   useEffect(() => {
     const getHoliday = async () => {
-      const startDate = `${format(sub(date, { years: 1 }), 'yyyy')}-12-25`;
-      const endDate = `${format(add(date, { years: 1 }), 'yyyy')}-01-06`;
       const calendarId =
         'ko.south_korea%23holiday%40group.v.calendar.google.com';
       const res = await get(
-        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${process.env.REACT_APP_API_KEY}&orderBy=startTime&singleEvents=true&timeMin=${startDate}T00:00:00Z&timeMax=${endDate}T00:00:00Z`,
+        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${
+          process.env.REACT_APP_API_KEY
+        }&orderBy=startTime&singleEvents=true&timeMin=${
+          session(date).start
+        }T00:00:00Z&timeMax=${session(date).next}T00:00:00Z`,
       );
 
       const data = res.items.map((item: Holiday) => {
@@ -57,9 +84,8 @@ const CalendarPage = () => {
       });
       setDateData(data);
     };
-
     getHoliday();
-  }, [format(date, 'yyyy')]);
+  }, [format(date, 'MM')]);
 
   const prev = () => {
     setDate((curr) => sub(curr, { months: 1 }));
