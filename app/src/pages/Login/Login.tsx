@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import * as API from '../../api';
-import * as Style from './form';
+import * as Style from './Form';
 import { useDispatch } from 'react-redux';
 import { login } from './userSlice';
 import { IUser, ILogin, IRegister } from '../../types/userInterface';
 //dummy data
 import { loginUser, registerUser } from './userDummy';
-
 
 const Login = () => {
   const [email, setEmail] = useState('');
