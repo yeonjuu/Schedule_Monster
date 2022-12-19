@@ -19,7 +19,7 @@ export const categorySchema = new Schema<CategoryInterface>(
     },
     {
         timestamps: true,
-        collection: 'item',
+        collection: 'category',
     },
 );
 

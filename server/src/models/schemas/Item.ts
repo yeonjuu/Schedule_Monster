@@ -5,14 +5,14 @@ export interface ItemInterface {
     itemName: String;
     price: Number;
     exp: Number;
-    category: String;
+    categoryName: String;
 }
 export interface UpdateItemInterface {
     _id: String;
     itemName?: String;
     price?: Number;
     exp?: Number;
-    category?: String;
+    categoryName?: String;
 }
 
 // 스키마
@@ -30,7 +30,7 @@ export const itemSchema = new Schema<ItemInterface>(
             type: Number,
             required: true,
         },
-        category: {
+        categoryName: {
             type: String,
             required: true,
         },
