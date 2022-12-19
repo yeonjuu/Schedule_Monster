@@ -10,3 +10,5 @@ export { indexRouter };
 export * from './userRouter';
 export * from './characterRouter';
 export * from './characterListRouter';
+export * from './itemRouter';
+export * from './categoryRouter';
