@@ -19,16 +19,16 @@ import {
   CalendarController,
   MonsterBox,
   Layout,
-} from '../components/calendar/styles';
-import Dates from '../components/calendar/Dates';
+} from './styles';
+import Dates from './Dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretLeft,
   faCaretRight,
   faRotateRight,
 } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
-import { DateData, Holiday } from '../types/calendarTypes';
+import { DateData, Holiday } from '../../types/calendarTypes';
+import { get } from '../../api';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -44,10 +44,11 @@ const CalendarPage = () => {
       const endDate = `${format(add(date, { years: 1 }), 'yyyy')}-01-06`;
       const calendarId =
         'ko.south_korea%23holiday%40group.v.calendar.google.com';
-      const res = await axios.get(
+      const res = await get(
         `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${process.env.REACT_APP_API_KEY}&orderBy=startTime&singleEvents=true&timeMin=${startDate}T00:00:00Z&timeMax=${endDate}T00:00:00Z`,
       );
-      const data = res.data.items.map((item: Holiday) => {
+
+      const data = res.items.map((item: Holiday) => {
         return {
           name: item.summary,
           description: item.description.slice(0, 3),
