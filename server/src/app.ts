@@ -8,7 +8,8 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 
 const logger = morgan;
-import { indexRouter, userRouter, characterRouter } from './routes/index';
+
+import { indexRouter, userRouter, characterRouter, characterListRouter, itemRouter, categoryRouter } from './routes/index';
 
 const app = express();
 
@@ -29,6 +30,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', userRouter);
 app.use('/characters', characterRouter);
+<<<<<<< server/src/app.ts
+app.use('/characterlist', characterListRouter);
+=======
+app.use('/items', itemRouter);
+app.use('/category', categoryRouter);
+>>>>>>> server/src/app.ts
 app.use('/', indexRouter);
 
 // app.use(function (req, res, next) {
