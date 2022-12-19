@@ -1,20 +1,19 @@
 {
   "compilerOptions": {
-    "jsx": "preserve",
-    "lib": ["ES6", "DOM", "DOM.Iterable"],
-    "rootDir": "src",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "ES5",
-    "sourceMap": true,
     "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
+    "noEmit": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
-
+    "strictNullChecks": true,
+    "target": "esnext",
+    "baseUrl": "src"
   },
-  "include": ["./src"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

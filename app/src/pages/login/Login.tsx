@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import * as API from '../../api';
-import * as Style from './Form';
+import * as Style from './form';
 import { useDispatch } from 'react-redux';
 import { login } from './userSlice';
 import { IUser, ILogin, IRegister } from '../../types/userInterface';
@@ -24,16 +24,14 @@ const Login = () => {
 
     //로그인 토큰 확인 후 정보 있으면 ok 없으면 정보 없음 띄어주기
     //에러 항목 어떻게 오는지 보고 띄워주기
-    // const { token, auth, nickname, point } = await API.post(
-    //   '/users/login',
-    //   userInfo,
-    // );
-    const { nickname, email: resEmail, auth, point } = loginUser.loginUser;
-    const token: string | undefined = loginUser.accessToken;
+    const { token, auth, nickname, point } = await API.post(
+      '/users/login',
+      userInfo,
+    );
 
     if (token) {
       const user: IUser = {
-        email: resEmail,
+        email,
         nickname,
         point,
         auth,
@@ -96,7 +94,6 @@ const Resgister = () => {
       email,
       password: pw,
     };
-    console.log('register info : ', registerInfo);
 
     //회원가입 api 요청
     //회원가입시 발생할 수 있는 오류
@@ -104,13 +101,14 @@ const Resgister = () => {
     //닉네임중복?
     //api /users 보내고
     //api /users/login 보내기
-    // await API.post('/users', registerInfo);
+    const res = await API.post('/users', registerInfo);
+    const { nickname: resNick, auth, point, email: resEmail } = res;
+    console.log(res);
+    alert('회원가입 완료');
     //register password가 암호화 되어있음. 현재 회원가입 시, post 2번 보내야함
     // await API.post('/users/login',{email, password})
 
-    const { nickname: nick, auth, point } = registerUser;
-
-    dispatch(login({ nickname: nick, auth, point, email }));
+    dispatch(login({ nickname: resNick, auth, point, email: resEmail }));
   };
 
   useEffect(() => {

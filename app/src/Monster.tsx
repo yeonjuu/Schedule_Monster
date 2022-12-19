@@ -34,23 +34,3 @@
 // }
 
 
-
-{/* <Main>
-<Store>
-  <Menubar>
-    <li>상점</li>
-    <li>도감</li>
-    <li>내 아이템</li>
-    <div>리스트
-
-    </div>
-  </Menubar>
-
-  <MonsterProfile>
-    <MonsterImage src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png">
-    </MonsterImage>
-  </MonsterProfile>
-
-              
-</Store>
-</Main> */}

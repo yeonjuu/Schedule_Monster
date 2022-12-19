@@ -13,8 +13,6 @@ export default function Items() {
                     <CategoryBox>
                     <ItemBox></ItemBox>
                     <ItemBox></ItemBox>
-                    <ItemBox></ItemBox>
-                    <ItemBox></ItemBox>
                     </CategoryBox>
 
                     <CategoryBox>
