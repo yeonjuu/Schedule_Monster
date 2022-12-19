@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { logout } from '../../pages/Login/userSlice';
+import { logout } from '../../pages/login/userSlice';
 import * as Nav from './nav';
 
 type IProps = {
