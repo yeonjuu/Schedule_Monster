@@ -9,3 +9,4 @@ indexRouter.get('/', function (req, res) {
 export { indexRouter };
 export * from './userRouter';
 export * from './characterRouter';
+export * from './characterListRouter';
