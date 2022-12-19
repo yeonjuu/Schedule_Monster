@@ -12,36 +12,32 @@ import { indexRouter, userRouter, characterRouter } from './routes/index';
 
 const app = express();
 
-/* eslint-disable no-console */
-
-const PORT = port || '3000';
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
+mongoose.set('strictQuery', true);
 mongoose.connect(mongoDBUri);
 mongoose.connection.on('connected', () => {
   console.log(`Successfully connected to MongoDB: ${mongoDBUri}`);
 });
-mongoose.set('strictQuery', true);
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/users', userRouter);
 app.use('/characters', characterRouter);
+app.use('/', indexRouter);
 
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
-// error handler
-app.use(errorHandler);
+// // // error handler
+// app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server listening on port: ${PORT}`);
+  console.log(`Server listening on port: ${port}`);
 });
