@@ -10,12 +10,17 @@ import CalendarPage from './pages/calendar/CalendarPage';
 import MyItems from './pages/characters/MyItems';
 import CharactersList from './pages/characters/CharactersList';
 import Root from './pages/characters/Root';
-import { LoginRegister } from './pages/login/Login';
+import { LoginRegister } from 'pages/login/LoginRegister';
+import { Main } from 'pages/main/Main';
 import Admin from './pages/admin/admin';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Main />,
+  },
+  {
+    path: '/login',
     element: <LoginRegister />,
   },
   {
