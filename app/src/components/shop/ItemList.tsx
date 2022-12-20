@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 import { useParams } from 'react-router-dom';
 import { ItemBox } from './../characters/StoreStyle';
-function ItemList({ category, inputValue }: any) {
+function ItemList({ category, inputValue, url }: any) {
   const { id } = useParams();
   const navigate = useNavigate();
   const itemList =
@@ -17,22 +17,22 @@ function ItemList({ category, inputValue }: any) {
           });
         });
   return (
-    <ul>
+    <>
       {itemList.map((item: any): JSX.Element => {
         return (
           <ItemBox key={item.itemId}>
-            <li
+            <div
               onClick={(): void => {
-                navigate(`/admin/item/${item.itemId}`);
+                navigate(`${url}${item.itemId}`);
               }}
             >
               <div>{item.itemName}</div>
               <div>{item.price}</div>
-            </li>
+            </div>
           </ItemBox>
         );
       })}
-    </ul>
+    </>
   );
 }
 export default ItemList;
