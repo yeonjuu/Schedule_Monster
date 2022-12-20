@@ -1,14 +1,26 @@
 import styled, { css } from 'styled-components';
 
-export const Form = styled.form`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-`;
-
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  max-width: 1440px;
+  width: 500px;
+  min-height: 100vh;
+  margin: 0 auto;
+`;
+
+export const LogoWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  > img {
+    width: 100%;
+    height: auto;
+  }
+`;
+
+export const Form = styled.form`
+  display: flex;
   justify-content: center;
   flex-direction: column;
 `;
@@ -23,7 +35,7 @@ export const Tabs = styled.div`
 
 export const Tab = styled.p<{ active: boolean }>`
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   ${(props) =>
     props.active &&
     css`
