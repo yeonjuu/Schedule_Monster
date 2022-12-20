@@ -35,17 +35,47 @@ const CalendarPage = () => {
   const [dateData, setDateData] = useState<DateData[]>([]);
   const startMonth = startOfMonth(date);
   const endMonth = endOfMonth(date);
-  const day = startOfWeek(startMonth); //day는 달력 기준에서 달이 시작하는 첫 주의 첫 날
-  const endDay = endOfWeek(endMonth); //달력의 마지막 날
+  const day = startOfWeek(startMonth);
+  const endDay = endOfWeek(endMonth);
+
+  const session = (date: Date) => {
+    const prevYear = format(sub(date, { years: 1 }), 'yyyy');
+    const nextYear = format(add(date, { years: 1 }), 'yyyy');
+    const thisYear = format(date, 'yyyy');
+    const prevMonth = format(sub(date, { months: 1 }), 'MM');
+    const nextMonth = format(add(date, { months: 1 }), 'MM');
+    const thisMonth = format(date, 'MM');
+    if (thisMonth === '12') {
+      return {
+        //지금이 12월이면 11월 25일~내년 1월 06일까지가 범위
+        start: `${thisYear}-${prevMonth}-25`,
+        next: `${nextYear}-${nextMonth}-06`,
+      };
+    } else if (thisMonth === '01') {
+      return {
+        //지금이 1월이면 작년 12월 25일~ 2월 06일까지가 범위
+        start: `${prevYear}-${prevMonth}-25`,
+        next: `${thisYear}-${nextMonth}-06`,
+      };
+    } else {
+      return {
+        //그 외에는 이전 월 25일~ 다음 월 06일까지가 범위
+        start: `${thisYear}-${prevMonth}-25`,
+        next: `${thisYear}-${nextMonth}-06`,
+      };
+    }
+  };
 
   useEffect(() => {
     const getHoliday = async () => {
-      const startDate = `${format(sub(date, { years: 1 }), 'yyyy')}-12-25`;
-      const endDate = `${format(add(date, { years: 1 }), 'yyyy')}-01-06`;
       const calendarId =
         'ko.south_korea%23holiday%40group.v.calendar.google.com';
       const res = await get(
-        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${process.env.REACT_APP_API_KEY}&orderBy=startTime&singleEvents=true&timeMin=${startDate}T00:00:00Z&timeMax=${endDate}T00:00:00Z`,
+        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${
+          process.env.REACT_APP_API_KEY
+        }&orderBy=startTime&singleEvents=true&timeMin=${
+          session(date).start
+        }T00:00:00Z&timeMax=${session(date).next}T00:00:00Z`,
       );
 
       const data = res.items.map((item: Holiday) => {
@@ -57,9 +87,8 @@ const CalendarPage = () => {
       });
       setDateData(data);
     };
-
     getHoliday();
-  }, [format(date, 'yyyy')]);
+  }, [format(date, 'MM')]);
 
   const prev = () => {
     setDate((curr) => sub(curr, { months: 1 }));
@@ -74,8 +103,8 @@ const CalendarPage = () => {
   };
 
   const renderDay = (day: Date, endDay: Date) => {
-    let arr = [];
-    const brr = [];
+    let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
+    const brr = []; //일주일 들을 모아 한달을 담는 배열
     while (day <= endDay) {
       arr.push(
         <Dates
@@ -107,7 +136,6 @@ const CalendarPage = () => {
           </button>
           {format(date, 'yyyy')}년 {format(date, 'MM')} 월
           <button onClick={next}>
-            {' '}
             <FontAwesomeIcon icon={faCaretRight} />
           </button>
           <button onClick={now}>
