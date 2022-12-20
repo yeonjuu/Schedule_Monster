@@ -1,25 +1,30 @@
-import React from 'react';
-import styled from 'styled-components';
-import ItemCard from '../../components/characters/ItemCard';
-import { Main, MonsterProfile, MonsterImage, ContentsBox, MonsterStatus, ItemList, ItemBox, ItemContainer, CategoryBox } from '../../components/characters/StoreStyle';
-ItemCard
+import React, {useState} from 'react';
+import { MonsterProfile, MonsterImage, ContentsBox, MonsterStatus, ItemList, ItemBox, ItemContainer, CategoryBox } from '../../components/characters/StoreStyle';
+import StoreItem from '../../components/characters/StoreItem'
+
+
 
 export default function Items() {
+
+    const [affection, setAffection] = useState(10);
+
     return (
         <ContentsBox>
             <ItemList>
                 상점 아이템
             <ItemContainer>
                     <CategoryBox>
-                    <ItemBox></ItemBox>
-                    <ItemBox></ItemBox>
+                        <StoreItem></StoreItem>
+                        <StoreItem></StoreItem>
+                        <StoreItem></StoreItem>
+                        <StoreItem></StoreItem>
+                        <StoreItem></StoreItem>
+
                     </CategoryBox>
 
                     <CategoryBox>
-                    <ItemBox></ItemBox>
-                    <ItemBox></ItemBox>
-                    <ItemBox></ItemBox>
-                    <ItemBox></ItemBox>
+                        <StoreItem></StoreItem>
+                        <StoreItem></StoreItem>
                     </CategoryBox>
         
             </ItemContainer>
@@ -33,7 +38,7 @@ export default function Items() {
                 <MonsterStatus>
                     <ul>
                         <li>이름 : 메타몽</li>
-                        <li>애정도 : ❤️ 200  </li>
+                        <li>{`애정도 : ❤️ ${affection}`} </li>
                     </ul>
                 </MonsterStatus>
             </MonsterProfile>

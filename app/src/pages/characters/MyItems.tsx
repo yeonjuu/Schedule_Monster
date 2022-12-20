@@ -1,5 +1,5 @@
 import React from 'react';
-import ItemCard from '../../components/characters/ItemCard';
+import ItemCard from '../../components/characters/MyitemsCard';
 import { ContentsBox, MonsterProfile, MonsterStatus, MonsterImage, ItemList, ItemBox, CategoryBox } from '../../components/characters/StoreStyle';
 
 export default function MyItems() {

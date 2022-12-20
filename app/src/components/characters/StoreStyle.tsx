@@ -40,11 +40,23 @@ export const MonsterProfile = styled.div`
 `
 
 export const MonsterImage = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 15rem;
     height: 15rem;
     background-color: aliceblue;
     border-radius: 50%;
     margin-bottom: 1.5rem;
+
+    &:hover{
+        width: 16rem;
+        height: 16rem;
+        background-color: aliceblue;
+        border-radius: 50%;
+        margin-bottom: 1.5rem;
+    }
 `
 
 export const MonsterStatus = styled.div`
@@ -73,7 +85,6 @@ export const ItemList = styled.div`
 //아이템 리스트
 
 export const ItemContainer = styled.div`
-    /* background-color: cadetblue; */
     width: 90%;
     height: 100%;
 
@@ -98,7 +109,6 @@ export const CategoryBox = styled.div`
     margin-bottom: 1rem;
     display: flex;
     justify-content: flex-start;
-    /* align-items: center; */
 
     overflow-x: scroll;
 
@@ -132,5 +142,15 @@ export const CharacterBox = styled.div`
     height: 8rem;
     margin: 1rem 0.5rem;
     flex-shrink: 0;
+`
 
+
+//버튼
+
+export const ItemButton = styled.button`
+    background-color: #a2bcff;
+    cursor: pointer;
+    border: none;
+    border-radius: 10%;
+    padding: 0.2rem;
 `
