@@ -2,8 +2,6 @@ import React from 'react';
 import GlobalStyle from './components/layout/globalStyle';
 
 
-
-
 function App() {
   return (
     <>

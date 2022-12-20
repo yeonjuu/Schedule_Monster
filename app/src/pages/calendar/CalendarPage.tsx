@@ -47,16 +47,19 @@ const CalendarPage = () => {
     const thisMonth = format(date, 'MM');
     if (thisMonth === '12') {
       return {
+        //지금이 12월이면 11월 25일~내년 1월 06일까지가 범위
         start: `${thisYear}-${prevMonth}-25`,
         next: `${nextYear}-${nextMonth}-06`,
       };
     } else if (thisMonth === '01') {
       return {
+        //지금이 1월이면 작년 12월 25일~ 2월 06일까지가 범위
         start: `${prevYear}-${prevMonth}-25`,
         next: `${thisYear}-${nextMonth}-06`,
       };
     } else {
       return {
+        //그 외에는 이전 월 25일~ 다음 월 06일까지가 범위
         start: `${thisYear}-${prevMonth}-25`,
         next: `${thisYear}-${nextMonth}-06`,
       };
@@ -100,8 +103,8 @@ const CalendarPage = () => {
   };
 
   const renderDay = (day: Date, endDay: Date) => {
-    let arr = [];
-    const brr = [];
+    let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
+    const brr = []; //일주일 들을 모아 한달을 담는 배열
     while (day <= endDay) {
       arr.push(
         <Dates
@@ -133,7 +136,6 @@ const CalendarPage = () => {
           </button>
           {format(date, 'yyyy')}년 {format(date, 'MM')} 월
           <button onClick={next}>
-            {' '}
             <FontAwesomeIcon icon={faCaretRight} />
           </button>
           <button onClick={now}>
