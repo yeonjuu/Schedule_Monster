@@ -29,6 +29,7 @@ const checkHoliday = (holiday: Array<DateData>) => {
 const Dates = ({ prevMonth, nextMonth, today, week, date, dateData }: Days) => {
   const todayDate = format(date, 'yyyy-MM-dd');
   const holiday = dateData.filter((item) => item.date === todayDate);
+  
 
   return (
     <DateContainer>
