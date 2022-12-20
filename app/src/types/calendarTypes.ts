@@ -1,3 +1,5 @@
+import { ArrowFunction } from 'typescript';
+
 interface Holiday {
   kind: string;
   etag: string;
@@ -44,4 +46,15 @@ interface Days {
   dateData: Array<DateData>;
 }
 
-export { Holiday, DateData, Days };
+interface Controller {
+  date: Date;
+  onClick: onClickObj;
+}
+
+type onClickObj = {
+  prev: () => void;
+  next: () => void;
+  now: () => void;
+};
+
+export { Holiday, DateData, Days, Controller,onClickObj };

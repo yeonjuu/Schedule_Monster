@@ -21,15 +21,11 @@ import {
   Layout,
 } from './CalendarStyles';
 import Dates from './Dates';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCaretLeft,
-  faCaretRight,
-  faRotateRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { DateData, Holiday } from '../../types/calendarTypes';
+import {  DateData, Holiday, onClickObj } from '../../types/calendarTypes';
 import { get } from '../../api';
 import useDebounce from '../../hooks/useDebounce';
+import DateController from './DateController';
+
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -92,17 +88,17 @@ const CalendarPage = () => {
     getHoliday();
   }, [debounce]);
 
-  const prev = () => {
+const onClick:onClickObj={
+  prev: () => {
     setDate((curr) => sub(curr, { months: 1 }));
-  };
-
-  const next = () => {
+  },
+  next: () => {
     setDate((curr) => add(curr, { months: 1 }));
-  };
-
-  const now = () => {
+  },
+  now: () => {
     setDate(new Date());
-  };
+  }
+}
 
   const renderDay = (day: Date, endDay: Date) => {
     let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
@@ -132,18 +128,7 @@ const CalendarPage = () => {
     <Layout>
       <Container>
         <MonsterBox>스킨</MonsterBox>
-        <CalendarController>
-          <button onClick={prev}>
-            <FontAwesomeIcon icon={faCaretLeft} />
-          </button>
-          {format(date, 'yyyy')}년 {format(date, 'MM')} 월
-          <button onClick={next}>
-            <FontAwesomeIcon icon={faCaretRight} />
-          </button>
-          <button onClick={now}>
-            <FontAwesomeIcon icon={faRotateRight} />
-          </button>
-        </CalendarController>
+        <DateController date={date} onClick={onClick}/>
         <HeaderCalendar>
           {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
             return <p key={`${names}-${index}`}>{names}</p>;
