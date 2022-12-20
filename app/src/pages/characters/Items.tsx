@@ -14,33 +14,41 @@ import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+
 export default function Items() {
+
+  const [count, setCount] = useState(0);  
   const [affection, setAffection] = useState(10);
   const [category, setCategory] = useState('all');
   const [inputState, setInputState] = useState('');
   const { id } = useParams();
-  console.log(id);
+//   console.log(id);
   const itemCategoryList = useSelector(
     (state: any): any => state.itemCategories,
   );
+
   return (
     <ContentsBox>
       <ItemList>
-        상점 아이템
+
         <BannerItem
           categories={itemCategoryList}
           setCategory={setCategory}
         ></BannerItem>
+
         <Search setState={setInputState}></Search>
+
         <ItemContainer>
           <CategoryBox>
             <ItemList2
               category={category === 'all' ? 'all' : category}
               inputValue={inputState}
               url={'/store/item/'}
+              purpose={'구매'}
             ></ItemList2>
           </CategoryBox>
         </ItemContainer>
+
       </ItemList>
 
       <MonsterProfile>
@@ -55,6 +63,7 @@ export default function Items() {
           <ul>
             <li>이름 : 메타몽</li>
             <li>{`애정도 : ❤️ ${affection}`} </li>
+            <li>보유 코인 : </li>
           </ul>
         </MonsterStatus>
       </MonsterProfile>

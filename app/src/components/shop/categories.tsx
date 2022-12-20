@@ -10,6 +10,7 @@ function BannerItem({ categories, setCategory }: any) {
     <>
       <Container>
         <li
+          style={{color:'#404040', opacity:'80%'}}
           key={'all'}
           onClick={(): void => {
             setCategory('all');
@@ -20,6 +21,7 @@ function BannerItem({ categories, setCategory }: any) {
         {categories.map((category: any, idx: number): JSX.Element => {
           return (
             <li
+              style={{color:'#404040', opacity:'80%'}}
               key={idx}
               onClick={(): void => {
                 setCategory(categories[idx].categoryId);
