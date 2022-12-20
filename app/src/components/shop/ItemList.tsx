@@ -6,15 +6,13 @@ import { createFuzzyMatcher } from '../../util/filterHangul';
 import { useParams } from 'react-router-dom';
 import { ItemBox } from './../characters/StoreStyle';
 function ItemList({ category, inputValue, url }: any) {
-  const { id } = useParams();
+  const data = useSelector((state: any) => state.items);
   const navigate = useNavigate();
   const itemList =
     inputValue === ''
-      ? filterCategory(category, 'items')
-      : useSelector((state: any) => {
-          return state.items.filter((val: any) => {
-            return createFuzzyMatcher(inputValue, val.itemName);
-          });
+      ? filterCategory(category, 'items', data)
+      : data.filter((val: any) => {
+          return createFuzzyMatcher(inputValue, val.itemName);
         });
   return (
     <>
