@@ -10,6 +10,7 @@ import {
   CategoryBox,
   ItemBox,
 } from '../../components/characters/StoreStyle';
+import StoreItem from 'components/characters/StoreItem';
 function ItemPage({ categories, setCategory, category }: any) {
   const [inputState, setInputState] = useState('');
   return (
@@ -21,12 +22,15 @@ function ItemPage({ categories, setCategory, category }: any) {
           category={category}
         ></BannerItem>
         <Search setState={setInputState}></Search>
-
-        <ItemList
-          category={category === 'all' ? 'all' : category.categoryId}
-          inputValue={inputState}
-        ></ItemList>
+        <CategoryBox>
+          <ItemList
+            category={category === 'all' ? 'all' : category}
+            inputValue={inputState}
+            url={'/admin/item/'}
+          ></ItemList>
+        </CategoryBox>
       </ItemContainer>
+
       <EditItem></EditItem>
     </ContentsBox>
   );
