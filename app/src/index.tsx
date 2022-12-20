@@ -11,6 +11,7 @@ import MyItems from './pages/characters/MyItems';
 import CharactersList from './pages/characters/CharactersList';
 import Root from './pages/characters/Root';
 import { LoginRegister } from './pages/login/Login';
+import Admin from './pages/admin/admin';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,11 @@ const router = createBrowserRouter([
       { path: '/store/myitems', element: <MyItems></MyItems> },
     ],
   },
+  {
+    path: '/admin/*',
+    element: <Admin />,
+  },
 ]);
-
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -43,6 +47,5 @@ root.render(
       <RouterProvider router={router} />
       <App />
     </Provider>
-    
   </React.StrictMode>,
 );
