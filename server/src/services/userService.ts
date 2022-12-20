@@ -9,10 +9,9 @@ import {
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '../utils/config';
-
+import { characterListService } from './characterListService';
 class UserService {
   private User: userModelType;
-
   constructor(userModel: userModelType) {
     this.User = userModel;
   }
@@ -37,6 +36,8 @@ class UserService {
       active,
       point,
     };
+    //캐릭터리스트 초기
+    await characterListService.addCharacterList(email);
     return await this.User.create(RegisterInfo);
   }
 
@@ -44,9 +45,11 @@ class UserService {
     const { email, password, nickname, point } = updateInfo;
     const user = await this.User.findOne({ email });
     if (!user) {
-      throw new Error(
-        '비정상적인 요청으로 확인되어 해당 요청을 차단합니다 : Err_email',
-      );
+      return {
+        status: 403,
+        error: 'Forbidden',
+        message: '비정상적인 요청으로 확인되어 해당 요청을 차단합니다.',
+      };
     }
     const correctPasswordHash = user.password;
     const isPasswordCorrect = await bcrypt.compare(
@@ -55,9 +58,11 @@ class UserService {
     );
 
     if (!isPasswordCorrect) {
-      throw new Error(
-        '비정상적인 요청으로 확인되어 해당 요청을 차단합니다. : Err_pw',
-      );
+      return {
+        status: 403,
+        error: 'Forbidden',
+        message: '비정상적인 요청으로 확인되어 해당 요청을 차단합니다.',
+      };
     }
 
     const updateData = {
@@ -82,9 +87,12 @@ class UserService {
     const user = await this.User.findOne({ email });
     // 계정 가입 내역 확인
     if (!user) {
-      throw new Error(
-        '입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다',
-      );
+      return {
+        status: 403,
+        error: 'Forbidden',
+        message:
+          '입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다',
+      };
     }
 
     // 비밀번호 일치 여부 확인
@@ -95,9 +103,11 @@ class UserService {
     );
 
     if (!isPasswordCorrect) {
-      throw new Error(
-        '비밀번호가 일치하지 않습니다. 다시 한 번 확인 바랍니다.',
-      );
+      return {
+        status: 403,
+        error: 'Forbidden',
+        message: '비밀번호가 일치하지 않습니다. 다시 한 번 확인 바랍니다.',
+      };
     }
 
     // 토큰 생성
@@ -140,11 +150,19 @@ class UserService {
     const { email, id, level, exp } = characterData;
 
     if (!(email && id && level && exp))
-      throw new Error('요청이 정상적으로 수신되지 않아 추가할 수  없습니다.');
+      return {
+        status: 400,
+        error: 'Bad Request',
+        message: '요청이 정상적으로 수신되지 않아 추가할 수 없습니다.',
+      };
 
     const user = await this.User.findOne({ email });
     if (!user) {
-      throw new Error('캐리터를 추가할 수 없습니다.');
+      return {
+        status: 400,
+        error: 'Bad Request',
+        message: '요청이 정상적으로 수신되지 않아 추가할 수 없습니다.',
+      };
     }
     const filter = { email };
 
