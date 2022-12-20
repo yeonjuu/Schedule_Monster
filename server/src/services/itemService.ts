@@ -23,6 +23,10 @@ class ItemService {
   }
 
   // 카테고리 별 아이템 조회
+  async getItemByCategory(categoryName: string) {
+    const result = await this.Item.find({ categoryName: categoryName });
+    return result;
+  }
 
   // 아이템 생성
   async createItem(itemInfo: ItemInterface) {
