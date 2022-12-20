@@ -6,7 +6,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
-
+import cors from 'cors';
 const logger = morgan;
 
 import {
@@ -34,6 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 app.use('/users', userRouter);
 app.use('/characters', characterRouter);
@@ -42,12 +43,12 @@ app.use('/items', itemRouter);
 app.use('/category', categoryRouter);
 app.use('/', indexRouter);
 
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
+app.use(function (req, res, next) {
+  next(createError(404));
+});
 
-// // // error handler
-// app.use(errorHandler);
+// // error handler
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
