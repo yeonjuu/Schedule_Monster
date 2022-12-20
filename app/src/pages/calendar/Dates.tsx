@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { DateContainer, Day, HolidayLabel } from './styles';
+import { DateContainer, Day, HolidayLabel } from './CalendarStyles';
 import React from 'react';
 import { DateData, Days } from '../../types/calendarTypes';
 
@@ -29,7 +29,6 @@ const checkHoliday = (holiday: Array<DateData>) => {
 const Dates = ({ prevMonth, nextMonth, today, week, date, dateData }: Days) => {
   const todayDate = format(date, 'yyyy-MM-dd');
   const holiday = dateData.filter((item) => item.date === todayDate);
-  
 
   return (
     <DateContainer>

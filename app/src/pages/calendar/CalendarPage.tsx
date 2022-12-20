@@ -19,7 +19,7 @@ import {
   CalendarController,
   MonsterBox,
   Layout,
-} from './styles';
+} from './CalendarStyles';
 import Dates from './Dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -29,6 +29,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { DateData, Holiday } from '../../types/calendarTypes';
 import { get } from '../../api';
+import useDebounce from '../../hooks/useDebounce';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -37,14 +38,15 @@ const CalendarPage = () => {
   const endMonth = endOfMonth(date);
   const day = startOfWeek(startMonth);
   const endDay = endOfWeek(endMonth);
+  const prevYear = format(sub(date, { years: 1 }), 'yyyy');
+  const nextYear = format(add(date, { years: 1 }), 'yyyy');
+  const thisYear = format(date, 'yyyy');
+  const prevMonth = format(sub(date, { months: 1 }), 'MM');
+  const nextMonth = format(add(date, { months: 1 }), 'MM');
+  const thisMonth = format(date, 'MM');
+  const debounce = useDebounce(format(date, 'MM'));
 
-  const session = (date: Date) => {
-    const prevYear = format(sub(date, { years: 1 }), 'yyyy');
-    const nextYear = format(add(date, { years: 1 }), 'yyyy');
-    const thisYear = format(date, 'yyyy');
-    const prevMonth = format(sub(date, { months: 1 }), 'MM');
-    const nextMonth = format(add(date, { months: 1 }), 'MM');
-    const thisMonth = format(date, 'MM');
+  const session = () => {
     if (thisMonth === '12') {
       return {
         //지금이 12월이면 11월 25일~내년 1월 06일까지가 범위
@@ -74,8 +76,8 @@ const CalendarPage = () => {
         `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${
           process.env.REACT_APP_API_KEY
         }&orderBy=startTime&singleEvents=true&timeMin=${
-          session(date).start
-        }T00:00:00Z&timeMax=${session(date).next}T00:00:00Z`,
+          session().start
+        }T00:00:00Z&timeMax=${session().next}T00:00:00Z`,
       );
 
       const data = res.items.map((item: Holiday) => {
@@ -88,7 +90,7 @@ const CalendarPage = () => {
       setDateData(data);
     };
     getHoliday();
-  }, [format(date, 'MM')]);
+  }, [debounce]);
 
   const prev = () => {
     setDate((curr) => sub(curr, { months: 1 }));

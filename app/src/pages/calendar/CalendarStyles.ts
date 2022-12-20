@@ -117,6 +117,7 @@ const HeaderCalendar = styled.div`
 
 const Container = styled.div`
   width: 84vw;
+  max-width: 1024px;
   height: 100%;
   display: flex;
   flex-direction: column;
