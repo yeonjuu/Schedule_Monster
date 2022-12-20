@@ -18,7 +18,11 @@ class CharacterListService {
     const user = await this.user.findOne({ email });
     if (!user) throw new Error('사용자가 존재하지 않습니다');
     if (user?.auth === 'user')
-      throw new Error('해당 관리 권한으로는 서비스 요청을 할 수 없습니다');
+      return {
+        status: 401,
+        error: 'Unauthorized',
+        message: '해당 관리 권한으로는 서비스 요청을 할 수 없습니다',
+      };
 
     const result = await this.characterList.find({});
     return result;
@@ -26,8 +30,7 @@ class CharacterListService {
   // 특정 사용자 캐릭터 리스트 상세 조회
   async getCharacterList(email: string) {
     const result = await this.characterList.findOne({ email });
-    if (result === null) return {};
-    else return result;
+    return result;
   }
 
   // 사용자 캐릭터 리스트 최초 추가
