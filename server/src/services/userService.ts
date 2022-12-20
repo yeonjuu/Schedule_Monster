@@ -8,7 +8,7 @@ import {
 } from '../models/schemas/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET_KEY, SMTPID, SMTPPW } from '../utils/config';
+import { JWT_SECRET_KEY } from '../utils/config';
 
 class UserService {
   private User: userModelType;
