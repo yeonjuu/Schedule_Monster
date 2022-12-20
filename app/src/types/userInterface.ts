@@ -6,8 +6,8 @@ export interface IUser {
 }
 
 export interface ILogin {
-  userEmail: string;
-  userPw: string;
+  email: string;
+  password: string;
 }
 
 export interface IRegister {
