@@ -17,7 +17,7 @@ import { useParams } from 'react-router-dom';
 
 export default function Items() {
 
-  const [count, setCount] = useState(0);  
+  const [coin, setCoin] = useState(100);
   const [affection, setAffection] = useState(10);
   const [category, setCategory] = useState('all');
   const [inputState, setInputState] = useState('');
@@ -40,12 +40,14 @@ export default function Items() {
 
         <ItemContainer>
           <CategoryBox>
+        
             <ItemList2
               category={category === 'all' ? 'all' : category}
               inputValue={inputState}
               url={'/store/item/'}
               purpose={'구매'}
             ></ItemList2>
+
           </CategoryBox>
         </ItemContainer>
 
@@ -62,8 +64,8 @@ export default function Items() {
         <MonsterStatus>
           <ul>
             <li>이름 : 메타몽</li>
-            <li>{`애정도 : ❤️ ${affection}`} </li>
-            <li>보유 코인 : </li>
+            <li>{`애정도 : ❤️ ${affection}`}</li>
+            <li>보유 코인 : {coin}</li>
           </ul>
         </MonsterStatus>
       </MonsterProfile>

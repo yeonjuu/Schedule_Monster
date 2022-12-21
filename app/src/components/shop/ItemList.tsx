@@ -1,12 +1,15 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { useNavigate } from 'react-router-dom';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 import { useParams } from 'react-router-dom';
-import { ItemBox, ItemButton} from './../characters/StoreStyle';
+import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
+import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
 
 function ItemList({ category, inputValue, url, purpose }: any) {
+  const [count, setCount] = useState(0);  
+
   const { id } = useParams();
   const navigate = useNavigate();
   const itemList =
@@ -24,11 +27,8 @@ function ItemList({ category, inputValue, url, purpose }: any) {
           <ItemBox key={item.itemId}>
 
           <div style={{display:'flex', justifyContent:'space-around', padding:'0.3rem'}}>
-
           <span>💰 {item.price}</span>
-          <ItemButton onClick={() => confirm(`${item.itemName}을/룰 구매하시겠습니까?`)}>
-              {`${purpose}하기`}
-          </ItemButton>
+          <span>❤️ +{item.exp}</span>
           </div>
 
             <div
@@ -40,6 +40,33 @@ function ItemList({ category, inputValue, url, purpose }: any) {
               {/* <div>{item.price}</div> */}
               
             </div>
+
+
+
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+
+            { purpose === '구매' ? (
+              <div style={{ display:'flex', justifyContent:'center', alignItems:'center', marginBottom:'0.3rem'}}>
+                <QuanButton onClick={
+                  () => count >= 1 ? setCount((cur) => cur-1) : setCount((cur) => cur)}>
+                  <AiOutlineMinus/>
+                </QuanButton>
+                <span style={{margin: '0 1.5rem'}}>{count}</span>
+                <QuanButton onClick={
+                  () => setCount((cur) => cur+1) }>
+                  <AiOutlinePlus/>
+                </QuanButton>
+              </div>)
+               : null }
+
+            <ItemButton onClick={() => 
+              confirm(`'${item.itemName}' 아이템을 구매하시겠습니까?`)}>
+              {`${purpose}`}
+            </ItemButton>
+              
+              </div>
+
+
           </ItemBox>
         );
       })}

@@ -8,7 +8,7 @@ function Search({ setState }: any) {
     <Searchbar
     type="text"
     value={value}
-    placeholder="아이템 검색🔍"
+    placeholder="아이템 검색 🔍"
     onInput={(event): void => {
       setValue((event.target as HTMLTextAreaElement).value);
       setState((event.target as HTMLTextAreaElement).value);

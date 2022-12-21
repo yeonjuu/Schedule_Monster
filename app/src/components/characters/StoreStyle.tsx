@@ -59,6 +59,10 @@ export const MonsterImage = styled.div`
     border-radius: 50%;
     margin-bottom: 1.5rem;
 
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+
     &:hover{
         width: 16rem;
         height: 16rem;
@@ -74,6 +78,10 @@ export const MonsterStatus = styled.div`
     height: 10rem;
     border-radius: 1rem;
     padding: 1rem;
+
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
 `
 
 export const ItemList = styled.div`
@@ -127,10 +135,12 @@ export const CategoryBox = styled.div`
     flex-wrap: wrap;
 
     overflow-y: scroll;
-    overflow-x: scroll;
 
 `
 export const ItemBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: aliceblue;
     width: 130px;
     height: 150px;
@@ -144,10 +154,12 @@ export const ItemBox = styled.div`
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     
+    &:hover {
+        transform: scale(1.1);
+    }
 `
 
 //수집도감 리스트
-
 export const CharacterContainer = styled.div`
     background-color: white;
     border-radius: 1rem;
@@ -165,16 +177,6 @@ export const CharacterBox = styled.div`
     height: 8rem;
     margin: 1rem 0.5rem;
     flex-shrink: 0;
-`
-
-
-//구매, 사용 버튼
-export const ItemButton = styled.button`
-    background-color: #a2bcff;
-    cursor: pointer;
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.3rem;
 `
 
 
@@ -208,5 +210,41 @@ export const Searchbar = styled.input`
 
     &:focus {
         border-color: black;
+    }
+`
+
+//구매, 사용 버튼
+export const ItemButton = styled.button`
+    background-color: #a2bcff;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.3rem;
+
+    width: 100%;
+    height: 1.5rem;
+
+    font-weight: bold;
+
+    &:hover {
+     background-color: #84a5f8;
+    }
+`
+
+//구매 수량 버튼
+export const QuanButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 50%;
+    background-color: #a2bcff;
+    font-size: large;
+    font-weight: 500;
+    &:hover {
+     background-color: #84a5f8;
     }
 `
