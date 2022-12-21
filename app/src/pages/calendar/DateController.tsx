@@ -15,7 +15,7 @@ const DateController = ({ date, onClick }: Controller) => {
       <button onClick={onClick.prev}>
         <FontAwesomeIcon icon={faCaretLeft} />
       </button>
-      {format(date, 'yyyy')}년 {format(date, 'MM')} 월
+      {format(date, 'yyyy')}년 {format(date, 'M')}월
       <button onClick={onClick.next}>
         <FontAwesomeIcon icon={faCaretRight} />
       </button>

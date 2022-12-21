@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   format,
   add,
@@ -25,11 +25,15 @@ import {  DateData, Holiday, onClickObj } from '../../types/calendarTypes';
 import { get } from '../../api';
 import useDebounce from '../../hooks/useDebounce';
 import DateController from './DateController';
+import { Modal } from 'pages/calendar/modal/Modal';
+import  useModal  from 'hooks/useModal';
+import { NavBar } from 'components/navbar/NavBar';
 
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [dateData, setDateData] = useState<DateData[]>([]);
+ 
   const startMonth = startOfMonth(date);
   const endMonth = endOfMonth(date);
   const day = startOfWeek(startMonth);
@@ -42,6 +46,8 @@ const CalendarPage = () => {
   const thisMonth = format(date, 'MM');
   const debounce = useDebounce(format(date, 'MM'));
 
+ const {toggle, setModal}=useModal();
+ 
   const session = () => {
     if (thisMonth === '12') {
       return {
@@ -101,6 +107,7 @@ const onClick:onClickObj={
 }
 
   const renderDay = (day: Date, endDay: Date) => {
+    
     let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
     const brr = []; //일주일 들을 모아 한달을 담는 배열
     while (day <= endDay) {
@@ -113,6 +120,7 @@ const onClick:onClickObj={
           week={format(day, 'EE')}
           date={day}
           dateData={dateData}
+          setModal={setModal}
         />,
       );
       if (format(day, 'EE') == 'Sat') {
@@ -127,6 +135,7 @@ const onClick:onClickObj={
   return (
     <Layout>
       <Container>
+        <NavBar/>
         <MonsterBox>스킨</MonsterBox>
         <DateController date={date} onClick={onClick}/>
         <HeaderCalendar>
@@ -135,6 +144,8 @@ const onClick:onClickObj={
           })}
         </HeaderCalendar>
         <Calendar>{renderDay(day, endDay)}</Calendar>
+        <button onClick={setModal}>누르기</button>
+        {toggle&&<Modal setModal={setModal}/>}
       </Container>
     </Layout>
   );
