@@ -3,23 +3,25 @@ import { useEffect, useRef, useState } from 'react';
 import Schedule from '../Schedule';
 import Todo from '../Todo';
 import { ModalContainer, Tab, ContentBox, TabBox, BtnBox } from './ModalStyle';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Modal = ({ setModal }: { setModal: () => void }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const onClick = (tab: number) => {
     setValue(tab);
   };
 
+  const { dates } = useParams();
   const tabs = [
     {
       name: '할 일',
-      content: <Todo />,
+      content: <Todo dates={dates} />,
     },
     {
       name: '일정',
-      content: <Schedule />,
+      content: <Schedule dates={dates}/>,
     },
   ];
 
@@ -30,6 +32,7 @@ const Modal = ({ setModal }: { setModal: () => void }) => {
         //current.contains(e.targt)은 이벤트를 실행한 e.target이 포함되어 있다면 true/아니면 false
         //여기서는 modalRef 바깥에서 event가 발생하면 ~ 으로 조건 걸었다
         setModal();
+        navigate('/calendar');
       }
     };
     document.addEventListener('mousedown', clickOutside);
@@ -57,8 +60,8 @@ const Modal = ({ setModal }: { setModal: () => void }) => {
       </TabBox>
       <ContentBox>{tabs[value].content}</ContentBox>
       <BtnBox>
-        <ModalBtn onClick={setModal}>취소</ModalBtn>
-        <ModalBtn onClick={setModal}>저장</ModalBtn>
+        <ModalBtn onClick={()=>{setModal(); navigate('/calendar')}}>취소</ModalBtn>
+        <ModalBtn onClick={()=>{setModal(); navigate('/calendar')}}>저장</ModalBtn>
       </BtnBox>
     </ModalContainer>
   );

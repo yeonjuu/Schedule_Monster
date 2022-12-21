@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { DateContainer, Day, HolidayLabel } from './CalendarStyles';
 import React from 'react';
 import { DateData, Days } from '../../types/calendarTypes';
+import { useNavigate } from 'react-router-dom';
 
 //공휴일 - 기념일 라벨링
 const Holiday = ({ description, name }: DateData) => {
@@ -28,11 +29,13 @@ const checkHoliday = (holiday: Array<DateData>) => {
 };
 
 const Dates = ({ prevMonth, nextMonth, today, week, date, dateData, setModal }: Days) => {
+  const navigate = useNavigate();
+  
   const todayDate = format(date, 'yyyy-MM-dd');
   const holiday = dateData.filter((item) => item.date === todayDate);
   const day=format(date, 'd')
   return (
-    <DateContainer onDoubleClick={setModal}>
+    <DateContainer onDoubleClick={()=>{setModal(); navigate(`/calendar/todos/${format(date,'yyyyMMdd')}`);}}>
       <Day
         prevMonth={prevMonth} //달력에서 표시되는 이전 달의 날짜들인지 확인
         nextMonth={nextMonth}//달력에서 표시되는 이후 달의 날짜들인지 확인

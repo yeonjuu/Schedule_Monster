@@ -8,9 +8,9 @@ color: #414656;
 font-size: 16px;
 padding: 0 15px;
 border-radius: 4px;
-transition: all 0.8s;
+transition: all 1s;
 &:hover {
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
 }
 `;
