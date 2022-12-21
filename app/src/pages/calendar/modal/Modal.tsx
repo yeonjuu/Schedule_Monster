@@ -1,9 +1,8 @@
-import useModal from 'hooks/useModal';
-import { Input } from 'pages/login/form';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { ModalBtn } from 'components/button/buttons';
+import { useEffect, useRef, useState } from 'react';
 import Schedule from '../Schedule';
 import Todo from '../Todo';
-import { ModalContainer, CloseButton, SubButton, Tab, ContentBox, TabBox } from './ModalStyle';
+import { ModalContainer, Tab, ContentBox, TabBox, BtnBox } from './ModalStyle';
 
 const Modal = ({ setModal }: { setModal: () => void }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -57,8 +56,10 @@ const Modal = ({ setModal }: { setModal: () => void }) => {
         })}
       </TabBox>
       <ContentBox>{tabs[value].content}</ContentBox>
-      <CloseButton onClick={setModal}>취소</CloseButton>
-      <SubButton onClick={setModal}>저장</SubButton>
+      <BtnBox>
+        <ModalBtn onClick={setModal}>취소</ModalBtn>
+        <ModalBtn onClick={setModal}>저장</ModalBtn>
+      </BtnBox>
     </ModalContainer>
   );
 };

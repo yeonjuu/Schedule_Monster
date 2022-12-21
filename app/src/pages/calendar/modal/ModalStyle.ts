@@ -1,7 +1,8 @@
+import TwitterPicker from 'react-color/lib/components/twitter/Twitter';
 import styled, { css } from 'styled-components';
 
 export const ModalContainer = styled.div`
-  width: 450px;
+  width: 380px;
   opacity: 1;
   display: flex;
   flex-direction: column;
@@ -18,34 +19,16 @@ export const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   background-color: white;
   border: 1px solid black;
   border-radius: 14px;
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  right: 4px;
-  bottom: 10px;
-  cursor: pointer;
-  border: none;
-  background-color: transparent;
-  color: #414656;
-  font-size: 18px;
-  padding: 0 15px;
-  border-radius: 4px;
-  transition: all 0.8s;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0.8;
-  }
-`;
-
-export const SubButton = styled(CloseButton)`
-  right: 70px;
-`;
+export const BtnBox=styled.div`
+display: flex;
+justify-content: flex-end;
+height: 25px;
+`
 
 export const TabBox = styled.div`
   display: flex;
@@ -76,4 +59,18 @@ export const Tab = styled.div<{ active: boolean }>`
       color: #a2bcfe;
       font-weight: bold;
     `}
+`;
+
+export const PickColor = styled.button<{ labelColor: string }>`
+  cursor: pointer;
+  margin-left: 10px;
+  width: 40px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  ${(props) =>
+    props.labelColor &&
+    css`
+background-color: {props.labelColor}`}
 `;
