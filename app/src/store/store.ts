@@ -1,7 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../pages/login/userSlice';
 import { items, monsterCategories, monsters, itemCategories } from './mockData';
-import { persistStore, persistReducer } from 'redux-persist';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import userListSlice from 'pages/admin/userListSlice';
 import itemListSlice from 'pages/admin/itemListSlice';
@@ -25,6 +34,12 @@ const store = configureStore({
     itemListReducer: itemListSlice.reducer,
     categoryListReducer: categoryListSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export default store;
