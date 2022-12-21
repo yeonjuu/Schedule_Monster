@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Container } from '../../pages/admin/bannerCss';
-import Search from './search';
-import NavItem from './ItemList';
-import NavMonster from './monsterList';
+import { Container } from '../../pages/admin/adminCss';
 
-function BannerItem({ categories, setCategory }: any) {
+function CategoryList({ categories, setCategory }: any) {
   return (
     <>
       <Container>
@@ -22,7 +19,7 @@ function BannerItem({ categories, setCategory }: any) {
             <li
               key={idx}
               onClick={(): void => {
-                setCategory(categories[idx].categoryId);
+                setCategory(categories[idx].categoryName);
               }}
             >
               {category.categoryName}
@@ -33,4 +30,4 @@ function BannerItem({ categories, setCategory }: any) {
     </>
   );
 }
-export default BannerItem;
+export default CategoryList;

@@ -3,6 +3,9 @@ import userReducer from '../pages/login/userSlice';
 import { items, monsterCategories, monsters, itemCategories } from './mockData';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import userListSlice from 'pages/admin/userListSlice';
+import itemListSlice from 'pages/admin/itemListSlice';
+import categoryListSlice from 'pages/admin/categoryListSlice';
 
 const persistConfig = {
   key: 'root',
@@ -18,6 +21,9 @@ const store = configureStore({
     monsterCategories,
     itemCategories,
     monsters,
+    userListReducer: userListSlice.reducer,
+    itemListReducer: itemListSlice.reducer,
+    categoryListReducer: categoryListSlice.reducer,
   },
 });
 
