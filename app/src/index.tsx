@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <p>페이지를 찾을 수 없습니다😭</p>,
     children: [
-      { index: true, element: <Items></Items> },
+      { path: '/store/item/:id', element: <Items></Items> },
       { path: '/store/characters', element: <CharactersList></CharactersList> },
       { path: '/store/myitems', element: <MyItems></MyItems> },
     ],

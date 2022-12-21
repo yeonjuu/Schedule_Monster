@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Container } from '../../pages/admin/bannerCss';
-import Search from './search';
-import NavItem from './ItemList';
-import NavMonster from './monsterList';
+import { Container } from '../../pages/admin/adminCss';
 
-function BannerItem({ categories, setCategory, category }: any) {
+function CategoryList({ categories, setCategory }: any) {
   return (
     <>
       <Container>
@@ -22,7 +19,7 @@ function BannerItem({ categories, setCategory, category }: any) {
             <li
               key={idx}
               onClick={(): void => {
-                setCategory(categories[idx]);
+                setCategory(categories[idx].categoryName);
               }}
             >
               {category.categoryName}
@@ -30,19 +27,7 @@ function BannerItem({ categories, setCategory, category }: any) {
           );
         })}
       </Container>
-
-      {/* {type === 'item' ? (
-        <NavItem
-          category={category === 'all' ? 'all' : category.categoryId}
-          inputValue={inputState}
-        ></NavItem>
-      ) : (
-        <NavMonster
-          category={category === 'all' ? 'all' : category.categoryId}
-          inputValue={inputState}
-        ></NavMonster>
-      )} */}
     </>
   );
 }
-export default BannerItem;
+export default CategoryList;

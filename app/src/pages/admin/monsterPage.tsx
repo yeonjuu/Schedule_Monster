@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container } from './bannerCss';
 import Search from '../../components/shop/search';
 import MonsterList from '../../components/shop/monsterList';
 import BannerItem from '../../components/shop/categories';
@@ -15,7 +14,7 @@ function MonsterPage({ categories, setCategory, category }: any) {
       ></BannerItem>
       <Search setState={setInputState}></Search>
       <MonsterList
-        category={category === 'all' ? 'all' : category.categoryId}
+        category={category === 'all' ? 'all' : category}
         inputValue={inputState}
       ></MonsterList>
     </div>

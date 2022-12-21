@@ -22,3 +22,16 @@ export const BuyButton = styled.button`
   color: white;
   border-radius: 30px;
 `;
+
+export const UserInfoBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 20px 0px;
+`;
+
+export const UserPageContainer = styled.div`
+  overflow-y: scroll;
+  border: 2px solid black;
+  height: 500px;
+`;
