@@ -17,7 +17,9 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "no-console": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "no-console": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-var-requires": 0,
+    "react/prop-types": "off"
   }
 }

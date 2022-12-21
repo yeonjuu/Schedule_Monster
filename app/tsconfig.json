@@ -1,23 +1,19 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "lib": ["es6", "dom"],
-    "rootDir": "src",
-    "module": "commonjs",
+    "allowJs": true,
     "esModuleInterop": true,
-    "target": "es5",
-    "sourceMap": true,
+    "jsx": "preserve",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
+    "noEmit": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "target": "esnext",
+    "baseUrl": "src"
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }
