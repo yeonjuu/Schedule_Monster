@@ -163,7 +163,7 @@ export const ItemBox = styled.div`
 export const CharacterContainer = styled.div`
     background-color: white;
     border-radius: 1rem;
-    width: 95%;
+    width: 60%;
     height: 80%;
 
     display: flex;

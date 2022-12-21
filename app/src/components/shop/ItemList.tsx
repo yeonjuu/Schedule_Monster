@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
 
-function ItemList({ category, inputValue, url, purpose }: any) {
+function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection, setAffection}: any) {
   const [count, setCount] = useState(0);  
 
   const { id } = useParams();
@@ -20,6 +20,7 @@ function ItemList({ category, inputValue, url, purpose }: any) {
             return createFuzzyMatcher(inputValue, val.itemName);
           });
         });
+
   return (
     <>
       {itemList.map((item: any): JSX.Element => {
@@ -46,6 +47,7 @@ function ItemList({ category, inputValue, url, purpose }: any) {
             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
 
             { purpose === '구매' ? (
+              <>
               <div style={{ display:'flex', justifyContent:'center', alignItems:'center', marginBottom:'0.3rem'}}>
                 <QuanButton onClick={
                   () => count >= 1 ? setCount((cur) => cur-1) : setCount((cur) => cur)}>
@@ -56,13 +58,37 @@ function ItemList({ category, inputValue, url, purpose }: any) {
                   () => setCount((cur) => cur+1) }>
                   <AiOutlinePlus/>
                 </QuanButton>
-              </div>)
+              </div>
+
+              <ItemButton onClick={() => 
+                {const isPurchase = confirm(`'${item.itemName}' 아이템을 구매하시겠습니까?`);
+                  if (isPurchase && coin >= item.price) {
+                    setCoin((prev : number) => prev - item.price);
+                }
+                }}>
+                {`${purpose}`}
+              </ItemButton>
+
+              </>
+              )
                : null }
 
-            <ItemButton onClick={() => 
-              confirm(`'${item.itemName}' 아이템을 구매하시겠습니까?`)}>
-              {`${purpose}`}
-            </ItemButton>
+              
+              { purpose === '사용' ? (
+              <>
+              <ItemButton onClick={() => 
+                {const isPurchase = confirm(`'${item.itemName}' 아이템을 시용하시겠습니까?`);
+                  if (isPurchase && coin >= item.price) {
+                    setAffection((prev : number) => prev + item.exp);
+                }
+                }}>
+                {`${purpose}`}
+              </ItemButton>
+
+              </>
+              )
+
+                : null }
               
               </div>
 

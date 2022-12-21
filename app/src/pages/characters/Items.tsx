@@ -17,7 +17,7 @@ import { useParams } from 'react-router-dom';
 
 export default function Items() {
 
-  const [coin, setCoin] = useState(100);
+  const [coin, setCoin] = useState(1000);
   const [affection, setAffection] = useState(10);
   const [category, setCategory] = useState('all');
   const [inputState, setInputState] = useState('');
@@ -46,6 +46,10 @@ export default function Items() {
               inputValue={inputState}
               url={'/store/item/'}
               purpose={'구매'}
+              coin={coin}
+              setCoin={setCoin}
+              affection={affection}
+              setAffection={setAffection}
             ></ItemList2>
 
           </CategoryBox>
