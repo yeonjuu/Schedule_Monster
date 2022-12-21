@@ -28,6 +28,7 @@ import DateController from './DateController';
 import { Modal } from 'pages/calendar/modal/Modal';
 import useModal from 'hooks/useModal';
 import { NavBar } from 'components/navbar/NavBar';
+import axios from 'axios';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -73,7 +74,7 @@ const CalendarPage = () => {
     const getHoliday = async () => {
       const calendarId =
         'ko.south_korea%23holiday%40group.v.calendar.google.com';
-      const res = await get(
+      const res = await axios.get(
         `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${
           process.env.REACT_APP_API_KEY
         }&orderBy=startTime&singleEvents=true&timeMin=${
@@ -81,7 +82,7 @@ const CalendarPage = () => {
         }T00:00:00Z&timeMax=${session().next}T00:00:00Z`,
       );
 
-      const data = res.items.map((item: Holiday) => {
+      const data = res.data.items.map((item: Holiday) => {
         return {
           name: item.summary,
           description: item.description.slice(0, 3),

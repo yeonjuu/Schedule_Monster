@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { MAIN_COLOR } from 'assets/styles';
+
 
 const paletteSlice = createSlice({
   name: 'Palette',
   initialState: {
-    color: '#ff0000',
+    color: `${MAIN_COLOR}`,
   },
   reducers: {
     pickColor: (state, action) => {
