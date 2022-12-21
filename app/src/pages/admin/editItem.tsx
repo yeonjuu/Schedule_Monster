@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import produce from 'immer';
-import { changeItem } from '../../store/mockData';
+import * as API from '../../api';
 
 const EditItemBox = styled.div`
   background-color: white;
@@ -15,17 +15,20 @@ const Img = styled.img`
 `;
 
 function EditItem() {
-  const dispatch = useDispatch();
-  const itemList = useSelector((state: any) => state.items);
-  const categories = useSelector((state: any) => state.itemCategories);
+  const itemListReducer = useSelector((state: any) => state.itemListReducer);
+  const itemList = itemListReducer.itemList;
+  const categoryListReducer = useSelector(
+    (state: any) => state.categoryListReducer,
+  );
+  const categoryList = categoryListReducer.categoryList;
   const { id } = useParams();
   const selectItem = itemList.find((item: any): any => {
-    return item.itemId === id;
+    return item._id === id;
   });
   const initialstate =
     id === 'normal'
       ? {
-          itemId: '',
+          _id: '',
           itemName: '',
           price: '',
           exp: '',
@@ -34,13 +37,13 @@ function EditItem() {
           category: '',
         }
       : {
-          itemId: selectItem.itemId,
+          _id: selectItem._id,
           itemName: selectItem.itemName,
           price: selectItem.price,
           exp: selectItem.exp,
           image: selectItem.imgage,
           info: selectItem.info,
-          category: selectItem.category,
+          category: selectItem.categoryName,
         };
 
   const [itemState, setItemState] = useState(initialstate);
@@ -124,9 +127,9 @@ function EditItem() {
         />
         <div>카테고리</div>
         <select onChange={onChangeCategory} value={itemState.category}>
-          {categories.map((category: any): JSX.Element => {
+          {categoryList.map((category: any): JSX.Element => {
             return (
-              <option key={category.categoryId} value={category.categoryName}>
+              <option key={category._id} value={category.categoryName}>
                 {category.categoryName}
               </option>
             );
@@ -144,11 +147,52 @@ function EditItem() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            dispatch(changeItem(itemState));
+            if (confirm('수정 or 삭제 하시겠습니까?')) {
+              console.log(itemState);
+
+              id === 'normal'
+                ? API.post(
+                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/register',
+                    {
+                      itemName: itemState.itemName,
+                      price: itemState.price,
+                      exp: itemState.exp,
+                      categoryName: itemState.category,
+                    },
+                  )
+                : API.put(
+                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/update',
+                    {
+                      _id: id,
+                      itemName: itemState.itemName,
+                      price: itemState.price,
+                      exp: itemState.exp,
+                      categoryName: itemState.category,
+                    },
+                  );
+              location.replace('/admin/item/normal');
+            }
           }}
         >
           {id === 'normal' ? '추가' : '수정'}
         </button>
+        {id === 'normal' ? (
+          <></>
+        ) : (
+          <button
+            onClick={(e) => {
+              if (confirm('삭제 하시겠습니까?')) {
+                e.preventDefault();
+                API.delete(
+                  `https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/delete/${id}`,
+                );
+              }
+              location.replace('/admin/item/normal');
+            }}
+          >
+            삭제
+          </button>
+        )}
       </form>
     </EditItemBox>
   );

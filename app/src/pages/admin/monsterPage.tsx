@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container } from './bannerCss';
 import Search from '../../components/shop/search';
 import MonsterList from '../../components/shop/monsterList';
 import BannerItem from '../../components/shop/categories';

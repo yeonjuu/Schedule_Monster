@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { useNavigate } from 'react-router-dom';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-import { useParams } from 'react-router-dom';
 import { ItemBox } from './../characters/StoreStyle';
 function ItemList({ category, inputValue, url }: any) {
-  const data = useSelector((state: any) => state.items);
+  const reducerData = useSelector((state: any) => state.itemListReducer);
+  const data = reducerData.itemList;
   const navigate = useNavigate();
   const itemList =
     inputValue === ''
@@ -18,10 +18,10 @@ function ItemList({ category, inputValue, url }: any) {
     <>
       {itemList.map((item: any): JSX.Element => {
         return (
-          <ItemBox key={item.itemId}>
+          <ItemBox key={item._id}>
             <div
               onClick={(): void => {
-                navigate(`${url}${item.itemId}`);
+                navigate(`${url}${item._id}`);
               }}
             >
               <div>{item.itemName}</div>
