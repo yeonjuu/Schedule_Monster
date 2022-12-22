@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  MonsterProfile,
+  MonsterContainer,
   MonsterImage,
   ContentsBox,
   MonsterStatus,
@@ -14,6 +14,7 @@ import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import MonsterProfile from '../../components/characters/MonsterProfile';
 
 export default function Items() {
 
@@ -57,22 +58,11 @@ export default function Items() {
 
       </ItemList>
 
-      <MonsterProfile>
-        <MonsterImage>
-          <img
-            style={{ width: '15rem', height: '15rem' }}
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png"
-          />
-        </MonsterImage>
 
-        <MonsterStatus>
-          <ul>
-            <li>이름 : 메타몽</li>
-            <li>{`애정도 : ❤️ ${affection}`}</li>
-            <li>보유 코인 : {coin}</li>
-          </ul>
-        </MonsterStatus>
-      </MonsterProfile>
+      <MonsterProfile
+      coin={coin}
+      affection={affection} />
+
     </ContentsBox>
   );
 }

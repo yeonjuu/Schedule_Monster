@@ -8,7 +8,7 @@ import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
 
 function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection, setAffection}: any) {
-  const [count, setCount] = useState(0);  
+  const [count, setCount] = useState(1);  
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,7 +50,11 @@ function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection
               <>
               <div style={{ display:'flex', justifyContent:'center', alignItems:'center', marginBottom:'0.3rem'}}>
                 <QuanButton onClick={
-                  () => count >= 1 ? setCount((cur) => cur-1) : setCount((cur) => cur)}>
+                  (e) => {
+                    count >= 2 ? setCount((cur) => cur-1) : setCount((cur) => cur);
+                    console.log(e);
+                  }
+                  }>
                   <AiOutlineMinus/>
                 </QuanButton>
                 <span style={{margin: '0 1.5rem'}}>{count}</span>

@@ -1,48 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ContentsBox, CharacterContainer, CharacterBox, MonsterProfile, MonsterImage, MonsterStatus} from '../../components/characters/StoreStyle';
+import { ContentsBox, CharacterContainer, CharacterBox, MonsterContainer, MonsterImage, MonsterStatus} from '../../components/characters/StoreStyle';
 import { useQuery } from '@tanstack/react-query';
-
+import MonsterProfile from 'components/characters/MonsterProfile';
 
 export default function CharactersList() {
 
-    const { isLoading, error, data: pokemons} = useQuery(['pokemonData'],
-     async () => {
-            return axios.get('/pokeMockData/pokemon.json')
-            .then((res) => console.log(res.data.pokedata))
-        });
+    const [isLoading, setIsLoading] = useState(true);
+    const [pokemons, setPokemons] = useState([]);
+    const [coin, setCoin] = useState(1000);
+    const [affection, setAffection] = useState(10);
 
+    // const { isLoading, error, data: pokemons} = useQuery(['pokemonData'],
+    //  async () => {
+    //         return axios.get('/pokeMockData/pokemon.json')
+    //         .then((res) => console.log(res))
+    //     });
+
+    useEffect(() => {
+        axios.get('/pokeMockData/pokemon.json')
+        .then((res) => {
+            setPokemons(res.data.pokedata);
+            setIsLoading(!isLoading);
+        });
+    }, []);
+
+    console.log(pokemons);
      
     return (
         <>
         <ContentsBox>
-            <CharacterContainer></CharacterContainer>
-            <MonsterProfile></MonsterProfile>
+            <CharacterContainer>
+                {isLoading ? 
+                <div style={{display:'flex', alignItems:'center', alignSelf:'center', margin: '0 auto'}}>
+                    <h3>Loading...</h3>
+                    <img style={{width:'6rem', height:'3rem'}} src="https://weichiachang.github.io/pokemon-master/img/loading.45600eb9.gif" />
+                    </div> :
+                    <>
+                    {pokemons.map((pokemon: any) => 
+                    <CharacterBox key={pokemon.id}>
+                        <span>{pokemon.name}</span>
+                        <img src={pokemon.image}/>
+                    </CharacterBox>)}
+                    </>
+                }
+            </CharacterContainer>
+
+            <MonsterProfile
+            coin={coin}
+            affection={affection}
+             />
         </ContentsBox>
+
             
             {/* {isLoading &&
             <ContentsBox>
                 <CharacterContainer>
                     <h1 style={{textAlign:'center', alignSelf:'center', margin: '0 auto'}}>Loading,,,</h1>
                 </CharacterContainer>
-
-                <MonsterProfile>
-                    <MonsterImage>
-                    <img
-                        style={{ width: '15rem', height: '15rem' }}
-                        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png"
-                    />
-
-                    </MonsterImage>
-
-                    <MonsterStatus>
-                    <ul>
-                        <li>이름 : 메타몽</li>
-                        <li>{`애정도 : ❤️ `}</li>
-                        <li>보유 코인 : </li>
-                    </ul>
-                    </MonsterStatus>
-                </MonsterProfile>
             </ContentsBox>}
 
             {error && 
@@ -50,24 +65,6 @@ export default function CharactersList() {
                 <CharacterContainer>
                     <h1 style={{textAlign:'center', alignSelf:'center', margin: '0 auto'}}>Error 발생🤕</h1>
                 </CharacterContainer>
-
-                <MonsterProfile>
-                <MonsterImage>
-                <img
-                    style={{ width: '15rem', height: '15rem' }}
-                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png"
-                />
-
-                </MonsterImage>
-
-                <MonsterStatus>
-                <ul>
-                    <li>이름 : 메타몽</li>
-                    <li>{`애정도 : ❤️ `}</li>
-                    <li>보유 코인 : </li>
-                </ul>
-                </MonsterStatus>
-            </MonsterProfile>
             </ContentsBox>}
 
             {pokemons && 
@@ -75,8 +72,6 @@ export default function CharactersList() {
                 <CharacterContainer>
                     {pokemons}
                 </CharacterContainer>
-
-
             </ContentsBox>} */}
 
     </>

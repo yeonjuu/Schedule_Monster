@@ -27,7 +27,9 @@ export const ContentsBox = styled.div`
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
 
 `
-export const MonsterProfile = styled.div`
+
+//몬스터 프로필
+export const MonsterContainer = styled.div`
     background-color: white;
     width: 30%;
     height: 80%;
@@ -79,9 +81,17 @@ export const MonsterStatus = styled.div`
     border-radius: 1rem;
     padding: 1rem;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+`
+export const MonsterLine = styled.li`
+    list-style: none;
 `
 
 export const ItemList = styled.div`
@@ -104,7 +114,6 @@ export const ItemList = styled.div`
 `
 
 //아이템 리스트
-
 export const ItemContainer = styled.div`
     width: 90%;
     height: 100%;

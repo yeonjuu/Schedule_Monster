@@ -1,5 +1,6 @@
 {
     "title" : "pokemon list",
+    
     "pokedata" : [
         {
             "name" : "pikachu",
@@ -46,6 +47,43 @@
             "id" : 9,
             "image" : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png"
         }
-      ]
+      ],
+
+      "characters" : [
+        {
+            "_id": "639ca3cd8e6e43e432cc9ba8",
+            "characterName": "피카츄입니다",
+            "levelupPoint": {
+                "point1": 0,
+                "point2": 50,
+                "point3": 500
+            },
+            "images": {
+                "img1": "url",
+                "img2": "url2",
+                "img3": "url3"
+            },
+            "createdAt": "2022-12-16T16:58:53.353Z",
+            "updatedAt": "2022-12-16T16:59:32.710Z",
+            "__v": 0
+        },
+        {
+            "_id": "639ca4dd8e6e43e432cc9bb0",
+            "characterName": "꼬부기",
+            "levelupPoint": {
+                "point1": 0,
+                "point2": 200,
+                "point3": 1000
+            },
+            "images": {
+                "img1": "url",
+                "img2": "url2",
+                "img3": "url3"
+            },
+            "createdAt": "2022-12-16T17:03:25.493Z",
+            "updatedAt": "2022-12-16T17:03:25.493Z",
+            "__v": 0
+        }
+    ]
     }
 
