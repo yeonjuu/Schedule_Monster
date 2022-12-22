@@ -1,4 +1,5 @@
 import { ArrowFunction } from 'typescript';
+import { Calendar } from './../pages/calendar/CalendarStyles';
 
 interface Holiday {
   kind: string;
@@ -57,4 +58,10 @@ type onClickObj = {
   now: () => void;
 };
 
-export { Holiday, DateData, Days, Controller,onClickObj };
+type checkTodo={
+  title: string,
+  calendar: string,
+
+}
+
+export { Holiday, DateData, Days, Controller,onClickObj, checkTodo };

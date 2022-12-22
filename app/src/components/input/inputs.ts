@@ -1,12 +1,13 @@
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import styled, { css } from 'styled-components';
+import DatePicker from 'react-datepicker';
 
 export const Input = styled.input<{
   errors: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
 }>`
-  width: 330px;
+  width: 100%;
   height: 33px;
-  text-indent: 15px;
+  text-indent: 13px;
   border: 0.5px solid #a2bcfe;
   border-radius: 8px;
   box-sizing: border-box;
@@ -14,9 +15,25 @@ export const Input = styled.input<{
   ${(props) =>
     props.errors &&
     css`
+      color: black;
       font-weight: bold;
       border: 1.5px solid #ffa4b2;
-      background-color: #ffa4b2;
+    `}
+`;
+
+export const SelectCal = styled.select<{
+  errors: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
+}>`
+  width: 332px;
+  height: 33px;
+  border: 1px solid #a2bcfe;
+  border-radius: 8px;
+  text-indent: 13px;
+  ${(props) =>
+    props.errors &&
+    css`
+      font-weight: bold;
+      border: 1.5px solid #ffa4b2;
     `}
 `;
 
@@ -25,10 +42,33 @@ export const InputBox = styled.div`
     margin-top: 20px;
   }
   & > select {
-    margin: 20px 0;
+    margin-top: 20px;
   }
 
   & > div {
     margin-top: 20px;
   }
 `;
+
+export const SchedulePicker = styled(DatePicker)`
+  width: 100%;
+  height: 33px;
+  font-size: 13px;
+  border: 1px solid #a2bcfe;
+  border-radius: 8px;
+  box-sizing: border-box;
+  text-align: center;
+`;
+export const ScheduleBox = styled.div`
+
+  display: flex;
+  height: 33px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ErrorWord=styled.small`
+margin-left: 13px;
+color: #D83167;
+font-weight: bold;
+`

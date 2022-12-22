@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import DatePicker from 'react-datepicker';
+
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 
 export const ModalContainer = styled.div`
   width: 397px;
@@ -28,6 +29,7 @@ export const BtnBox = styled.div`
   display: flex;
   justify-content: flex-end;
   height: 25px;
+  margin-top: 20px;
 `;
 
 export const TabBox = styled.div`
@@ -75,34 +77,3 @@ export const PickColor = styled.button<{ labelColor: string }>`
       background-color: ${props.labelColor};
     `}
 `;
-
-export const SchedulePicker = styled(DatePicker)`
-  width: 100%;
-  height: 33px;
-  font-size: 12px;
-  border: 1px solid #a2bcfe;
-  border-radius: 8px;
-  box-sizing: border-box;
-  text-align: center;
-`;
-export const ScheduleBox = styled.div`
-
-  display: flex;
-  height: 33px;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const SelectCal = styled.select`
-  width: 332px;
-  height: 33px;
-  border: 1px solid #a2bcfe;
-  border-radius: 8px;
-  text-indent: 15px;
-`;
-
-export const ErrorWord=styled.small`
-margin-left: 14px;
-color: #D83167;
-font-weight: bold;
-`

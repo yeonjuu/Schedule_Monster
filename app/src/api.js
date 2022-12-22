@@ -1,9 +1,13 @@
 import axios from 'axios';
 
+const cloudDB = process.env.REACT_APP_CLOUD_DB;
+
 async function get(endpoint) {
+  const apiUrl = `${cloudDB}${endpoint}`;
   try {
-    const response = await axios.get(endpoint, {
+    const response = await axios.get(apiUrl, {
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      //accessToken,,, refreshtoken,, cookies
     });
     //응답 값 데이터만 전송
     return response.data;
@@ -24,8 +28,9 @@ async function get(endpoint) {
 }
 
 async function post(endpoint, data) {
+  const apiUrl = `${cloudDB}${endpoint}`;
   try {
-    const response = await axios.post(endpoint, data, {
+    const response = await axios.post(apiUrl, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -45,8 +50,9 @@ async function post(endpoint, data) {
 //patch : 덮어쓰기? 틀은 그대로 있고 안에 내용을 바꾸는거
 //기존 데이터 + 바뀌는 데이터 다 작성
 async function put(endpoint, data) {
+  const apiUrl = `${cloudDB}${endpoint}`;
   try {
-    const response = await axios.put(endpoint, data, {
+    const response = await axios.put(apiUrl, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -65,8 +71,9 @@ async function put(endpoint, data) {
 
 //변경할 데이터만 작성
 async function patch(endpoint, data) {
+  const apiUrl = `${cloudDB}${endpoint}`;
   try {
-    const response = await axios.patch(endpoint, data, {
+    const response = await axios.patch(apiUrl, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -84,10 +91,10 @@ async function patch(endpoint, data) {
   }
 }
 
-async function del(endpoint, data) {
+async function del(endpoint) {
+  const apiUrl = `${cloudDB}${endpoint}`;
   try {
-    const response = await axios.delete(endpoint, {
-      data: { data },
+    const response = await axios.delete(apiUrl, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },

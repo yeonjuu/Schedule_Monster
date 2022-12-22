@@ -41,7 +41,7 @@ const Dates = ({ prevMonth, nextMonth, today, week, date, dateData }: Days) => {
     <DateContainer
       onDoubleClick={() => {
         dispatch(openModal());
-        navigate(`/calendar/todos/${format(date, 'yyyyMMdd')}`);
+        navigate(`/calendar/todos/${format(date, 'yyyy-MM-dd')}`);
       }}
     >
       <Day
