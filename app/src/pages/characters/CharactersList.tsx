@@ -3,11 +3,14 @@ import axios from 'axios';
 import { ContentsBox, CharacterContainer, CharacterBox, MonsterContainer, MonsterImage, MonsterStatus} from '../../components/characters/StoreStyle';
 import { useQuery } from '@tanstack/react-query';
 import MonsterProfile from 'components/characters/MonsterProfile';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function CharactersList() {
 
+    const [image, setImage] = useState('https://art.pixilart.com/5e6de2826be33b3.png');
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
-    const [pokemons, setPokemons] = useState([]);
+    const [pokemons, setPokemons] = useState<any[]>([]);
     const [coin, setCoin] = useState(1000);
     const [affection, setAffection] = useState(10);
 
@@ -25,7 +28,7 @@ export default function CharactersList() {
         });
     }, []);
 
-    console.log(pokemons);
+    // console.log(pokemons);
      
     return (
         <>
@@ -35,12 +38,23 @@ export default function CharactersList() {
                 <div style={{display:'flex', alignItems:'center', alignSelf:'center', margin: '0 auto'}}>
                     <h3>Loading...</h3>
                     <img style={{width:'6rem', height:'3rem'}} src="https://weichiachang.github.io/pokemon-master/img/loading.45600eb9.gif" />
-                    </div> :
+                    </div> : 
+
                     <>
                     {pokemons.map((pokemon: any) => 
-                    <CharacterBox key={pokemon.id}>
-                        <span>{pokemon.name}</span>
+                    <CharacterBox 
+                    onClick={ () => {
+                        navigate(`/store/characters/${pokemon.id}`);
+                        const clicked : any = pokemons.find(p=> p.id == pokemon.id);
+                        const isMain = window.confirm(`${clicked.name} 포켓몬을 대표 캐릭터로 지정하시겠습니까?`);
+                        if (isMain) {
+                        setImage((prev) => clicked.image);
+                        }
+                        // console.log(isMain);
+                    } }
+                    key={pokemon.id}>
                         <img src={pokemon.image}/>
+                        <h4 style={{alignSelf:'center'}}>{pokemon.name}</h4> 
                     </CharacterBox>)}
                     </>
                 }
@@ -49,6 +63,7 @@ export default function CharactersList() {
             <MonsterProfile
             coin={coin}
             affection={affection}
+            myPokemon={image}
              />
         </ContentsBox>
 

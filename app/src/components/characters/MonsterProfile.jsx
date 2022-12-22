@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { MonsterContainer, MonsterImage, MonsterLine, MonsterStatus } from './StoreStyle';
 
-export default function MonsterProfile({coin, affection}) {
+export default function MonsterProfile({coin, affection, myPokemon}) {
 
     return (
         <>
@@ -9,7 +9,7 @@ export default function MonsterProfile({coin, affection}) {
         <MonsterImage>
           <img
             style={{ width: '15rem', height: '15rem' }}
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png"
+            src={myPokemon}
           />
         </MonsterImage>
 

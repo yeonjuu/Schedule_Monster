@@ -182,10 +182,23 @@ export const CharacterContainer = styled.div`
 `
 export const CharacterBox = styled.div`
     background-color: aliceblue;
-    width: 6rem;
-    height: 8rem;
-    margin: 1rem 0.5rem;
+    width: 130px;
+    height: 150px;
+    margin: 1rem;
     flex-shrink: 0;
+    border-radius: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+
+    &:hover {
+        transform: scale(1.1);
+    }
 `
 
 

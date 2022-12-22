@@ -39,7 +39,7 @@ export default function MyItems() {
                 <ItemList2
                 category={category === 'all' ? 'all' : category}
                 inputValue={inputState}
-                url={'/store/item/'}
+                url={'/store/myitems/'}
                 purpose={'사용'}
                 coin={coin}
                 setCoin={setCoin}
@@ -52,7 +52,7 @@ export default function MyItems() {
 
             </ItemList>
 
-            <MonsterProfile coin={coin} affection={affection} />
+            <MonsterProfile coin={coin} affection={affection} myPokemon={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iv/heartgold-soulsilver/shiny/132.png'} />
 
         </ContentsBox>
     );

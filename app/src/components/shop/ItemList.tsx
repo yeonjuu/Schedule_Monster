@@ -8,6 +8,7 @@ import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
 
 function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection, setAffection}: any) {
+  
   const [count, setCount] = useState(1);  
 
   const { id } = useParams();
@@ -25,24 +26,20 @@ function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection
     <>
       {itemList.map((item: any): JSX.Element => {
         return (
-          <ItemBox key={item.itemId}>
+          <ItemBox 
+          onClick={(): void => {
+            navigate(`${url}${item.itemId}`);
+          }}
+          key={item.itemId}>
 
           <div style={{display:'flex', justifyContent:'space-around', padding:'0.3rem'}}>
-          <span>💰 {item.price}</span>
+          {purpose !== '사용' ? <span>💰 {item.price}</span> : null}
           <span>❤️ +{item.exp}</span>
           </div>
 
-            <div
-              onClick={(): void => {
-                navigate(`${url}${item.itemId}`);
-              }}
-            >
               <div>{item.itemName}</div>
               {/* <div>{item.price}</div> */}
               
-            </div>
-
-
 
             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
 
