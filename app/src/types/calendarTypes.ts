@@ -44,7 +44,6 @@ interface Days {
   week: string;
   date: Date;
   dateData: Array<DateData>;
-  setModal: ()=> void
 }
 
 interface Controller {

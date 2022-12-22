@@ -22,13 +22,13 @@ import {
 } from './CalendarStyles';
 import Dates from './Dates';
 import { DateData, Holiday, onClickObj } from '../../types/calendarTypes';
-import { get } from '../../api';
 import useDebounce from '../../hooks/useDebounce';
 import DateController from './DateController';
 import { Modal } from 'pages/calendar/modal/Modal';
-import useModal from 'hooks/useModal';
 import { NavBar } from 'components/navbar/NavBar';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -45,9 +45,9 @@ const CalendarPage = () => {
   const nextMonth = format(add(date, { months: 1 }), 'MM');
   const thisMonth = format(date, 'MM');
   const debounce = useDebounce(format(date, 'MM'));
-
-  const { toggle, setModal } = useModal();
-
+  const door = useSelector((state: RootState) => state.modalSlice.door);
+  const dispatch = useDispatch();
+  
   const session = () => {
     if (thisMonth === '12') {
       return {
@@ -119,7 +119,6 @@ const CalendarPage = () => {
           week={format(day, 'EE')}
           date={day}
           dateData={dateData}
-          setModal={setModal}
         />,
       );
       if (format(day, 'EE') == 'Sat') {
@@ -131,19 +130,24 @@ const CalendarPage = () => {
     return brr;
   };
 
+
   return (
     <Layout>
       <Container>
         <NavBar />
         <MonsterBox>스킨</MonsterBox>
+        <div>
         <DateController date={date} onClick={onClick} />
+        
+        </div>
         <HeaderCalendar>
+          
           {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
             return <p key={`${names}-${index}`}>{names}</p>;
           })}
         </HeaderCalendar>
         <Calendar>{renderDay(day, endDay)}</Calendar>
-        {toggle && <Modal setModal={setModal} />}
+        {door && <Modal />}
       </Container>
     </Layout>
   );

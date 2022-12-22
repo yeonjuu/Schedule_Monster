@@ -3,6 +3,8 @@ import { DateContainer, Day, HolidayLabel } from './CalendarStyles';
 import React from 'react';
 import { DateData, Days } from '../../types/calendarTypes';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { openModal } from './slice/modalSlice';
 
 //공휴일 - 기념일 라벨링
 const Holiday = ({ description, name }: DateData) => {
@@ -28,17 +30,23 @@ const checkHoliday = (holiday: Array<DateData>) => {
   return arr;
 };
 
-const Dates = ({ prevMonth, nextMonth, today, week, date, dateData, setModal }: Days) => {
+const Dates = ({ prevMonth, nextMonth, today, week, date, dateData }: Days) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const todayDate = format(date, 'yyyy-MM-dd');
   const holiday = dateData.filter((item) => item.date === todayDate);
-  const day=format(date, 'd')
+  const day = format(date, 'd');
   return (
-    <DateContainer onDoubleClick={()=>{setModal(); navigate(`/calendar/todos/${format(date,'yyyyMMdd')}`);}}>
+    <DateContainer
+      onDoubleClick={() => {
+        dispatch(openModal());
+        navigate(`/calendar/todos/${format(date, 'yyyyMMdd')}`);
+      }}
+    >
       <Day
         prevMonth={prevMonth} //달력에서 표시되는 이전 달의 날짜들인지 확인
-        nextMonth={nextMonth}//달력에서 표시되는 이후 달의 날짜들인지 확인
+        nextMonth={nextMonth} //달력에서 표시되는 이후 달의 날짜들인지 확인
         week={week} //토, 일요일 여부 확인
         today={today} //달력에서 오늘 날짜와 동일한지 확인
       >
