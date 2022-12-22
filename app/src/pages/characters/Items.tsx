@@ -59,11 +59,7 @@ export default function Items() {
       </ItemList>
 
 
-      <MonsterProfile
-      coin={coin}
-      affection={affection}
-      myPokemon={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iv/heartgold-soulsilver/shiny/132.png'}
-       />
+      <MonsterProfile/>
       
 
     </ContentsBox>

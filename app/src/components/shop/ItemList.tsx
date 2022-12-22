@@ -6,10 +6,15 @@ import { createFuzzyMatcher } from '../../util/filterHangul';
 import { useParams } from 'react-router-dom';
 import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
+import { buyItem, useItem } from 'pages/characters/statusReducer';
+import { useDispatch } from 'react-redux';
 
-function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection, setAffection}: any) {
+function ItemList({ category, inputValue, url, purpose, affection, setAffection}: any) {
   
-  const [count, setCount] = useState(1);  
+  const dispatch = useDispatch();
+  const currentCoin = useSelector((state :any)=> state.statusReducer.coin);
+
+  const[count, setCount] = useState(1);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -49,7 +54,6 @@ function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection
                 <QuanButton onClick={
                   (e) => {
                     count >= 2 ? setCount((cur) => cur-1) : setCount((cur) => cur);
-                    console.log(e);
                   }
                   }>
                   <AiOutlineMinus/>
@@ -63,8 +67,8 @@ function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection
 
               <ItemButton onClick={() => 
                 {const isPurchase = confirm(`'${item.itemName}' 아이템을 구매하시겠습니까?`);
-                  if (isPurchase && coin >= item.price) {
-                    setCoin((prev : number) => prev - item.price);
+                  if (isPurchase && currentCoin >= item.price) {
+                    dispatch(buyItem(item.price));
                 }
                 }}>
                 {`${purpose}`}
@@ -79,8 +83,8 @@ function ItemList({ category, inputValue, url, purpose, coin, setCoin, affection
               <>
               <ItemButton onClick={() => 
                 {const isPurchase = confirm(`'${item.itemName}' 아이템을 시용하시겠습니까?`);
-                  if (isPurchase && coin >= item.price) {
-                    setAffection((prev : number) => prev + item.exp);
+                  if (isPurchase && currentCoin >= item.price) {
+                    dispatch(useItem(item.exp));
                 }
                 }}>
                 {`${purpose}`}

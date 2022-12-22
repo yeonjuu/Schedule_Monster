@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import ItemCard from '../../components/characters/MyitemsCard';
 import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
 import ItemList2 from 'components/shop/ItemList';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { ContentsBox, MonsterContainer, MonsterStatus, MonsterImage, ItemList, ItemBox, CategoryBox, ItemContainer } from '../../components/characters/StoreStyle';
+import { ContentsBox, ItemList, CategoryBox, ItemContainer } from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
 
 export default function MyItems() {
@@ -52,7 +51,7 @@ export default function MyItems() {
 
             </ItemList>
 
-            <MonsterProfile coin={coin} affection={affection} myPokemon={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iv/heartgold-soulsilver/shiny/132.png'} />
+            <MonsterProfile />
 
         </ContentsBox>
     );
