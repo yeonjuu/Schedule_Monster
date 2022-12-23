@@ -1,9 +1,14 @@
 import Router from 'express';
 
-const router = Router();
+const indexRouter = Router();
 /* GET home page. */
-router.get('/', function (req, res) {
-  res.json({ title: '12Team project1' });
+indexRouter.get('/', function (req, res) {
+  res.render('index');
 });
 
-module.exports = router;
+export { indexRouter };
+export * from './userRouter';
+export * from './characterRouter';
+export * from './characterListRouter';
+export * from './itemRouter';
+export * from './categoryRouter';

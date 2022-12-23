@@ -9,9 +9,6 @@ const initialState = {
   auth: '',
 };
 
-//계속 로그인 후, 계속 필요한 정보들
-//닉네임, 이메일, 포인트, 권한, ...
-
 const userSlice = createSlice({
   name: 'user',
   initialState,

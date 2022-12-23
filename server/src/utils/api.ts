@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { AsyncRequestHandler } from '../types';
 
 export const asyncHandler = (asyncHandlerArgFunc: AsyncRequestHandler) => {
+  console.log(asyncHandlerArgFunc);
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await asyncHandlerArgFunc(req, res, next);

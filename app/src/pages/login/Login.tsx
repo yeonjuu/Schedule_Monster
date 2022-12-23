@@ -20,11 +20,9 @@ export const Login = () => {
     userInfo = { email, password: pw };
     console.log('userInfo :', userInfo);
 
-    //로그인 토큰 확인 후 정보 있으면 ok 없으면 정보 없음 띄어주기
-    //에러 항목 어떻게 오는지 보고 띄워주기
-    //현재 틀린 정보는 500 error로 반환
     try {
       const data = await API.post('/users/login', userInfo);
+      console.log(data);
       const { auth, point, nickname } = data.loginUser;
       const { accessToken, refreshToken } = data;
       if (accessToken) {
@@ -51,6 +49,10 @@ export const Login = () => {
       }
     } catch (error) {
       console.log(error);
+      if (error.status === 403) {
+        const msg = error.message;
+        setErrorContent(msg);
+      }
     }
   };
 
@@ -70,6 +72,7 @@ export const Login = () => {
         name="userPw"
         placeholder="비밀번호를 입력해주세요"
         required
+        autoComplete="off"
         onChange={(e) => setPw(e.target.value)}
       />
       {errorContent}
