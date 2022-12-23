@@ -9,14 +9,28 @@ import {
   CategoryBox,
   ItemList,
 } from '../../components/characters/StoreStyle';
-function ItemPage({ categories, setCategory, category }: any) {
+import { useSelector } from 'react-redux';
+function ItemPage({ setCategory, category }: any) {
+  const itemCategories = useSelector((state: any) => {
+    return state.categoryListReducer.categoryList;
+  });
+  const itemList = useSelector((state: any) => state.itemListReducer.itemList);
+  const [item, setItem] = useState({
+    _id: '',
+    itemName: '',
+    price: '',
+    exp: '',
+    image: '',
+    info: '',
+    category: '',
+  });
   const [inputState, setInputState] = useState('');
   return (
     <ContentsBox>
       <ItemList>
         <ItemContainer>
           <BannerItem
-            categories={categories}
+            categories={itemCategories}
             setCategory={setCategory}
           ></BannerItem>
           <Search setState={setInputState}></Search>
@@ -24,13 +38,19 @@ function ItemPage({ categories, setCategory, category }: any) {
             <ItemListComponents
               category={category === 'all' ? 'all' : category}
               inputValue={inputState}
-              url={'/admin/item/'}
+              data={itemList}
+              setItem={setItem}
             ></ItemListComponents>
           </CategoryBox>
         </ItemContainer>
       </ItemList>
 
-      <EditItem></EditItem>
+      <EditItem
+        categoryList={itemCategories}
+        itemList={itemList}
+        itemState={item}
+        setItemState={setItem}
+      ></EditItem>
     </ContentsBox>
   );
 }
