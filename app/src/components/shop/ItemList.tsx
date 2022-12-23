@@ -63,7 +63,7 @@ function ItemList({ category, inputValue, url, purpose }: any) {
               </div>
 
               <ItemButton onClick={() => 
-                {const isPurchase = confirm(`'${item.itemName}' 아이템을 구매하시겠습니까?`);
+                {const isPurchase = window.confirm(`'${item.itemName}' 아이템을 구매하시겠습니까?`);
                   if (isPurchase && currentCoin >= item.price) {
                     dispatch(buyItem(item.price));
                 }
@@ -79,7 +79,7 @@ function ItemList({ category, inputValue, url, purpose }: any) {
               { purpose === '사용' ? (
               <>
               <ItemButton onClick={() => 
-                {const isPurchase = confirm(`'${item.itemName}' 아이템을 시용하시겠습니까?`);
+                {const isPurchase = window.confirm(`'${item.itemName}' 아이템을 시용하시겠습니까?`);
                   if (isPurchase && currentCoin >= item.price) {
                     dispatch(useItem(item.exp));
                 }
