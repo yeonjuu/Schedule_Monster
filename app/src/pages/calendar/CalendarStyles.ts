@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-const Calendar = styled.div`
+export const Calendar = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -8,7 +8,7 @@ const Calendar = styled.div`
   margin-top: 10px;
 `;
 
-const WeekContainer = styled.div`
+export const WeekContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: white;
@@ -16,7 +16,7 @@ const WeekContainer = styled.div`
 `;
 
 //Dates=> DateContainer
-const Dates = styled.div<{
+export const Dates = styled.div<{
   prevMonth: boolean;
   nextMonth: boolean;
   week: string;
@@ -57,7 +57,7 @@ const Dates = styled.div<{
       : null}
 `;
 
-const DateContainer = styled.div`
+export const DateContainer = styled.div`
   border-radius: 4px;
   padding: 0 6px;
   width: 100%;
@@ -66,7 +66,7 @@ const DateContainer = styled.div`
   border: solid 0.5px lightgray;
 `;
 
-const Day = styled.p<{
+export const Day = styled.p<{
   prevMonth: boolean;
   nextMonth: boolean;
   week: string;
@@ -103,7 +103,7 @@ const Day = styled.p<{
       : null}
 `;
 
-const HeaderCalendar = styled.div`
+export const HeaderCalendar = styled.div`
   display: grid;
   height: 20px;
   width: 100%;
@@ -115,8 +115,9 @@ const HeaderCalendar = styled.div`
   }
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 84vw;
+  max-width: 1024px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -124,7 +125,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const CalendarController = styled.div`
+export const CalendarController = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,7 +143,7 @@ const CalendarController = styled.div`
   }
 `;
 
-const MonsterBox = styled.div`
+export const MonsterBox = styled.div`
   display: flex;
   background-color: #ffeeca;
   height: 150px;
@@ -151,14 +152,14 @@ const MonsterBox = styled.div`
   border-radius: 10px;
 `;
 
-const Layout = styled.div`
+export const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 `;
 
-const HolidayLabel = styled.div<{ description: string }>`
+export const HolidayLabel = styled.div<{ description: string }>`
   height: 15%;
   width: 100%;
   border-radius: 9px;
@@ -180,16 +181,9 @@ const HolidayLabel = styled.div<{ description: string }>`
         `}
 `;
 
-export {
-  Calendar,
-  WeekContainer,
-  Dates,
-  DateContainer,
-  HeaderCalendar,
-  Container,
-  CalendarController,
-  MonsterBox,
-  Layout,
-  Day,
-  HolidayLabel,
-};
+export const PickCalBox = styled.div`
+  white-space: nowrap;
+  overflow: auto;
+  width: 500px;
+  height: 30px;
+`;
