@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import statusReducer from 'pages/characters/statusReducer';
 import userReducer from '../pages/login/userSlice';
 import { items, monsterCategories, monsters, itemCategories } from './mockData';
 import {
