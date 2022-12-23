@@ -13,7 +13,7 @@ import Root from './pages/characters/Root';
 import { LoginRegister } from 'pages/login/LoginRegister';
 import { Main } from 'pages/main/Main';
 import Admin from './pages/admin/admin';
-import { MyPage } from 'pages/mypage/MyPage';
+import { MyPage } from 'pages/mypage/UserMyPage';
 
 import { PersistGate } from 'redux-persist/integration/react';
 
