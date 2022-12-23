@@ -3,28 +3,26 @@ import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { useNavigate } from 'react-router-dom';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-import { useParams } from 'react-router-dom';
 import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
-import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { buyItem, useItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
 
-function ItemList({ category, inputValue, url, purpose, affection, setAffection}: any) {
+function ItemList({ category, inputValue, url, purpose }: any) {
   
   const dispatch = useDispatch();
   const currentCoin = useSelector((state :any)=> state.statusReducer.coin);
-
   const[count, setCount] = useState(1);
 
-  const { id } = useParams();
+
+  const reducerData = useSelector((state: any) => state.itemListReducer);
+  const data = reducerData.itemList;
   const navigate = useNavigate();
   const itemList =
     inputValue === ''
-      ? filterCategory(category, 'items')
-      : useSelector((state: any) => {
-          return state.items.filter((val: any) => {
-            return createFuzzyMatcher(inputValue, val.itemName);
-          });
+      ? filterCategory(category, 'items', data)
+      : data.filter((val: any) => {
+          return createFuzzyMatcher(inputValue, val.itemName);
         });
 
   return (
@@ -33,9 +31,9 @@ function ItemList({ category, inputValue, url, purpose, affection, setAffection}
         return (
           <ItemBox 
           onClick={(): void => {
-            navigate(`${url}${item.itemId}`);
+            navigate(`${url}${item.item._id}`);
           }}
-          key={item.itemId}>
+          key={item.item._id}>
 
           <div style={{display:'flex', justifyContent:'space-around', padding:'0.3rem'}}>
           {purpose !== '사용' ? <span>💰 {item.price}</span> : null}
@@ -43,7 +41,6 @@ function ItemList({ category, inputValue, url, purpose, affection, setAffection}
           </div>
 
               <div>{item.itemName}</div>
-              {/* <div>{item.price}</div> */}
               
 
             <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>

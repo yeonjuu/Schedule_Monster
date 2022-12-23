@@ -39,7 +39,6 @@ export default function CharactersList() {
                         onClick={ () => {
                             navigate(`/store/characters/${pokemon.id}`);
                             const clicked : any = pokemons.find(p=> p.id == pokemon.id);
-                            console.log(clicked.image);
                             const isMain = window.confirm(`${clicked.name} 포켓몬을 대표 캐릭터로 지정하시겠습니까?`);
                             if (isMain) {
                             dispatch(mainImage(clicked.image));
