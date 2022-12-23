@@ -27,6 +27,7 @@ const persistedReducer = persistReducer(persistConfig, userReducer);
 
 const store = configureStore({
   reducer: {
+    statusReducer,
     persistedReducer,
     items,
     monsterCategories,

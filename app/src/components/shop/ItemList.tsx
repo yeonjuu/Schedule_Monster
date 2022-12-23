@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 import { ItemBox, ItemButton, QuanButton} from './../characters/StoreStyle';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-import { buyItem, useItem } from 'pages/characters/statusReducer';
+import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
 
 function ItemList({ category, inputValue, url, purpose }: any) {
@@ -31,9 +31,9 @@ function ItemList({ category, inputValue, url, purpose }: any) {
         return (
           <ItemBox 
           onClick={(): void => {
-            navigate(`${url}${item.item._id}`);
+            navigate(`${url}${item.item.id}`);
           }}
-          key={item.item._id}>
+          key={item.item.id}>
 
           <div style={{display:'flex', justifyContent:'space-around', padding:'0.3rem'}}>
           {purpose !== '사용' ? <span>💰 {item.price}</span> : null}
@@ -81,7 +81,7 @@ function ItemList({ category, inputValue, url, purpose }: any) {
               <ItemButton onClick={() => 
                 {const isPurchase = window.confirm(`'${item.itemName}' 아이템을 시용하시겠습니까?`);
                   if (isPurchase && currentCoin >= item.price) {
-                    dispatch(useItem(item.exp));
+                    dispatch(applyItem(item.exp));
                 }
                 }}>
                 {`${purpose}`}
