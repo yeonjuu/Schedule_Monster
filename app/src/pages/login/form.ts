@@ -74,8 +74,17 @@ export const Title = styled.h5`
   font-size: 20px;
 `;
 
-export const Error = styled.p`
-  color: #d23e3e;
+export const Hint = styled.p<{ error: boolean }>`
+  color: #8e8e8e;
+  width: 330px;
   font-size: 13px;
-  margin-left: 15px;
+  padding-left: 15px;
+  margin-bottom: 12px;
+
+  ${(props) =>
+    props.error &&
+    css`
+      color: #d23e3e;
+      font-size: 13px;
+    `}
 `;

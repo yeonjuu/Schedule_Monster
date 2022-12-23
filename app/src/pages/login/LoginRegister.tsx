@@ -15,7 +15,7 @@ export const LoginRegister = () => {
   return (
     <Style.Container>
       <Style.LogoWrapper onClick={logoClickHandler}>
-        <img src="/logo.png" />
+        <img src="/logo.png" alt="스케줄몬스터로고" />
       </Style.LogoWrapper>
       <Style.Title>로그인 또는 회원가입</Style.Title>
       <Style.Tabs>

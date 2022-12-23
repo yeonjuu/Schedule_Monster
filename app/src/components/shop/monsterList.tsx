@@ -5,14 +5,14 @@ import filterCategory from '../../util/filterCategory';
 
 import { createFuzzyMatcher } from '../../util/filterHangul';
 function MonsterList({ category, inputValue }: any) {
+  const data = useSelector((state: any) => state.monsters);
   const itemList =
     inputValue === ''
-      ? filterCategory(category, 'monsters')
-      : useSelector((state: any) => {
-          return state.monsters.filter((val: any) => {
-            return createFuzzyMatcher(inputValue, val.characterName);
-          });
+      ? filterCategory(category, 'monsters', data)
+      : data.filter((val: any) => {
+          return createFuzzyMatcher(inputValue, val.characterName);
         });
+
   return (
     <ul>
       {itemList.map((item: any): JSX.Element => {

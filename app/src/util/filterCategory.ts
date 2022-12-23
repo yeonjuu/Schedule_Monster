@@ -1,13 +1,11 @@
-import { useSelector } from 'react-redux';
-
-function filterCategory(categoryId: string, type: string): any {
-  const value = useSelector((state: any) => {
-    return categoryId === 'all'
-      ? state[type]
-      : state[type].filter((val: any): any => {
-          return val.category == categoryId;
+function filterCategory(categoryId: string, type: string, data: any): any {
+  const value =
+    categoryId === 'all'
+      ? data
+      : data.filter((val: any): any => {
+          return val.categoryName == categoryId;
         });
-  });
+
   return value;
 }
 
