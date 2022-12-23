@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Main } from './StoreStyle';
-
+import { useDispatch } from 'react-redux';
+import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
 const NavMenu = styled.li`
   color: #8eabf5;
   font-weight: 500;
@@ -17,19 +18,23 @@ const NavMenu = styled.li`
 `;
 
 export default function Navbar() {
+  const dispatch = useDispatch<any>();
   return (
     <div>
       <Main>
         <Link to="/">
-          <img
-            style={{ width: '300px', height: '120px' }}
-            src="/logo.png"
-          />
+          <img style={{ width: '300px', height: '120px' }} src="/logo.png" />
         </Link>
 
-        <div style={{display:'flex'}}>
+        <div style={{ display: 'flex' }}>
           <Link style={{ textDecoration: 'none' }} to="/store/item/normal">
-            <NavMenu>상점</NavMenu>
+            <NavMenu
+              onClick={() => {
+                dispatch(asyncitemListFetch());
+              }}
+            >
+              상점
+            </NavMenu>
           </Link>
 
           <Link style={{ textDecoration: 'none' }} to="/store/myitems">
@@ -40,8 +45,6 @@ export default function Navbar() {
             <NavMenu>수집도감</NavMenu>
           </Link>
         </div>
-
-
       </Main>
     </div>
   );

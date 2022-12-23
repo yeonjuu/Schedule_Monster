@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Banner from './banner';
 import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ItemPage from './itemPage';
 import MonsterPage from './monsterPage';
 import UserPage from './userPage';
-
+import { asyncCategoryListFetch } from './slice/categoryListSlice';
+import { asyncitemListFetch } from './slice/itemListSlice';
+import { asyncUserListFetch } from './slice/userListSlice';
+import { asyncMonsterListFetch } from './slice/monsterListSlice';
 const Body = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -17,14 +20,15 @@ const Main = styled.div`
 `;
 
 function Admin() {
+  console.log('어드민');
+  const dispatch = useDispatch<any>();
   const [category, setCategory] = useState('all');
-  const itemCategories = useSelector((state: any) => {
-    return state.categoryListReducer;
-  });
-  const monsterCategories = useSelector((state: any) => {
-    return state.monsterCategories;
-  });
-
+  useEffect(() => {
+    dispatch(asyncCategoryListFetch());
+    dispatch(asyncUserListFetch());
+    dispatch(asyncitemListFetch());
+    dispatch(asyncMonsterListFetch());
+  }, []);
   return (
     <Body>
       <Banner setCategory={setCategory}></Banner>
@@ -32,21 +36,18 @@ function Admin() {
         <div>
           <Routes>
             <Route
-              path="/item/:id"
+              path="/item"
               element={
                 <ItemPage
-                  categories={itemCategories.categoryList}
                   setCategory={setCategory}
                   category={category}
                 ></ItemPage>
               }
             ></Route>
             <Route
-              path="/monster/:id"
+              path="/monster"
               element={
                 <MonsterPage
-                  categories={monsterCategories}
-                  type={'monster'}
                   setCategory={setCategory}
                   category={category}
                 ></MonsterPage>

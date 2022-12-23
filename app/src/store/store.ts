@@ -13,10 +13,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import userListSlice from 'pages/admin/userListSlice';
-import itemListSlice from 'pages/admin/itemListSlice';
-import categoryListSlice from 'pages/admin/categoryListSlice';
+import userListSlice from 'pages/admin/slice/userListSlice';
+import itemListSlice from 'pages/admin/slice/itemListSlice';
+import categoryListSlice from 'pages/admin/slice/categoryListSlice';
 import paletteSlice from '../pages/calendar/slice/paletteSlice';
+import monsterListSlice from 'pages/admin/slice/monsterListSlice';
 import modalSlice from '../pages/calendar/slice/modalSlice';
 const persistConfig = {
   key: 'root',
@@ -36,6 +37,8 @@ const store = configureStore({
     userListReducer: userListSlice.reducer,
     itemListReducer: itemListSlice.reducer,
     categoryListReducer: categoryListSlice.reducer,
+    monsterListReducer: monsterListSlice.reducer,
+
     paletteSlice,
     modalSlice,
   },

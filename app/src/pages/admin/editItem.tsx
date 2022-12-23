@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import produce from 'immer';
 import * as API from '../../api';
 
@@ -14,57 +12,25 @@ const Img = styled.img`
   width: 150px;
 `;
 
-function EditItem() {
-  const itemListReducer = useSelector((state: any) => state.itemListReducer);
-  const itemList = itemListReducer.itemList;
-  const categoryListReducer = useSelector(
-    (state: any) => state.categoryListReducer,
-  );
-  const categoryList = categoryListReducer.categoryList;
-  const { id } = useParams();
-  const selectItem = itemList.find((item: any): any => {
-    return item._id === id;
-  });
-  const initialstate =
-    id === 'normal'
-      ? {
-          _id: '',
-          itemName: '',
-          price: '',
-          exp: '',
-          image: '',
-          info: '',
-          category: '',
-        }
-      : {
-          _id: selectItem._id,
-          itemName: selectItem.itemName,
-          price: selectItem.price,
-          exp: selectItem.exp,
-          image: selectItem.imgage,
-          info: selectItem.info,
-          category: selectItem.categoryName,
-        };
-
-  const [itemState, setItemState] = useState(initialstate);
-  const [previewImg, setPreviewImg] = useState(initialstate.image);
+function EditItem({ categoryList, itemState, setItemState }: any) {
+  const [previewImg, setPreviewImg] = useState(itemState.image);
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.itemName = e.target.value;
       }),
     );
   };
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.price = e.target.value;
       }),
     );
   };
   const onChangeInfo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.info = e.target.value;
       }),
     );
@@ -73,29 +39,25 @@ function EditItem() {
     setPreviewImg(URL.createObjectURL(e.target.files[0]));
 
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.image = '';
       }),
     );
   };
   const onChangeExp = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.exp = e.target.value;
       }),
     );
   };
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.category = e.target.value;
       }),
     );
   };
-  useEffect((): void => {
-    setItemState(initialstate);
-    setPreviewImg(initialstate.image);
-  }, [id]);
   return (
     <EditItemBox>
       <form>
@@ -147,10 +109,8 @@ function EditItem() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            if (confirm('수정 or 삭제 하시겠습니까?')) {
-              console.log(itemState);
-
-              id === 'normal'
+            if (window.confirm('수정 or 추가 하시겠습니까?')) {
+              itemState._id === 'normal'
                 ? API.post(
                     'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/register',
                     {
@@ -163,31 +123,29 @@ function EditItem() {
                 : API.put(
                     'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/update',
                     {
-                      _id: id,
+                      _id: itemState._id,
                       itemName: itemState.itemName,
                       price: itemState.price,
                       exp: itemState.exp,
                       categoryName: itemState.category,
                     },
                   );
-              location.replace('/admin/item/normal');
             }
           }}
         >
-          {id === 'normal' ? '추가' : '수정'}
+          {itemState._id === '' ? '추가' : '수정'}
         </button>
-        {id === 'normal' ? (
+        {itemState._id === '' ? (
           <></>
         ) : (
           <button
             onClick={(e) => {
-              if (confirm('삭제 하시겠습니까?')) {
+              if (window.confirm('삭제 하시겠습니까?')) {
                 e.preventDefault();
                 API.delete(
-                  `https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/delete/${id}`,
+                  `https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/delete/${itemState._id}`,
                 );
               }
-              location.replace('/admin/item/normal');
             }}
           >
             삭제
