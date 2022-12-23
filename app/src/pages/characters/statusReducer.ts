@@ -16,7 +16,7 @@ const statusSlice = createSlice({
     buyItem: (state: any, action: PayloadAction<number>) => {
       state.coin -= action.payload;
     },
-    useItem: (state: any, action: PayloadAction<number>) => {
+    applyItem: (state: any, action: PayloadAction<number>) => {
       state.affection += action.payload;
     },
     mainImage: (state: any, action: PayloadAction<MainImage>) => {
@@ -28,6 +28,6 @@ const statusSlice = createSlice({
   },
 });
 
-export const { buyItem, useItem, mainImage, mainName } =
+export const { buyItem, applyItem, mainImage, mainName } =
   statusSlice.actions;
 export default statusSlice.reducer;
