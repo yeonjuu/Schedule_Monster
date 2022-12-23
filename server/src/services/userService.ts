@@ -44,26 +44,12 @@ class UserService {
   async updateUser(updateInfo: UpdateInterface) {
     const { email, password, nickname, point } = updateInfo;
     const user = await this.User.findOne({ email });
-    if (!user) {
-      return {
-        status: 403,
-        error: 'Forbidden',
-        message: '비정상적인 요청으로 확인되어 해당 요청을 차단합니다.',
-      };
-    }
-    const correctPasswordHash = user.password;
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      correctPasswordHash,
-    );
+    if (!user) throw new Error('type:Forbidden,content:비정상적인 요청으로 확인되어 해당 요청을 차단합니다.');
 
-    if (!isPasswordCorrect) {
-      return {
-        status: 403,
-        error: 'Forbidden',
-        message: '비정상적인 요청으로 확인되어 해당 요청을 차단합니다.',
-      };
-    }
+    const correctPasswordHash = user.password;
+    const isPasswordCorrect = await bcrypt.compare(password, correctPasswordHash);
+    if (!isPasswordCorrect)
+      throw new Error('type:Forbidden,content:비정상적인 요청으로 확인되어 해당 요청을 차단합니다.');
 
     const updateData = {
       ...(nickname && { nickname }),
@@ -86,29 +72,15 @@ class UserService {
     const { email, password } = loginInfo;
     const user = await this.User.findOne({ email });
     // 계정 가입 내역 확인
-    if (!user) {
-      return {
-        status: 403,
-        error: 'Forbidden',
-        message:
-          '입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다',
-      };
-    }
+    if (!user)
+      throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
 
     // 비밀번호 일치 여부 확인
     const correctPasswordHash = user.password;
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      correctPasswordHash,
-    );
+    const isPasswordCorrect = await bcrypt.compare(password, correctPasswordHash);
 
-    if (!isPasswordCorrect) {
-      return {
-        status: 403,
-        error: 'Forbidden',
-        message: '비밀번호가 일치하지 않습니다. 다시 한 번 확인 바랍니다.',
-      };
-    }
+    if (!isPasswordCorrect)
+      throw new Error('type:Forbidden,content:비밀번호가 일치하지 않습니다. 다시 한 번 확인 바랍니다.');
 
     // 토큰 생성
     const secretKey = JWT_SECRET_KEY;
@@ -139,31 +111,18 @@ class UserService {
   async logoutUser(email: string) {
     const filter = { email };
     const option = { returnOriginal: false };
-    return await this.User.findOneAndUpdate(
-      filter,
-      { $unset: { refreshToken: '' } },
-      option,
-    );
+    return await this.User.findOneAndUpdate(filter, { $unset: { refreshToken: '' } }, option);
   }
 
   async addCharater(characterData: CharaterListInterface) {
     const { email, id, level, exp } = characterData;
 
     if (!(email && id && level && exp))
-      return {
-        status: 400,
-        error: 'Bad Request',
-        message: '요청이 정상적으로 수신되지 않아 추가할 수 없습니다.',
-      };
+      throw new Error('type:BadRequest,content:요청이 정상적으로 수신되지 않아 추가할 수 없습니다.');
 
     const user = await this.User.findOne({ email });
-    if (!user) {
-      return {
-        status: 400,
-        error: 'Bad Request',
-        message: '요청이 정상적으로 수신되지 않아 추가할 수 없습니다.',
-      };
-    }
+    if (!user) throw new Error('type:BadRequest,content:요청이 정상적으로 수신되지 않아 추가할 수 없습니다.');
+
     const filter = { email };
 
     let charaterList: Array<object> = [];
