@@ -6,6 +6,8 @@ interface userItemControllerInterface {
     getUserItem: AsyncRequestHandler;
     createUserItem: AsyncRequestHandler;
     deleteUserItem: AsyncRequestHandler;
+    buyUserItem: AsyncRequestHandler;
+    useUserItem: AsyncRequestHandler;
 }
 
 export const userItemController: userItemControllerInterface = {
@@ -25,6 +27,15 @@ export const userItemController: userItemControllerInterface = {
     async deleteUserItem(req, res) {
         const { id } = req.params;
         const response = await userItemService.deleteUserItem(id);
+        res.json(response);
+    },
+    async buyUserItem(req, res) {
+        const response = await userItemService.buyUserItem(req.body);
+        res.json(response);
+    },
+    async useUserItem(req, res) {
+        const { email, itemId, characterId } = req.body;
+        const response = await userItemService.useUserItem(email, itemId, characterId);
         res.json(response);
     },
 };
