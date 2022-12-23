@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import {
-  MonsterContainer,
-  MonsterImage,
   ContentsBox,
-  MonsterStatus,
-  ItemBox,
   ItemList,
   ItemContainer,
   CategoryBox,

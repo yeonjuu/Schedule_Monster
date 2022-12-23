@@ -1,4 +1,3 @@
-import { NavBar } from 'components/navbar/NavBar';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
@@ -40,8 +39,6 @@ export default function Navbar() {
           <Link style={{ textDecoration: 'none' }} to="/store/characters">
             <NavMenu>수집도감</NavMenu>
           </Link>
-
-          <NavBar/>
         </div>
 
 

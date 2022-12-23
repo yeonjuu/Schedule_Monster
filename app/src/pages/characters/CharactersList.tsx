@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ContentsBox, CharacterContainer, CharacterBox, MonsterContainer, MonsterImage, MonsterStatus} from '../../components/characters/StoreStyle';
-import { useQuery } from '@tanstack/react-query';
+import { ContentsBox, CharacterContainer, CharacterBox, MonsterStatus} from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { chooseMain } from 'pages/characters/statusReducer';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { mainImage, mainName } from 'pages/characters/statusReducer';
 
 export default function CharactersList() {
 
-    const mainImage = useSelector((state:any) => state.statusReducer.mainImage);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +42,8 @@ export default function CharactersList() {
                             console.log(clicked.image);
                             const isMain = window.confirm(`${clicked.name} 포켓몬을 대표 캐릭터로 지정하시겠습니까?`);
                             if (isMain) {
-                            dispatch(chooseMain(clicked.image));
+                            dispatch(mainImage(clicked.image));
+                            dispatch(mainName(clicked.name));
                             }
                             // console.log(isMain);
                         } }

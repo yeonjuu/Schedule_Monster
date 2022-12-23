@@ -1,11 +1,7 @@
-export interface Mstatus {
-    name: string;
-    affection: number;
-    coin: number;
-    mainImage: string;
-  }
-
-
-export interface Image {
+export interface MainImage {
   mainImage : string;
+}
+
+export interface MainName {
+  name : string;
 }

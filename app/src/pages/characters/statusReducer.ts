@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Image } from './storeInterface';
+import { MainImage, MainName } from './storeInterface';
 
 const initialState = {
-  name: '',
-  affection: 100,
+  name: '스몬',
+  affection: 0,
   coin: 1000,
   mainImage : 'https://art.pixilart.com/5e6de2826be33b3.png',
 };
@@ -13,18 +13,21 @@ const statusSlice = createSlice({
   name: 'pokename',
   initialState,
   reducers: {
-    buyItem: (state:any, action: PayloadAction<number>) => {
+    buyItem: (state: any, action: PayloadAction<number>) => {
       state.coin -= action.payload;
     },
-    useItem: (state:any, action: PayloadAction<number>) => {
+    useItem: (state: any, action: PayloadAction<number>) => {
       state.affection += action.payload;
     },
-    chooseMain: (state: any, action: PayloadAction<Image>) => {
-      state.mainImage = action.payload.mainImage;
+    mainImage: (state: any, action: PayloadAction<MainImage>) => {
+      state.mainImage = action.payload;
     },
+    mainName: (state: any, action: PayloadAction<MainName>) => {
+      state.name = action.payload;
+    }
   },
 });
 
-export const { buyItem, useItem, chooseMain } =
+export const { buyItem, useItem, mainImage, mainName } =
   statusSlice.actions;
 export default statusSlice.reducer;

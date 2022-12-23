@@ -50,10 +50,11 @@ export const MonsterContainer = styled.div`
 
 `
 
-export const MonsterImage = styled.div`
+export const MonsterImageContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 
     width: 15rem;
     height: 15rem;
@@ -92,6 +93,7 @@ export const MonsterStatus = styled.div`
 `
 export const MonsterLine = styled.li`
     list-style: none;
+    font-size: large;
 `
 
 export const ItemList = styled.div`
@@ -182,11 +184,13 @@ export const CharacterContainer = styled.div`
 `
 export const CharacterBox = styled.div`
     background-color: aliceblue;
-    width: 130px;
+    width: 120px;
     height: 150px;
     margin: 1rem;
     flex-shrink: 0;
     border-radius: 1rem;
+
+    cursor: pointer;
 
     display: flex;
     flex-direction: column;
