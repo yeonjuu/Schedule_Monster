@@ -9,7 +9,17 @@ import morgan from 'morgan';
 import cors from 'cors';
 const logger = morgan;
 
-import { indexRouter, userRouter, characterRouter, characterListRouter, itemRouter, categoryRouter, scheduleRouter, userItemRouter } from './routes';
+import {
+  indexRouter,
+  userRouter,
+  characterRouter,
+  characterListRouter,
+  itemRouter,
+  categoryRouter,
+  scheduleRouter,
+  userItemRouter,
+  calendarRouter,
+} from './routes';
 
 const app = express();
 
@@ -36,6 +46,7 @@ app.use('/items', itemRouter);
 app.use('/category', categoryRouter);
 app.use('/schedule', scheduleRouter);
 app.use('/useritem', userItemRouter);
+app.use('/calendar', calendarRouter);
 app.use('/', indexRouter);
 
 app.use('*', function (req, res, next) {

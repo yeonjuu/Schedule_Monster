@@ -5,3 +5,4 @@ export * from './itemService';
 export * from './categoryService';
 export * from './scheduleService';
 export * from './userItemService';
+export * from './calendarService';

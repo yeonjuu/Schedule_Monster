@@ -4,3 +4,4 @@ export * from './itemController';
 export * from './categoryController';
 export * from './scheduleController';
 export * from './userItemController';
+export * from './calendarController';
