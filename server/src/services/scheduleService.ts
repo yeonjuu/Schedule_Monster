@@ -1,5 +1,3 @@
-import { NOTFOUND } from 'dns';
-import { start } from 'repl';
 import { scheduleModel, scheduleModelType } from '../models';
 import { ScheduleInterface } from '../models/schemas/Schedule';
 import { splitedArr } from '../utils/splitedArr';
