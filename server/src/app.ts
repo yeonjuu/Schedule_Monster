@@ -38,11 +38,11 @@ app.use('/schedule', scheduleRouter);
 app.use('/useritem', userItemRouter);
 app.use('/', indexRouter);
 
-app.use(function (req, res, next) {
-  next(createError(404));
+app.use('*', function (req, res, next) {
+  next('type:NotFound,message:요청하신 페이지는 존재하지 않습니다');
 });
 
-// // error handler
+// error handler
 app.use(errorHandler);
 
 app.listen(port, () => {
