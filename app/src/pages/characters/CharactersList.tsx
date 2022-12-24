@@ -17,15 +17,20 @@ export default function CharactersList() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [pokemons, setPokemons] = useState<any[]>([]);
-  useEffect(() => {
-    axios.get('/pokeMockData/pokemon.json').then((res) => {
-      setPokemons(res.data.pokedata);
-      setIsLoading(!isLoading);
-      const data = API.get('users').then((val) => console.log(val));
-    });
-  }, []);
 
-  // console.log(pokemons);
+  useEffect(() => {
+    // axios.get('/pokeMockData/pokemon.json').then((res) => {
+    //   setPokemons(res.data.pokedata);
+    //   setIsLoading(!isLoading);
+    // });
+    async function fetchData() {
+        const data = await API.get('/characters/all');
+        console.log(data);
+        setPokemons(data);
+        setIsLoading(!isLoading);
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -51,9 +56,9 @@ export default function CharactersList() {
               {pokemons.map((pokemon: any) => (
                 <CharacterBox
                   onClick={() => {
-                    navigate(`/store/characters/${pokemon.id}`);
+                    navigate(`/store/characters/${pokemon._id}`);
                     const clicked: any = pokemons.find(
-                      (p) => p.id == pokemon.id,
+                      (p) => p._id == pokemon._id,
                     );
                     const isMain = window.confirm(
                       `${clicked.name} 포켓몬을 대표 캐릭터로 지정하시겠습니까?`,
@@ -64,7 +69,7 @@ export default function CharactersList() {
                     }
                     // console.log(isMain);
                   }}
-                  key={pokemon.id}
+                  key={pokemon._id}
                 >
                   <img src={pokemon.image} />
                   <h4 style={{ alignSelf: 'center' }}>{pokemon.name}</h4>

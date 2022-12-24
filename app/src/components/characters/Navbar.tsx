@@ -4,6 +4,9 @@ import styled, { css } from 'styled-components';
 import { Main } from './StoreStyle';
 import { useDispatch } from 'react-redux';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
+import { NavBar } from 'components/navbar/NavBar';
+import { Logo } from 'components/logo/Logo';
+
 const NavMenu = styled.li`
   color: #8eabf5;
   font-weight: 500;
@@ -23,11 +26,11 @@ export default function Navbar() {
     <div>
       <Main>
         <Link to="/">
-          <img style={{ width: '300px', height: '120px' }} src="/logo.png" />
+          <Logo />
         </Link>
 
         <div style={{ display: 'flex' }}>
-          <Link style={{ textDecoration: 'none' }} to="/store/item/normal">
+          <Link style={{ textDecoration: 'none' }} to="/store">
             <NavMenu
               onClick={() => {
                 dispatch(asyncitemListFetch());
@@ -44,6 +47,8 @@ export default function Navbar() {
           <Link style={{ textDecoration: 'none' }} to="/store/characters">
             <NavMenu>수집도감</NavMenu>
           </Link>
+
+          <NavBar />
         </div>
       </Main>
     </div>

@@ -10,8 +10,6 @@ import MonsterProfile from 'components/characters/MonsterProfile';
 
 export default function MyItems() {
 
-    const [coin, setCoin] = useState(1000);
-    const [affection, setAffection] = useState(10);
     const [category, setCategory] = useState('all');
     const [inputState, setInputState] = useState('');
     const { id } = useParams();
@@ -40,10 +38,6 @@ export default function MyItems() {
                 inputValue={inputState}
                 url={'/store/myitems/'}
                 purpose={'사용'}
-                coin={coin}
-                setCoin={setCoin}
-                affection={affection}
-                setAffection={setAffection}
                 ></ItemList2>
 
             </CategoryBox>

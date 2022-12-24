@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as API from '../../../api';
 const asyncCategoryListFetch = createAsyncThunk('GET_CATEGORY', async () => {
-  const categoryList = await API.get('category/all');
+  const categoryList = await API.get('/category/all');
   return categoryList;
 });
 

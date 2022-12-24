@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as API from '../../../api';
 const asyncitemListFetch = createAsyncThunk('GET_ITEMLIST', async () => {
-  const itemList = await API.get('items/all');
+  const itemList = await API.get('/items/all');
   return itemList;
 });
 
