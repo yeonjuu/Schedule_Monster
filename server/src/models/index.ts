@@ -3,12 +3,13 @@ import { UserSchema, UserInterface } from './schemas/User';
 import { CharacterListSchema, CharacterListInterface } from './schemas/CharacterList';
 import { ScheduleInterface, ScheduleSchema } from './schemas/Schedule';
 import { CalendarInterface, CalendarSchema } from './schemas/Calendar';
-
+import { CalendarShareInterface, CalendarShareSchema } from './schemas/CalendarShare';
 interface ModelIdInterface {
   user: string;
   characterList: string;
   schedule: string;
   calendar: string;
+  calendarshare: string;
 }
 
 export const modelIdentifier: ModelIdInterface = {
@@ -16,6 +17,7 @@ export const modelIdentifier: ModelIdInterface = {
   characterList: 'charaterlist',
   schedule: 'schedule',
   calendar: 'calendar',
+  calendarshare: 'calendarshare',
 };
 
 const userModel = model<UserInterface>(modelIdentifier.user, UserSchema);
@@ -30,6 +32,8 @@ type scheduleModelType = Model<ScheduleInterface>;
 const calendarModel = model<CalendarInterface>(modelIdentifier.calendar, CalendarSchema);
 type calendarModelType = Model<CalendarInterface>;
 
+const calendarShareModel = model<CalendarShareInterface>(modelIdentifier.calendarshare, CalendarShareSchema);
+type calendarShareModelType = Model<CalendarShareInterface>;
 export {
   userModel,
   userModelType,
@@ -39,4 +43,6 @@ export {
   scheduleModelType,
   calendarModel,
   calendarModelType,
+  calendarShareModel,
+  calendarShareModelType,
 };

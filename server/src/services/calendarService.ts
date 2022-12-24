@@ -8,13 +8,6 @@ class CalendarService {
   constructor(calendarModel: calendarModelType) {
     this.calendar = calendarModel;
   }
-  /*
-  email: string;
-  calendarName: string;
-  calendarId: string;
-  share?: boolean;
-  url?: string;
-*/
   async getCalendars() {
     // email 정보를 받아 유저 정보를 확인하여 권한이 user가 아니면 아래 코드를 수행하도록 수정 필요!!
     const result = await this.calendar.find({});

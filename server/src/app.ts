@@ -19,6 +19,7 @@ import {
   scheduleRouter,
   userItemRouter,
   calendarRouter,
+  calendarShareRouter,
 } from './routes';
 
 const app = express();
@@ -47,6 +48,7 @@ app.use('/category', categoryRouter);
 app.use('/schedule', scheduleRouter);
 app.use('/useritem', userItemRouter);
 app.use('/calendar', calendarRouter);
+app.use('/share', calendarShareRouter);
 app.use('/', indexRouter);
 
 app.use('*', function (req, res, next) {
