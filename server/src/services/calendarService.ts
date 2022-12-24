@@ -49,7 +49,10 @@ class CalendarService {
   }
 
   async calendarShareOrNot(calendarId: string) {
-    const { share } = { ...(await this.calendar.findOne({ calendarId })) };
+    const calendar = await this.calendar.findOne({ calendarId });
+    if (!calendar)
+      throw new Error('type:Forbidden,content:요청하신 데이터가 존재하지 않습니다. 다시 한 번 확인 바랍니다.');
+    const { share } = calendar.toObject();
     let url = null;
     if (!share) url = generateRandomString(12);
     const updateInfo = {
