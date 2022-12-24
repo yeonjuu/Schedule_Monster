@@ -14,8 +14,8 @@ import { LoginRegister } from 'pages/login/LoginRegister';
 import { Main } from 'pages/main/Main';
 import Admin from './pages/admin/admin';
 import { MyPage } from 'pages/mypage/UserMyPage';
-
 import { PersistGate } from 'redux-persist/integration/react';
+import { NotFound } from 'pages/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -42,7 +42,10 @@ const router = createBrowserRouter([
       { index: true, element: <Items></Items> },
       { path: '/store/item/:id', element: <Items></Items> },
       { path: '/store/characters', element: <CharactersList></CharactersList> },
-      { path: '/store/characters/:id', element: <CharactersList></CharactersList> },
+      {
+        path: '/store/characters/:id',
+        element: <CharactersList></CharactersList>,
+      },
       { path: '/store/myitems', element: <MyItems></MyItems> },
       { path: '/store/myitems/:id', element: <MyItems></MyItems> },
     ],
@@ -54,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: '/mypage',
     element: <MyPage />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 
@@ -68,5 +75,5 @@ root.render(
       </PersistGate>
       <App />
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
