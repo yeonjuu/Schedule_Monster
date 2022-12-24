@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
@@ -6,9 +6,17 @@ import { ItemBox, ItemButton, QuanButton } from './../characters/StoreStyle';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
+import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
+
 
 function Item({ setItem, item, purpose }: any) {
-  const dispatch = useDispatch();
+
+  useEffect( () => {
+    dispatch(asyncitemListFetch());
+  },
+  []);
+
+  const dispatch = useDispatch<any>();
   const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
   return (
@@ -25,8 +33,8 @@ function Item({ setItem, item, purpose }: any) {
           padding: '0.3rem',
         }}
       >
-        {purpose !== '사용' ? <span>💰 {item.price}</span> : null}
-        <span>❤️ +{item.exp}</span>
+        {purpose === '구매' ? <span style={{fontSize:'15px'}}>💰 {item.price}</span> : null}
+        {/* <span style={{fontSize:'15px'}}>+ ❤️{item.exp}</span> */}
       </div>
 
       <div>{item.itemName}</div>
@@ -68,8 +76,10 @@ function Item({ setItem, item, purpose }: any) {
                 const isPurchase = window.confirm(
                   `'${item.itemName}' 아이템을 구매하시겠습니까?`,
                 );
-                if (isPurchase && currentCoin >= item.price) {
-                  dispatch(buyItem(item.price));
+                if (isPurchase && currentCoin >= item.price*count) {
+                  dispatch(buyItem(item.price*count));
+                } else if (isPurchase && currentCoin < item.price*count) {
+                  alert('보유 코인이 부족해요😭')
                 }
               }}
             >
@@ -78,22 +88,6 @@ function Item({ setItem, item, purpose }: any) {
           </>
         ) : null}
 
-        {purpose === '사용' ? (
-          <>
-            <ItemButton
-              onClick={() => {
-                const isPurchase = window.confirm(
-                  `'${item.itemName}' 아이템을 시용하시겠습니까?`,
-                );
-                if (isPurchase && currentCoin >= item.price) {
-                  dispatch(applyItem(item.exp));
-                }
-              }}
-            >
-              {`${purpose}`}
-            </ItemButton>
-          </>
-        ) : null}
       </div>
     </ItemBox>
   );
