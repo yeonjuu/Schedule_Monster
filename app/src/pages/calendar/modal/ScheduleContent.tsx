@@ -20,7 +20,6 @@ import { useEffect, useState } from 'react';
 import { checkTodo, todoData } from 'types/calendarTypes';
 import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
 import * as API from 'api';
-import { mainColor } from 'assets/styles';
 import { ko } from 'date-fns/esm/locale';
 import { format } from 'date-fns';
 
@@ -37,13 +36,17 @@ const ScheduleContent = ({
 
   const content = { ...tmp };
 
-  const tmpYear= Number(content.startDate!.slice(0,4));
-const tmpMonth=Number(content.startDate!.slice(4,6));
-const tmpDay=Number(content.startDate!.slice(6,8));
-  const [startDate, setStartDate] = useState<Date>(new Date(tmpYear, tmpMonth-1, tmpDay));
-  const [endDate, setEndDate] = useState<Date>(new Date(tmpYear, tmpMonth-1, tmpDay));
+  const tmpYear = Number(content.startDate!.slice(0, 4));
+  const tmpMonth = Number(content.startDate!.slice(4, 6));
+  const tmpDay = Number(content.startDate!.slice(6, 8));
+  const [startDate, setStartDate] = useState<Date>(
+    new Date(tmpYear, tmpMonth - 1, tmpDay),
+  );
+  const [endDate, setEndDate] = useState<Date>(
+    new Date(tmpYear, tmpMonth - 1, tmpDay),
+  );
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState<string>(`${mainColor}`);
+  const [color, setColor] = useState<string | undefined>(content?.labelColor);
 
   const {
     setError,
@@ -52,7 +55,6 @@ const tmpDay=Number(content.startDate!.slice(6,8));
     register,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
-
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -92,20 +94,19 @@ const tmpDay=Number(content.startDate!.slice(6,8));
         message: '종료 일자는 시작 일자보다 커야 합니다',
       });
     } else {
-      
       const data = {
         ...content,
-        startDate: format(startDate,'yyyyMMdd-hh:mm'),
-        endDate: format(endDate,'yyyyMMdd-hh:mm'),
+        startDate: format(startDate, 'yyyyMMdd-hh:mm'),
+        endDate: format(endDate, 'yyyyMMdd-hh:mm'),
         title: input.title,
         labelColor: color,
         isTodo: false,
       };
       console.log(data);
-     
+
       try {
         console.log(data);
-        dispatch(changeCalendar({scheduleId: scheduleId, content:data}))
+        dispatch(changeCalendar({ scheduleId: scheduleId, content: data }));
         // await API.put(`/schedule/day`, data);
         alert('일정을 등록하였습니다');
         dispatch(toggleTodo());
@@ -120,7 +121,6 @@ const tmpDay=Number(content.startDate!.slice(6,8));
     console.log('실패');
     console.log(errors);
   };
-
 
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
@@ -176,7 +176,7 @@ const tmpDay=Number(content.startDate!.slice(6,8));
 
         <ScheduleBox>
           <SchedulePicker
-           disabled={content.isCompleted}
+            disabled={content.isCompleted}
             wrapperClassName="datePicker"
             locale={ko}
             selected={startDate}
@@ -188,7 +188,7 @@ const tmpDay=Number(content.startDate!.slice(6,8));
           />
           <p>&nbsp;-&nbsp;</p>
           <SchedulePicker
-           disabled={content.isCompleted}
+            disabled={content.isCompleted}
             wrapperClassName="datePicker"
             locale={ko}
             selected={endDate}

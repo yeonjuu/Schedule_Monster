@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
+import { mainColor } from 'assets/styles';
 
 export const ModalContainer = styled.div`
   width: 397px;
@@ -63,7 +64,7 @@ export const Tab = styled.div<{ active: boolean }>`
     `}
 `;
 
-export const PickColor = styled.button<{ labelColor: string }>`
+export const PickColor = styled.button<{ labelColor: string| undefined }>`
   cursor: pointer;
   margin-left: 10px;
   width: 55px;
@@ -72,8 +73,9 @@ export const PickColor = styled.button<{ labelColor: string }>`
   border: none;
   font-weight: bold;
   ${(props) =>
-    props.labelColor &&
+    props.labelColor ?
     css`
       background-color: ${props.labelColor};
-    `}
+    ` : css`
+    background-color: ${mainColor}`}
 `;

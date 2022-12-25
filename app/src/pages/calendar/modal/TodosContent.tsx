@@ -28,7 +28,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   ).find((item) => item.scheduleId === scheduleId);
   const content={...tmp};
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState<string>(`${mainColor}`);
+  const [color, setColor] = useState<string|undefined>(content?.labelColor);
 
   const {
     handleSubmit,
