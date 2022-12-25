@@ -1,5 +1,5 @@
 import { post } from 'api';
-import { MAIN_COLOR } from 'assets/styles';
+import { mainColor } from 'assets/styles';
 import { ModalBtn } from 'components/button/buttons';
 import { ErrorWord, Input, InputBox, SelectCal } from 'components/input/inputs';
 import React, { useState } from 'react';
@@ -25,7 +25,7 @@ const Todo = ({ dates }: { dates: string | any }) => {
     formState: { errors },
   } = useForm({ mode: 'onChange' });
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState<string>(`${MAIN_COLOR}`);
+  const [color, setColor] = useState<string>(`${mainColor}`);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

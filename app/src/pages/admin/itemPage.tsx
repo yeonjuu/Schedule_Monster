@@ -9,28 +9,50 @@ import {
   CategoryBox,
   ItemList,
 } from '../../components/characters/StoreStyle';
-function ItemPage({ categories, setCategory, category }: any) {
+function ItemPage() {
+  const [item, setItem] = useState({
+    _id: '',
+    itemName: '',
+    price: '',
+    exp: '',
+    image: '',
+    itemInfo: '',
+    category: '',
+  });
   const [inputState, setInputState] = useState('');
+  const [category, setCategory] = useState('all');
   return (
     <ContentsBox>
       <ItemList>
         <ItemContainer>
-          <BannerItem
-            categories={categories}
-            setCategory={setCategory}
-          ></BannerItem>
+          <BannerItem setCategory={setCategory}></BannerItem>
           <Search setState={setInputState}></Search>
+          <button
+            onClick={() => {
+              setItem({
+                _id: '',
+                itemName: '',
+                price: '',
+                exp: '',
+                image: '',
+                itemInfo: '',
+                category: '',
+              });
+            }}
+          >
+            에딧 창 리셋
+          </button>
           <CategoryBox>
             <ItemListComponents
               category={category === 'all' ? 'all' : category}
               inputValue={inputState}
-              url={'/admin/item/'}
+              setItem={setItem}
             ></ItemListComponents>
           </CategoryBox>
         </ItemContainer>
       </ItemList>
 
-      <EditItem></EditItem>
+      <EditItem itemData={item}></EditItem>
     </ContentsBox>
   );
 }

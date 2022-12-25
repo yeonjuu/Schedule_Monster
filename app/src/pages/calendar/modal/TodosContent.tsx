@@ -14,11 +14,11 @@ import {
   InputBox,
 } from 'components/input/inputs';
 import { TwitterPicker } from 'react-color';
-import { useState, useRef } from 'react';
-import { MAIN_COLOR } from 'assets/styles';
+import { useState } from 'react';
 import { checkTodo, todoData } from 'types/calendarTypes';
 import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
 import * as API from 'api';
+import { mainColor } from 'assets/styles';
 
 const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   ).find((item) => item.scheduleId === scheduleId);
   const content={...tmp};
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState<string>(`${MAIN_COLOR}`);
+  const [color, setColor] = useState<string>(`${mainColor}`);
 
   const {
     handleSubmit,

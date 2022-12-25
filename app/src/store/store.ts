@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import statusReducer from 'pages/characters/statusReducer';
 import userReducer from '../pages/login/userSlice';
 import { items, monsterCategories, monsters, itemCategories } from './mockData';
 import {
@@ -12,9 +13,10 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import userListSlice from 'pages/admin/userListSlice';
-import itemListSlice from 'pages/admin/itemListSlice';
-import categoryListSlice from 'pages/admin/categoryListSlice';
+import userListSlice from 'pages/admin/slice/userListSlice';
+import itemListSlice from 'pages/admin/slice/itemListSlice';
+import categoryListSlice from 'pages/admin/slice/categoryListSlice';
+import monsterListSlice from 'pages/admin/slice/monsterListSlice';
 import modalSlice from '../pages/calendar/slice/modalSlice';
 import todoSlice from 'pages/calendar/slice/todoSlice';
 const persistConfig = {
@@ -26,6 +28,7 @@ const persistedReducer = persistReducer(persistConfig, userReducer);
 
 const store = configureStore({
   reducer: {
+    statusReducer,
     persistedReducer,
     items,
     monsterCategories,
@@ -34,6 +37,7 @@ const store = configureStore({
     userListReducer: userListSlice.reducer,
     itemListReducer: itemListSlice.reducer,
     categoryListReducer: categoryListSlice.reducer,
+    monsterListReducer: monsterListSlice.reducer,
     modalSlice,
     todoSlice
   },

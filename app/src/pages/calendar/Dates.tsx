@@ -10,7 +10,7 @@ import React, { Dispatch } from 'react';
 import { DateData, Days, todoData } from '../../types/calendarTypes';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal, openModal, toggleTodo } from './slice/modalSlice';
+import { closeModal, openModal, toggleSchedule, toggleTodo } from './slice/modalSlice';
 import { RootState } from 'store/store';
 import { AnyAction } from 'redux';
 
@@ -44,8 +44,7 @@ const checkTodo = (
         labelColor={todo[i].labelColor}
         onClick={() => {
           dispatch(toggleTodo());
-
-          navigate(`/calendar/todos/day/${todo[i].scheduleId}`);
+          navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
       >
         <span>{todo[i].title}</span>
@@ -55,7 +54,8 @@ const checkTodo = (
   return arr;
 };
 
-const checkSchedule = (todo: Array<todoData>) => {
+const checkSchedule = ( dispatch: Dispatch<AnyAction>,
+  navigate: NavigateFunction,todo: Array<todoData>) => {
   const arr = [];
   for (let i = 0; i < todo.length; i++) {
     arr.push(
@@ -63,6 +63,10 @@ const checkSchedule = (todo: Array<todoData>) => {
       isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}
+        onClick={() => {
+          dispatch(toggleTodo());
+          navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
+        }}
       >
         <span>{todo[i].title}</span>
       </ScheduleLabel>,
@@ -112,8 +116,9 @@ const Dates = ({
         {day}
       </Day>
       {holidayArr && checkHoliday(holidayArr)}
+      
+      {scheduleArr && checkSchedule(dispatch, navigate, scheduleArr)}
       {todosArr && checkTodo(dispatch, navigate, todosArr)}
-      {scheduleArr && checkSchedule(scheduleArr)}
     </DateContainer>
   );
 };

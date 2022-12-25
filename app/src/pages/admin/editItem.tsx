@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import produce from 'immer';
 import * as API from '../../api';
-
+import { asyncitemListFetch } from './slice/itemListSlice';
+import { useDispatch, useSelector } from 'react-redux';
 const EditItemBox = styled.div`
   background-color: white;
 `;
@@ -14,57 +13,39 @@ const Img = styled.img`
   width: 150px;
 `;
 
-function EditItem() {
-  const itemListReducer = useSelector((state: any) => state.itemListReducer);
-  const itemList = itemListReducer.itemList;
-  const categoryListReducer = useSelector(
-    (state: any) => state.categoryListReducer,
-  );
-  const categoryList = categoryListReducer.categoryList;
-  const { id } = useParams();
-  const selectItem = itemList.find((item: any): any => {
-    return item._id === id;
+function EditItem({ itemData }: any) {
+  const dispatch = useDispatch<any>();
+  const categoryList = useSelector((state: any) => {
+    return state.categoryListReducer.categoryList;
   });
-  const initialstate =
-    id === 'normal'
-      ? {
-          _id: '',
-          itemName: '',
-          price: '',
-          exp: '',
-          image: '',
-          info: '',
-          category: '',
-        }
-      : {
-          _id: selectItem._id,
-          itemName: selectItem.itemName,
-          price: selectItem.price,
-          exp: selectItem.exp,
-          image: selectItem.imgage,
-          info: selectItem.info,
-          category: selectItem.categoryName,
-        };
-
-  const [itemState, setItemState] = useState(initialstate);
-  const [previewImg, setPreviewImg] = useState(initialstate.image);
+  const [previewImg, setPreviewImg] = useState(itemData.image);
+  const [check, setCheck] = useState(false);
+  const [itemState, setItemState] = useState({
+    _id: itemData._id,
+    itemName: itemData.itemName,
+    price: itemData.price,
+    exp: itemData.exp,
+    image: itemData.image,
+    info: itemData.itemInfo,
+    category: itemData.categoryName,
+  });
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.itemName = e.target.value;
       }),
     );
   };
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.price = e.target.value;
       }),
     );
   };
   const onChangeInfo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.info = e.target.value;
       }),
     );
@@ -73,29 +54,40 @@ function EditItem() {
     setPreviewImg(URL.createObjectURL(e.target.files[0]));
 
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.image = '';
       }),
     );
   };
   const onChangeExp = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.exp = e.target.value;
       }),
     );
   };
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: any) => {
         draft.category = e.target.value;
       }),
     );
   };
-  useEffect((): void => {
-    setItemState(initialstate);
-    setPreviewImg(initialstate.image);
-  }, [id]);
+  useEffect(() => {
+    setItemState({
+      _id: itemData._id,
+      itemName: itemData.itemName,
+      price: itemData.price,
+      exp: itemData.exp,
+      image: itemData.image,
+      info: itemData.itemInfo,
+      category: itemData.categoryName,
+    });
+  }, [itemData]);
+  useEffect(() => {
+    dispatch(asyncitemListFetch());
+    setCheck(false);
+  }, [check, dispatch]);
   return (
     <EditItemBox>
       <form>
@@ -127,6 +119,7 @@ function EditItem() {
         />
         <div>카테고리</div>
         <select onChange={onChangeCategory} value={itemState.category}>
+          <option value="">==선택하세요==</option>
           {categoryList.map((category: any): JSX.Element => {
             return (
               <option key={category._id} value={category.categoryName}>
@@ -147,47 +140,60 @@ function EditItem() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            if (confirm('수정 or 삭제 하시겠습니까?')) {
-              console.log(itemState);
-
-              id === 'normal'
-                ? API.post(
-                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/register',
-                    {
+            if (window.confirm('수정 or 추가 하시겠습니까?')) {
+              console.log({
+                itemName: itemState.itemName,
+                itemImage: '',
+                itemInfo: itemState.info,
+                price: itemState.price,
+                exp: itemState.exp,
+                categoryName: itemState.category,
+              });
+              try {
+                itemState._id === ''
+                  ? API.post('/items/register', {
                       itemName: itemState.itemName,
+                      itemImage: '',
+                      itemInfo: itemState.info,
                       price: itemState.price,
                       exp: itemState.exp,
                       categoryName: itemState.category,
-                    },
-                  )
-                : API.put(
-                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/update',
-                    {
-                      _id: id,
+                    })
+                  : API.put('/items/update', {
+                      _id: itemState._id,
                       itemName: itemState.itemName,
+                      itemImage: '',
                       price: itemState.price,
                       exp: itemState.exp,
                       categoryName: itemState.category,
-                    },
-                  );
-              location.replace('/admin/item/normal');
+                      itemInfo: itemState.info,
+                    });
+              } catch {
+                console.log('에러');
+              } finally {
+                setCheck(true);
+              }
             }
           }}
         >
-          {id === 'normal' ? '추가' : '수정'}
+          {itemState._id === '' ? '추가' : '수정'}
         </button>
-        {id === 'normal' ? (
+        {itemState._id === '' ? (
           <></>
         ) : (
           <button
             onClick={(e) => {
-              if (confirm('삭제 하시겠습니까?')) {
-                e.preventDefault();
-                API.delete(
-                  `https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/delete/${id}`,
-                );
+              if (window.confirm('삭제 하시겠습니까?')) {
+                try {
+                  e.preventDefault();
+
+                  API.delete(`/items/delete/${itemState._id}`);
+                } catch {
+                  console.log('에러');
+                } finally {
+                  setCheck(true);
+                }
               }
-              location.replace('/admin/item/normal');
             }}
           >
             삭제

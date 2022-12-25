@@ -15,7 +15,7 @@ import {
 import { ModalBtn } from 'components/button/buttons';
 import { useNavigate } from 'react-router-dom';
 import TwitterPicker from 'react-color/lib/components/twitter/Twitter';
-import { MAIN_COLOR } from 'assets/styles';
+import { mainColor } from 'assets/styles';
 import { closeModal } from '../slice/modalSlice';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { checkTodo } from 'types/calendarTypes';
@@ -38,7 +38,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
   const [startDate, setStartDate] = useState<Date>(todayData);
   const [endDate, setEndDate] = useState<Date>(todayData);
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState(`${MAIN_COLOR}`);
+  const [color, setColor] = useState(`${mainColor}`);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

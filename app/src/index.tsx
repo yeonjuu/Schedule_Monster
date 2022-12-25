@@ -13,7 +13,7 @@ import Root from './pages/characters/Root';
 import { LoginRegister } from 'pages/login/LoginRegister';
 import { Main } from 'pages/main/Main';
 import Admin from './pages/admin/admin';
-import { MyPage } from 'pages/mypage/MyPage';
+import { MyPage } from 'pages/mypage/UserMyPage';
 
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     element: <CalendarPage />,
   },
   {
-    path: '/calendar/todos/day/:scheduleId',
+    path: '/calendar/todos/:isTodo/:scheduleId',
     element: <CalendarPage />,
   },
   {
@@ -43,9 +43,12 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <p>페이지를 찾을 수 없습니다😭</p>,
     children: [
+      { index: true, element: <Items></Items> },
       { path: '/store/item/:id', element: <Items></Items> },
       { path: '/store/characters', element: <CharactersList></CharactersList> },
+      { path: '/store/characters/:id', element: <CharactersList></CharactersList> },
       { path: '/store/myitems', element: <MyItems></MyItems> },
+      { path: '/store/myitems/:id', element: <MyItems></MyItems> },
     ],
   },
   {
@@ -69,5 +72,5 @@ root.render(
       </PersistGate>
       <App />
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

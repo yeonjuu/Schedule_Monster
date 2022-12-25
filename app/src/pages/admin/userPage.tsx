@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Search from '../../components/shop/search';
-import { asyncUserListFetch } from './userListSlice';
+import { asyncUserListFetch } from './slice/userListSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { UserPageContainer } from './adminCss';
 import { createFuzzyMatcher } from 'util/filterHangul';

@@ -2,16 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { ModalContainer, Tab, ContentBox, TabBox } from './ModalStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { closeModal, toggleTodo } from '../slice/modalSlice';
+import { toggleTodo } from '../slice/modalSlice';
 import TodosContent from './TodosContent';
+import ScheduleContent from './ScheduleContent';
 
 const TodoModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { scheduleId } = useParams();
+  const { scheduleId, isTodo } = useParams();
 
   useEffect(() => {
+    console.log(isTodo);
     const clickOutside = (e: React.BaseSyntheticEvent | MouseEvent) => {
       // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -29,7 +31,10 @@ const TodoModal = () => {
 
   return (
     <ModalContainer ref={modalRef}>
-      <ContentBox><TodosContent scheduleId={scheduleId}/></ContentBox>
+      <ContentBox>
+        {isTodo==='true' ? <TodosContent scheduleId={scheduleId} /> : <ScheduleContent scheduleId={scheduleId} />}
+   
+      </ContentBox>
     </ModalContainer>
   );
 };
