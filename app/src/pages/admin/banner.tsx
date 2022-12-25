@@ -18,7 +18,6 @@ function Banner({ setCategory }: any) {
             navigate(`/admin/item`);
             dispatch(asyncitemListFetch());
             dispatch(asyncCategoryListFetch());
-            setCategory('all');
           }}
         >
           상점
@@ -26,7 +25,7 @@ function Banner({ setCategory }: any) {
         <li
           onClick={(): void => {
             navigate(`/admin/monster`);
-            setCategory('all');
+
             dispatch(asyncMonsterListFetch());
           }}
         >

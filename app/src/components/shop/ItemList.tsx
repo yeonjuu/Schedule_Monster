@@ -8,23 +8,18 @@ import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
 
-
 function Item({ setItem, item, purpose }: any) {
-
-  useEffect( () => {
-    dispatch(asyncitemListFetch());
-  },
-  []);
-
   const dispatch = useDispatch<any>();
   const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
+  useEffect(() => {
+    dispatch(asyncitemListFetch());
+  }, []);
   return (
     <ItemBox
       onClick={(): void => {
         setItem(item);
       }}
-      key={item._id}
     >
       <div
         style={{
@@ -33,7 +28,9 @@ function Item({ setItem, item, purpose }: any) {
           padding: '0.3rem',
         }}
       >
-        {purpose === '구매' ? <span style={{fontSize:'15px'}}>💰 {item.price}</span> : null}
+        {purpose === '구매' ? (
+          <span style={{ fontSize: '15px' }}>💰 {item.price}</span>
+        ) : null}
         {/* <span style={{fontSize:'15px'}}>+ ❤️{item.exp}</span> */}
       </div>
 
@@ -76,10 +73,10 @@ function Item({ setItem, item, purpose }: any) {
                 const isPurchase = window.confirm(
                   `'${item.itemName}' 아이템을 구매하시겠습니까?`,
                 );
-                if (isPurchase && currentCoin >= item.price*count) {
-                  dispatch(buyItem(item.price*count));
-                } else if (isPurchase && currentCoin < item.price*count) {
-                  alert('보유 코인이 부족해요😭')
+                if (isPurchase && currentCoin >= item.price * count) {
+                  dispatch(buyItem(item.price * count));
+                } else if (isPurchase && currentCoin < item.price * count) {
+                  alert('보유 코인이 부족해요😭');
                 }
               }}
             >
@@ -87,7 +84,6 @@ function Item({ setItem, item, purpose }: any) {
             </ItemButton>
           </>
         ) : null}
-
       </div>
     </ItemBox>
   );
@@ -105,7 +101,14 @@ function ItemList({ category, inputValue, url, purpose, setItem }: any) {
   return (
     <>
       {itemList.map((item: any): JSX.Element => {
-        return <Item item={item} setItem={setItem} purpose={purpose}></Item>;
+        return (
+          <Item
+            item={item}
+            setItem={setItem}
+            purpose={purpose}
+            key={item._id}
+          ></Item>
+        );
       })}
     </>
   );

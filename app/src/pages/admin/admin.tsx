@@ -10,6 +10,7 @@ import { asyncCategoryListFetch } from './slice/categoryListSlice';
 import { asyncitemListFetch } from './slice/itemListSlice';
 import { asyncUserListFetch } from './slice/userListSlice';
 import { asyncMonsterListFetch } from './slice/monsterListSlice';
+import CategoryPage from './categoryPage';
 const Body = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -20,9 +21,8 @@ const Main = styled.div`
 `;
 
 function Admin() {
-  console.log('어드민');
   const dispatch = useDispatch<any>();
-  const [category, setCategory] = useState('all');
+
   useEffect(() => {
     dispatch(asyncCategoryListFetch());
     dispatch(asyncUserListFetch());
@@ -31,29 +31,20 @@ function Admin() {
   }, []);
   return (
     <Body>
-      <Banner setCategory={setCategory}></Banner>
+      <Banner></Banner>
       <Main>
         <div>
           <Routes>
-            <Route
-              path="/item"
-              element={
-                <ItemPage
-                  setCategory={setCategory}
-                  category={category}
-                ></ItemPage>
-              }
-            ></Route>
+            <Route path="/item" element={<ItemPage></ItemPage>}></Route>
             <Route
               path="/monster"
-              element={
-                <MonsterPage
-                  setCategory={setCategory}
-                  category={category}
-                ></MonsterPage>
-              }
+              element={<MonsterPage></MonsterPage>}
             ></Route>
             <Route path="/user" element={<UserPage></UserPage>}></Route>
+            <Route
+              path="/category"
+              element={<CategoryPage></CategoryPage>}
+            ></Route>
           </Routes>
         </div>
       </Main>

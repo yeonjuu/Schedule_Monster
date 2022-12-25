@@ -17,7 +17,6 @@ function UserPage() {
       <button
         onClick={() => {
           dispatch(asyncUserListFetch());
-          console.log('???????');
         }}
       >
         유저 불러오기
