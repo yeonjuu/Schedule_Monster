@@ -1,5 +1,5 @@
 import { post } from 'api';
-import { MAIN_COLOR } from 'assets/styles';
+import { mainColor } from 'assets/styles';
 import { ModalBtn } from 'components/button/buttons';
 import { ErrorWord, Input, InputBox, SelectCal } from 'components/input/inputs';
 import React, { useState } from 'react';
@@ -17,31 +17,31 @@ const Todo = ({ dates }: { dates: string | any }) => {
   const year: number = Number(dates.slice(0, 4));
   const month: number = Number(dates.slice(5, 7));
   const day: number = Number(dates.slice(8, 10));
- 
+
   const {
     handleSubmit,
     register,
-    setError,
+
     formState: { errors },
   } = useForm({ mode: 'onChange' });
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState<string>(`${MAIN_COLOR}`);
- 
+  const [color, setColor] = useState<string>(`${mainColor}`);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onValid = async (input: checkTodo) => {
     const data = {
       calendarId: input.calendar,
-      scheduleId: '??', //얘는 어떻게 주지?
       startDate: dates,
       title: input.title,
       labelColor: color,
       isTodo: true,
     };
-    console.log(data);
+
     try {
-      await post('/schedule/day', data);
+      console.log(data);
+      await post(`/schedule/day`, data);
       alert('할 일을 등록하였습니다');
       dispatch(closeModal());
       navigate('/calendar');
@@ -62,8 +62,8 @@ const Todo = ({ dates }: { dates: string | any }) => {
       </span>
       <InputBox>
         <Input
+        type='text'
           placeholder="내용을 입력해주세요"
-          
           {...register('title', {
             required: '내용을 입력해 주세요',
             minLength: {
@@ -108,7 +108,10 @@ const Todo = ({ dates }: { dates: string | any }) => {
         {open && (
           <TwitterPicker
             color={color}
-            onChangeComplete={(color) => {setColor(color.hex); setOpen((curr) => !curr)}}
+            onChangeComplete={(color) => {
+              setColor(color.hex);
+              setOpen((curr) => !curr);
+            }}
             triangle={'top-right'}
             width={'380px'}
           />
@@ -118,6 +121,7 @@ const Todo = ({ dates }: { dates: string | any }) => {
         <ModalBtn
           type="button"
           onClick={() => {
+            
             dispatch(closeModal());
             navigate('/calendar');
           }}
