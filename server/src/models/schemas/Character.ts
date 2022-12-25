@@ -3,33 +3,40 @@ import { Schema, model, Model } from 'mongoose';
 // 인터페이스
 export interface CharacterInterface {
   // uid: string;
-  characterName: string;
-  levelupPoint: object;
-  images: object;
+    characterId: string;
+    nameKo: string;
+    nameEn: string;
+    levelupPoint: object;
+    image: object;
 }
 export interface UpdateCharacterInterface {
-    _id: string;
-    characterName?: string;
+    characterId: string;
+    nameKo?: string;
+    nameEn?: string;
     levelupPoint?: object;
-    images?: object;
+    image?: object;
 }
 
 // 스키마
 export const characterSchema = new Schema<CharacterInterface>(
   {
-    // uid: {
-    //   type: String,
-    //   required: true,
-    // },
-    characterName: {
+      characterId: {
       type: String,
       required: true,
     },
+    nameKo: {
+          type: String,
+          required: true,
+      },
+    nameEn: {
+          type: String,
+          required: true,
+      },
     levelupPoint: {
       type: Object,
       required: true,
     },
-    images: {
+    image: {
       type: Object,
       required: true,
     },

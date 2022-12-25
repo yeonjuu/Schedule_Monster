@@ -13,4 +13,4 @@ characterRouter.post('/register', asyncHandler(characterController.createCharact
 // 캐릭터 수정
 characterRouter.put('/update', asyncHandler(characterController.updateCharacter));
 // 캐릭터 삭제
-characterRouter.delete('/delete/:id', asyncHandler(characterController.deleteCharacter));
+characterRouter.delete('/delete/:characterId', asyncHandler(characterController.deleteCharacter));
