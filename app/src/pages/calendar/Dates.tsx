@@ -42,7 +42,8 @@ const checkTodo = (
       isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}
-        onClick={() => {
+        onClick={(e:React.MouseEvent<HTMLDivElement>) => {
+          e.preventDefault();
           dispatch(toggleTodo());
           navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
@@ -63,7 +64,8 @@ const checkSchedule = ( dispatch: Dispatch<AnyAction>,
       isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}
-        onClick={() => {
+        onClick={(e:React.MouseEvent<HTMLDivElement>) => {
+          e.preventDefault();
           dispatch(toggleTodo());
           navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
@@ -102,7 +104,8 @@ const Dates = ({
   const day = format(date, 'd');
   return (
     <DateContainer
-      onDoubleClick={() => {
+      onDoubleClick={(e:React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
         dispatch(openModal());
         navigate(`/calendar/todos/${format(date, 'yyyy-MM-dd')}`);
       }}
@@ -116,7 +119,6 @@ const Dates = ({
         {day}
       </Day>
       {holidayArr && checkHoliday(holidayArr)}
-      
       {scheduleArr && checkSchedule(dispatch, navigate, scheduleArr)}
       {todosArr && checkTodo(dispatch, navigate, todosArr)}
     </DateContainer>
