@@ -2,24 +2,21 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import filterCategory from '../../util/filterCategory';
-
+import { ItemBox } from 'components/characters/StoreStyle';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-function MonsterList({ category, inputValue, setMonster }: any) {
+function MonsterList({ inputValue, setMonster }: any) {
   const monsterList = useSelector(
     (state: any) => state.monsterListReducer.monsterList,
   );
   const data = monsterList;
-  const itemList =
-    inputValue === ''
-      ? filterCategory(category, data)
-      : data.filter((val: any) => {
-          return createFuzzyMatcher(inputValue, val.characterName);
-        });
+  const itemList = data.filter((val: any) => {
+    return createFuzzyMatcher(inputValue, val.characterName);
+  });
   return (
-    <ul>
+    <>
       {itemList.map((item: any): JSX.Element => {
         return (
-          <li
+          <ItemBox
             key={item._id}
             onClick={(): void => {
               setMonster(item);
@@ -27,10 +24,10 @@ function MonsterList({ category, inputValue, setMonster }: any) {
           >
             <div>{item.characterName}</div>
             <img src={item.images.image1} alt="" />
-          </li>
+          </ItemBox>
         );
       })}
-    </ul>
+    </>
   );
 }
 export default MonsterList;

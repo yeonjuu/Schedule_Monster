@@ -1,28 +1,11 @@
 import produce from 'immer';
 import React, { useState } from 'react';
-import { UserInfoBox, UserPageContainer } from './adminCss';
-import * as API from '../../api';
+import { UserInfoBox } from './adminCss';
 
 function UserInfo({ user }: any) {
-  const [state, setState] = useState(0);
   return (
     <UserInfoBox>
       <div>
-        <button
-          onClick={(e) => {
-            setState(state + 1);
-          }}
-        >
-          +
-        </button>
-        <div>{state}</div>
-        <button
-          onClick={() => {
-            setState(state - 1);
-          }}
-        >
-          -
-        </button>
         <div>
           <span>이메일: </span>
           <span>{user.email}</span>
