@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import {
   format,
   add,
@@ -16,23 +16,22 @@ import {
   WeekContainer,
   HeaderCalendar,
   Container,
-  CalendarController,
   MonsterBox,
   Layout,
 } from './CalendarStyles';
 import Dates from './Dates';
-import { DateData, Holiday, onClickObj } from '../../types/calendarTypes';
+import {  DateData, Holiday, onClickObj } from '../../types/calendarTypes';
 import useDebounce from '../../hooks/useDebounce';
 import DateController from './DateController';
 import { Modal } from 'pages/calendar/modal/Modal';
 import { NavBar } from 'components/navbar/NavBar';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
-  const [dateData, setDateData] = useState<DateData[]>([]);
+  const [holidayData, setHolidayData] = useState<DateData[]>([]);
 
   const startMonth = startOfMonth(date);
   const endMonth = endOfMonth(date);
@@ -46,8 +45,7 @@ const CalendarPage = () => {
   const thisMonth = format(date, 'MM');
   const debounce = useDebounce(format(date, 'MM'));
   const door = useSelector((state: RootState) => state.modalSlice.door);
-  const dispatch = useDispatch();
-  
+
   const session = () => {
     if (thisMonth === '12') {
       return {
@@ -89,7 +87,7 @@ const CalendarPage = () => {
           date: item.start.date,
         };
       });
-      setDateData(data);
+      setHolidayData(data);
     };
     getHoliday();
   }, [debounce]);
@@ -107,29 +105,35 @@ const CalendarPage = () => {
   };
 
   const renderDay = (day: Date, endDay: Date) => {
+    
     let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
     const brr = []; //일주일 들을 모아 한달을 담는 배열
+    let i=0;
     while (day <= endDay) {
       arr.push(
+        
         <Dates
+
           key={`${day}`}
           prevMonth={isSameMonth(startMonth, day)}
           nextMonth={isSameMonth(endMonth, day)}
           today={isSameDay(new Date(), day)}
           week={format(day, 'EE')}
           date={day}
-          dateData={dateData}
+          holidayData={holidayData}
         />,
+        
       );
       if (format(day, 'EE') == 'Sat') {
+        //토요일이되면 arr을 WeekContainer 컴포넌트에 담아서 brr에 넣는다(2중배열)
         brr.push(<WeekContainer key={`${day}-${endDay}`}>{arr}</WeekContainer>);
         arr = [];
       }
-      day = addDays(day, 1);
+      day = addDays(day, 1); //day는 하루씩 증가
+    i++;
     }
-    return brr;
+    return brr; //한달이 끝나면 brr 반환
   };
-
 
   return (
     <Layout>
@@ -137,11 +141,9 @@ const CalendarPage = () => {
         <NavBar />
         <MonsterBox>스킨</MonsterBox>
         <div>
-        <DateController date={date} onClick={onClick} />
-        
+          <DateController date={date} onClick={onClick} />
         </div>
         <HeaderCalendar>
-          
           {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
             return <p key={`${names}-${index}`}>{names}</p>;
           })}

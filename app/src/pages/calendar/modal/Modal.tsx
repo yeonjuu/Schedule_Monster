@@ -1,11 +1,10 @@
-import { ModalBtn } from 'components/button/buttons';
 import { useEffect, useRef, useState } from 'react';
 import Schedule from './Schedule';
 import Todo from './Todo';
-import { ModalContainer, Tab, ContentBox, TabBox, BtnBox } from './ModalStyle';
+import { ModalContainer, Tab, ContentBox, TabBox } from './ModalStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { openModal, closeModal } from '../slice/modalSlice';
+import { closeModal } from '../slice/modalSlice';
 
 const Modal = () => {
   const modalRef = useRef<HTMLDivElement>(null);

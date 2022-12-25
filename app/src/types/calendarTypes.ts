@@ -1,7 +1,7 @@
 import { ArrowFunction } from 'typescript';
 import { Calendar } from './../pages/calendar/CalendarStyles';
 
-interface Holiday {
+export interface Holiday {
   kind: string;
   etag: string;
   id: string;
@@ -22,46 +22,68 @@ interface Holiday {
   eventType: string;
 }
 
-interface Creator {
+export interface Creator {
   email: string;
   displayName: string;
   self: boolean;
 }
 
-interface End {
+export interface End {
   date: Date;
 }
 
-interface DateData {
+export interface DateData {
   name: string;
   description: string;
   date: string;
 }
 
-interface Days {
+export interface Days {
   nextMonth: boolean;
   prevMonth: boolean;
   today: boolean;
   week: string;
   date: Date;
-  dateData: Array<DateData>;
+  holidayData: Array<DateData>;
 }
 
-interface Controller {
+export interface Controller {
   date: Date;
   onClick: onClickObj;
 }
 
-type onClickObj = {
+export type onClickObj = {
   prev: () => void;
   next: () => void;
   now: () => void;
 };
 
-type checkTodo={
+export type checkTodo={
   title: string,
   calendar: string,
 
 }
 
-export { Holiday, DateData, Days, Controller,onClickObj, checkTodo };
+export interface checkDate{
+  prevMonth : boolean
+  nextMonth : boolean
+  today : boolean
+  week :string
+  date : Date
+  holidayData : DateData[]
+}
+
+export interface todoData{
+  _id: string;
+  calendarId: string;
+  scheduleId: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  labelColor: string;
+  isTodo: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+

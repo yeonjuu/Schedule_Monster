@@ -46,11 +46,11 @@ export const Dates = styled.div<{
       text-decoration: underline;
     `}
     ${(props) =>
-    props.week == 'Sun'
+    props.week === 'Sun'
       ? css`
           color: red;
         `
-      : props.week == 'Sat'
+      : props.week === 'Sat'
       ? css`
           color: blue;
         `
@@ -59,7 +59,7 @@ export const Dates = styled.div<{
 
 export const DateContainer = styled.div`
   border-radius: 4px;
-  padding: 0 6px;
+
   width: 100%;
   height: 100%;
   background-color: white;
@@ -74,6 +74,7 @@ export const Day = styled.p<{
 }>`
   display: block;
   width: 100%;
+  padding: 0 6px;
   ${(props) =>
     !props.prevMonth &&
     css`
@@ -92,11 +93,11 @@ export const Day = styled.p<{
       text-decoration: underline;
     `}
     ${(props) =>
-    props.week == 'Sun'
+    props.week === 'Sun'
       ? css`
           color: red;
         `
-      : props.week == 'Sat'
+      : props.week === 'Sat'
       ? css`
           color: blue;
         `
@@ -164,6 +165,7 @@ export const HolidayLabel = styled.div<{ description: string }>`
   width: 100%;
   border-radius: 9px;
   margin-top: 2px;
+
   color: white;
   text-align: center;
   text-overflow: ellipsis;
@@ -180,6 +182,25 @@ export const HolidayLabel = styled.div<{ description: string }>`
           background-color: gray;
         `}
 `;
+
+export const ScheduleLabel = styled.div<{ labelColor: string }>`
+  height: 15%;
+  width: 100%;
+
+  margin-top: 2px;
+  background-color: ${(props) => props.labelColor};
+  color: white;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 19px;
+`;
+
+export const TodoLabel=styled(ScheduleLabel)`
+border-radius: 6px;
+`
 
 export const PickCalBox = styled.div`
   white-space: nowrap;
