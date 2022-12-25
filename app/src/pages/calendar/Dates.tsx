@@ -6,12 +6,13 @@ import {
   ScheduleLabel,
   TodoLabel,
 } from './CalendarStyles';
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { DateData, Days, todoData } from '../../types/calendarTypes';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from './slice/modalSlice';
+import { closeModal, openModal, toggleTodo } from './slice/modalSlice';
 import { RootState } from 'store/store';
+import { AnyAction } from 'redux';
 
 //한 날짜에 겹치는 공휴일 - 기념일이 있을 수 있기에 배열에 담아 반환
 const checkHoliday = (holiday: Array<DateData>) => {
@@ -19,7 +20,6 @@ const checkHoliday = (holiday: Array<DateData>) => {
   for (let i = 0; i < holiday.length; i++) {
     arr.push(
       <HolidayLabel
-      onClick={()=> console.log(1)}
         key={`${holiday[i].date}-${i}`}
         description={holiday[i].description}
       >
@@ -30,17 +30,26 @@ const checkHoliday = (holiday: Array<DateData>) => {
   return arr;
 };
 
-const checkTodo = (todo: Array<todoData>) => {
+const checkTodo = (
+  dispatch: Dispatch<AnyAction>,
+  navigate: NavigateFunction,
+  todo: Array<todoData>,
+) => {
   const arr = [];
   for (let i = 0; i < todo.length; i++) {
     arr.push(
       <TodoLabel
+      isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}
+        onClick={() => {
+          dispatch(toggleTodo());
+
+          navigate(`/calendar/todos/day/${todo[i].scheduleId}`);
+        }}
       >
-      <span>{todo[i].title}</span>
-</TodoLabel>
-      ,
+        <span>{todo[i].title}</span>
+      </TodoLabel>,
     );
   }
   return arr;
@@ -51,13 +60,12 @@ const checkSchedule = (todo: Array<todoData>) => {
   for (let i = 0; i < todo.length; i++) {
     arr.push(
       <ScheduleLabel
+      isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
-        
         labelColor={todo[i].labelColor}
       >
-         <span>{todo[i].title}</span>
-</ScheduleLabel>
-        ,
+        <span>{todo[i].title}</span>
+      </ScheduleLabel>,
     );
   }
   return arr;
@@ -78,13 +86,13 @@ const Dates = ({
   const todosToday = format(date, 'yyyyMMdd');
   const holidayArr = holidayData.filter((item) => item.date === holidayToday);
   const todosArr = todoData.filter(
-    (item) => item.isTodo && item.startDate.slice(0,8) === todosToday,
+    (item) => item.isTodo && item.startDate.slice(0, 8) === todosToday,
   ); //캘린더별 일정 목록에서 할일만 분리한 배열
   const scheduleArr = todoData.filter(
     (item) =>
       !item.isTodo &&
-      item.startDate.slice(0,8) <= todosToday &&
-      item.endDate.slice(0,8) >= todosToday,
+      item.startDate.slice(0, 8) <= todosToday &&
+      item.endDate.slice(0, 8) >= todosToday,
   ); //캘린더별 일정 목록에서 일정만 분리한 배열
 
   const day = format(date, 'd');
@@ -104,7 +112,7 @@ const Dates = ({
         {day}
       </Day>
       {holidayArr && checkHoliday(holidayArr)}
-      {todosArr && checkTodo(todosArr)}
+      {todosArr && checkTodo(dispatch, navigate, todosArr)}
       {scheduleArr && checkSchedule(scheduleArr)}
     </DateContainer>
   );

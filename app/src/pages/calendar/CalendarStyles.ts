@@ -183,10 +183,10 @@ export const HolidayLabel = styled.div<{ description: string }>`
         `}
 `;
 
-export const ScheduleLabel = styled.div<{ labelColor: string }>`
+export const ScheduleLabel = styled.div<{ labelColor: string, isCompleted: boolean }>`
   height: 15%;
   width: 100%;
-
+  
   margin-top: 2px;
   background-color: ${(props) => props.labelColor};
   color: white;
@@ -196,6 +196,11 @@ export const ScheduleLabel = styled.div<{ labelColor: string }>`
   font-size: 13px;
   font-weight: 550;
   line-height: 19px;
+  ${props=>props.isCompleted&& css`
+  text-decoration:line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: '#D6A319';
+  `}
 `;
 
 export const TodoLabel=styled(ScheduleLabel)`

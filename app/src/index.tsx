@@ -35,6 +35,10 @@ const router = createBrowserRouter([
     element: <CalendarPage />,
   },
   {
+    path: '/calendar/todos/day/:scheduleId',
+    element: <CalendarPage />,
+  },
+  {
     path: '/store',
     element: <Root />,
     errorElement: <p>페이지를 찾을 수 없습니다😭</p>,

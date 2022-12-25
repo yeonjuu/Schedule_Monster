@@ -1,31 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import Schedule from './ModalSchedule';
-import Todo from './ModalTodo';
 import { ModalContainer, Tab, ContentBox, TabBox } from './ModalStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { closeModal } from '../slice/modalSlice';
+import { closeModal, toggleTodo } from '../slice/modalSlice';
+import TodosContent from './TodosContent';
 
-const Modal = () => {
+const TodoModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [value, setValue] = useState(0);
-  const onClick = (tab: number) => {
-    setValue(tab);
-  };
-
-  const { dates } = useParams();
-  const tabs = [
-    {
-      name: '할 일',
-      content: <Todo dates={dates} />,
-    },
-    {
-      name: '일정',
-      content: <Schedule dates={dates} />,
-    },
-  ];
+  const { scheduleId } = useParams();
 
   useEffect(() => {
     const clickOutside = (e: React.BaseSyntheticEvent | MouseEvent) => {
@@ -33,7 +17,7 @@ const Modal = () => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         //current.contains(e.targt)은 이벤트를 실행한 e.target이 포함되어 있다면 true/아니면 false
         //여기서는 modalRef 바깥에서 event가 발생하면 ~ 으로 조건 걸었다
-        dispatch(closeModal());
+        dispatch(toggleTodo());
         navigate('/calendar');
       }
     };
@@ -45,24 +29,9 @@ const Modal = () => {
 
   return (
     <ModalContainer ref={modalRef}>
-      <TabBox>
-        {tabs.map((tab, i) => {
-          return (
-            <Tab
-              key={`${tab.name}-${i}`}
-              onClick={() => {
-                onClick(i);
-              }}
-              active={i === value}
-            >
-              <p>{tab.name}</p>
-            </Tab>
-          );
-        })}
-      </TabBox>
-      <ContentBox>{tabs[value].content}</ContentBox>
+      <ContentBox><TodosContent scheduleId={scheduleId}/></ContentBox>
     </ModalContainer>
   );
 };
 
-export { Modal };
+export { TodoModal };

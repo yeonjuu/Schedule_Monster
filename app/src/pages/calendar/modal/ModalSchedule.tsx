@@ -100,6 +100,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
 
       <InputBox>
         <Input
+        type='text'
           placeholder="내용을 입력해주세요"
           {...register('title', {
             required: '내용을 입력해 주세요',

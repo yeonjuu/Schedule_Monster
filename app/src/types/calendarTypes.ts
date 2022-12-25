@@ -75,15 +75,16 @@ export interface checkDate{
 
 export interface todoData{
   _id: string;
-  calendarId: string;
-  scheduleId: string;
-  startDate: string;
-  endDate: string;
-  title: string;
-  labelColor: string;
-  isTodo: boolean;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+    calendarId: string;
+    scheduleId: string;
+    startDate: string;
+    endDate: string;
+    title: string;
+    labelColor: string;
+    isTodo: boolean;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    isCompleted: boolean;
 }
 

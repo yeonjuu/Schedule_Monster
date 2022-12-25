@@ -28,6 +28,7 @@ import { NavBar } from 'components/navbar/NavBar';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
+import { TodoModal } from './modal/TodosModal';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -45,6 +46,8 @@ const CalendarPage = () => {
   const thisMonth = format(date, 'MM');
   const debounce = useDebounce(format(date, 'MM'));
   const door = useSelector((state: RootState) => state.modalSlice.door);
+  const doorTodo = useSelector((state: RootState) => state.modalSlice.doorTodo);
+
 
   const session = () => {
     if (thisMonth === '12') {
@@ -150,6 +153,7 @@ const CalendarPage = () => {
         </HeaderCalendar>
         <Calendar>{renderDay(day, endDay)}</Calendar>
         {door && <Modal />}
+        {doorTodo && <TodoModal/>}
       </Container>
     </Layout>
   );
