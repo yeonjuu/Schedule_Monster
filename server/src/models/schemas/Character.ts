@@ -6,7 +6,7 @@ export interface CharacterInterface {
     characterId: string;
     nameKo: string;
     nameEn: string;
-    levelupPoint: object;
+    levelupPoint: number;
     image: object;
 }
 export interface UpdateCharacterInterface {
@@ -33,7 +33,7 @@ export const characterSchema = new Schema<CharacterInterface>(
           required: true,
       },
     levelupPoint: {
-      type: Object,
+      type: Number,
       required: true,
     },
     image: {
