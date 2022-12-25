@@ -11,12 +11,14 @@ import Search from 'components/shop/search';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import MonsterProfile from '../../components/characters/MonsterProfile';
+import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
 
 export default function Items() {
 
   useEffect( () => {
     dispatch(asyncitemListFetch());
+    dispatch(asyncCategoryListFetch());
   },
   []);
 

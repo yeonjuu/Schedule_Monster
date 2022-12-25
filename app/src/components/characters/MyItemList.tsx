@@ -3,13 +3,20 @@ import { ItemBox, ItemButton } from './StoreStyle';
 import * as API from '../../api';
 import { applyItem } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
+import filterCategory from '../../util/filterCategory';
+import { createFuzzyMatcher } from '../../util/filterHangul';
 
 
-export default function MyitemList ({ myItems, setMyItems } :
+
+export default function MyitemList ({ myItems, setMyItems, category, inputValue } :
     {   myItems: any;
-        setMyItems: any;}) : JSX.Element {
+        setMyItems: any;
+        category: any;
+        inputValue: any;
+      }) : JSX.Element {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const currentCoin = useSelector((state: any) => state.statusReducer.coin);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -21,9 +28,18 @@ export default function MyitemList ({ myItems, setMyItems } :
             setIsLoading(!isLoading);
         };
         fetchData();
+        dispatch(asyncCategoryListFetch());
     },[]);
 
-    console.log(myItems);
+
+        //검색기능
+        const myitemList =
+        inputValue === ''
+          ? filterCategory(category, myItems)
+          : myItems.filter((val: any) => {
+              return createFuzzyMatcher(inputValue, val.itemName);
+            });
+
 
     return (
         <>
@@ -44,7 +60,7 @@ export default function MyitemList ({ myItems, setMyItems } :
             </div>
           ) : 
           ( <>
-            {myItems.map((myitems:any) => (
+            {myitemList.map((myitems:any) => (
                 <ItemBox
                 key={myitems._id}
                 >

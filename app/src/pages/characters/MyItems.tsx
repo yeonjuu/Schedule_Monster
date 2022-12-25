@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
-import ItemList2 from 'components/shop/ItemList';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { ContentsBox, ItemList, CategoryBox, ItemContainer } from '../../components/characters/StoreStyle';
@@ -15,6 +14,7 @@ import { Container } from '../../pages/admin/adminCss';
 export default function MyItems() {
 
     const [myItems, setMyItems] = useState([]);
+    const dispatch = useDispatch<any>();
   
     const [category, setCategory] = useState('all');
     const [inputState, setInputState] = useState('');
@@ -40,7 +40,11 @@ export default function MyItems() {
 
                     <MyitemList 
                     myItems={myItems} 
-                    setMyItems={setMyItems} />
+                    setMyItems={setMyItems} 
+                    category={category === 'all' ? 'all' : category}
+                    inputValue={inputState}
+                    />
+
                       
                   </CategoryBox>
                 </ItemContainer>
