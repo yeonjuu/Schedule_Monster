@@ -37,27 +37,41 @@ class UserItemService {
 
     // 아이템 구매 (= 사용자 수집 아이템목록에는 추가, 사용자의 포인트는 차감)
     async buyUserItem(itemInfo: UserItemInterface) {
-        const {email, itemName, price, exp, categoryName} = itemInfo
+        const {email, price} = itemInfo
         // 1. 수집 아이템 목록에 추가
-        await this.UserItem.create(itemInfo);
+        const itemResult = await this.UserItem.create(itemInfo);
 
         // 사용자 정보 가져옴
         const userData = await userModel.findOne({ email: email })
-        console.log(userData)
-        // const { point } = userData // 에러가 남
+        if(!userData){
+            const message = {
+                "status": false,
+                "message": '오류 - 입력하신 이메일의 사용자 정보가 없습니다.'
+            }
+            return message
+        }
+        else{
+            // // 2. 사용자 포인트에서 아이템 금액만큼 차감 후 업데이트
+            const userPoint = +userData.point // 에러가 남
+            console.log('price', typeof price, price)
+            console.log('userPoint', typeof userPoint, userPoint)
 
-        // 2. 사용자 포인트에서 아이템 금액만큼 차감 후 업데이트
-        // const point = userData.point // 에러가 남
-        // if (point > price){
-        //     const newPoint = point - price
-        //     // 사용자 정보 중에서 업데이트 할 부분(금액) 수정
-        //     const updatePoint = {
-        //         ...(point && { point }),
-        //     }
-        //     await userModel.findOneAndUpdate({ email: email },{ ...updatePoint },{ returnOriginal: false },)
-        // }
+            // await userModel.findOneAndUpdate({ email: email },{ point: 5000 },{ returnOriginal: false },)
 
-        return
+            if (userPoint >= price){
+                const newPoint = userPoint - +price
+                // 사용자 정보 중에서 업데이트 할 부분(금액) 수정
+                const userResult = await userModel.findOneAndUpdate({ email: email },{ point: newPoint },{ returnOriginal: false },)
+            }
+            else {
+                const message = {
+                    "status": false,
+                    "message": '잔액부족 - 잔액을 다시 한 번 확인 바랍니다'
+                }
+                return message
+            }
+        }
+        return itemResult
     }
 
     // POST localhost:5000/userItem/use
@@ -66,11 +80,22 @@ class UserItemService {
     async useUserItem(email: string, itemId: string, characterId: string) {
         // 아이템 정보 받아옴
         const itemResult = await this.UserItem.find({_id:itemId})
-        console.log('itemResult', itemResult)
-
-        // 사용자 수집캐릭터 목록 get
+        if(!itemResult) {
+            const message = {
+                "status": false,
+                "message": '아이템 오류 - 해당 아이템은 존재하지하지 않습니다.'
+            }
+            return message
+        }
+        // 사용자 수집캐릭터 목록 받아옴
         const characterList = await characterListModel.findOne({ _id: characterId });
-        console.log('characterResult', characterList)
+        if(!characterList) {
+            const message = {
+                "status": false,
+                "message": '캐릭터 오류 - 해당 캐릭터는 존재하지하지 않습니다.'
+            }
+            return message
+        }
 
         // 1. 사용자가 수집한 캐릭터의 애정도 높임
         // 구현해야함
