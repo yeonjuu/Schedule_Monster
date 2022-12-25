@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
@@ -6,15 +6,12 @@ import { ItemBox, ItemButton, QuanButton } from './../characters/StoreStyle';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
-import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
 
 function Item({ setItem, item, purpose }: any) {
   const dispatch = useDispatch<any>();
   const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
-  useEffect(() => {
-    dispatch(asyncitemListFetch());
-  }, []);
+
   return (
     <ItemBox
       onClick={(): void => {
