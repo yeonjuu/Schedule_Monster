@@ -1,19 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
-import ItemList2 from 'components/shop/ItemList';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { ContentsBox, ItemList, CategoryBox, ItemContainer } from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
+import MyitemList from '../../components/characters/MyItemList';
+
+import { Container } from '../../pages/admin/adminCss';
+
 
 export default function MyItems() {
 
+    const [myItems, setMyItems] = useState([]);
+    const dispatch = useDispatch<any>();
+  
     const [category, setCategory] = useState('all');
     const [inputState, setInputState] = useState('');
     const { id } = useParams();
-  //   console.log(id);
     const itemCategoryList = useSelector(
       (state: any): any => state.itemCategories,
     );
@@ -31,21 +36,22 @@ export default function MyItems() {
                 <Search setState={setInputState}></Search>
 
                 <ItemContainer>
-                <CategoryBox>
+                  <CategoryBox>
 
-                <ItemList2
-                category={category === 'all' ? 'all' : category}
-                inputValue={inputState}
-                url={'/store/myitems/'}
-                purpose={'사용'}
-                ></ItemList2>
+                    <MyitemList 
+                    myItems={myItems} 
+                    setMyItems={setMyItems} 
+                    category={category === 'all' ? 'all' : category}
+                    inputValue={inputState}
+                    />
 
-            </CategoryBox>
-            </ItemContainer>
+                      
+                  </CategoryBox>
+                </ItemContainer>
 
-            </ItemList>
+          </ItemList>
 
-            <MonsterProfile />
+          <MonsterProfile />
 
         </ContentsBox>
     );

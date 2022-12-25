@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as API from '../../../api';
 const asyncUserListFetch = createAsyncThunk('GET_USERLIST', async () => {
-  const userList = await API.get('users');
+  const userList = await API.get('/users');
   return userList;
 });
 

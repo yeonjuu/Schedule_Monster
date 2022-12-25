@@ -4,9 +4,13 @@ import produce from 'immer';
 import * as API from '../../api';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { asyncMonsterListFetch } from './slice/monsterListSlice';
+import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 const EditItemBox = styled.div`
   background-color: white;
+  width: 25%;
+  height: 85%;
 `;
 const ImgBox = styled.div`
   height: 150px;
@@ -35,6 +39,8 @@ const settings = {
   arrows: true,
 };
 function EditMonster({ monsterData }: any) {
+  const dispatch = useDispatch<any>();
+  const [check, setCheck] = useState(false);
   const [monster, setMonster] = useState({
     _id: monsterData._id,
     characterName: monsterData.characterName,
@@ -89,6 +95,10 @@ function EditMonster({ monsterData }: any) {
       },
     });
   }, [monsterData]);
+  useEffect(() => {
+    dispatch(asyncMonsterListFetch());
+    setCheck(false);
+  }, [check]);
   return (
     <EditItemBox>
       <form>
@@ -170,18 +180,16 @@ function EditMonster({ monsterData }: any) {
               e.preventDefault();
               if (window.confirm('수정하시겠습니까?')) {
                 try {
-                  API.put(
-                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/characters/update',
-                    {
-                      _id: monster._id,
-                      characterName: monster.characterName,
-                      levelupPoint: monster.levelupPoint,
-                    },
-                  );
+                  API.put('/characters/update', {
+                    _id: monster._id,
+                    characterName: monster.characterName,
+                    levelupPoint: monster.levelupPoint,
+                  });
                 } catch {
                   console.log('에러');
+                } finally {
+                  setCheck(true);
                 }
-                window.location.reload();
               }
             }}
           >
@@ -193,18 +201,16 @@ function EditMonster({ monsterData }: any) {
               e.preventDefault();
               if (window.confirm('추가하시겠습니까?')) {
                 try {
-                  API.post(
-                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/characters/register',
-                    {
-                      characterName: monster.characterName,
-                      levelupPoint: monster.levelupPoint,
-                      images: monster.images,
-                    },
-                  );
+                  API.post('/characters/register', {
+                    characterName: monster.characterName,
+                    levelupPoint: monster.levelupPoint,
+                    images: monster.images,
+                  });
                 } catch {
                   console.log('에러');
+                } finally {
+                  setCheck(true);
                 }
-                window.location.reload();
               }
             }}
           >
@@ -217,13 +223,12 @@ function EditMonster({ monsterData }: any) {
               e.preventDefault();
               if (window.confirm('제거하시겠습니까?')) {
                 try {
-                  API.delete(
-                    `https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/characters/delete/${monster._id}`,
-                  );
+                  API.delete(`/characters/delete/${monster._id}`);
                 } catch {
                   console.log('에러');
+                } finally {
+                  setCheck(true);
                 }
-                window.location.reload();
               }
             }}
           >

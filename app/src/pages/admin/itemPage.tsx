@@ -9,48 +9,50 @@ import {
   CategoryBox,
   ItemList,
 } from '../../components/characters/StoreStyle';
-import { useSelector } from 'react-redux';
-function ItemPage({ setCategory, category }: any) {
-  const itemCategories = useSelector((state: any) => {
-    return state.categoryListReducer.categoryList;
-  });
-  const itemList = useSelector((state: any) => state.itemListReducer.itemList);
+function ItemPage() {
   const [item, setItem] = useState({
     _id: '',
     itemName: '',
     price: '',
     exp: '',
     image: '',
-    info: '',
+    itemInfo: '',
     category: '',
   });
   const [inputState, setInputState] = useState('');
+  const [category, setCategory] = useState('all');
   return (
     <ContentsBox>
       <ItemList>
         <ItemContainer>
-          <BannerItem
-            categories={itemCategories}
-            setCategory={setCategory}
-          ></BannerItem>
+          <BannerItem setCategory={setCategory}></BannerItem>
           <Search setState={setInputState}></Search>
+          <button
+            onClick={() => {
+              setItem({
+                _id: '',
+                itemName: '',
+                price: '',
+                exp: '',
+                image: '',
+                itemInfo: '',
+                category: '',
+              });
+            }}
+          >
+            에딧 창 리셋
+          </button>
           <CategoryBox>
             <ItemListComponents
               category={category === 'all' ? 'all' : category}
               inputValue={inputState}
-              data={itemList}
               setItem={setItem}
             ></ItemListComponents>
           </CategoryBox>
         </ItemContainer>
       </ItemList>
 
-      <EditItem
-        categoryList={itemCategories}
-        itemList={itemList}
-        itemState={item}
-        setItemState={setItem}
-      ></EditItem>
+      <EditItem itemData={item}></EditItem>
     </ContentsBox>
   );
 }

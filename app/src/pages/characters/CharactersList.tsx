@@ -19,13 +19,8 @@ export default function CharactersList() {
   const [pokemons, setPokemons] = useState<any[]>([]);
 
   useEffect(() => {
-    // axios.get('/pokeMockData/pokemon.json').then((res) => {
-    //   setPokemons(res.data.pokedata);
-    //   setIsLoading(!isLoading);
-    // });
     async function fetchData() {
         const data = await API.get('/characters/all');
-        console.log(data);
         setPokemons(data);
         setIsLoading(!isLoading);
     }
