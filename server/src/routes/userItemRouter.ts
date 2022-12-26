@@ -17,3 +17,5 @@ userItemRouter.delete('/delete/:id', asyncHandler(userItemController.deleteUserI
 userItemRouter.post('/buy', asyncHandler(userItemController.buyUserItem));
 // 사용자 아이템 사용
 userItemRouter.post('/use', asyncHandler(userItemController.useUserItem));
+// 알 부화
+userItemRouter.post('/egg', asyncHandler(userItemController.breakEgg));
