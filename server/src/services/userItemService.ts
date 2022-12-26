@@ -50,28 +50,24 @@ class UserItemService {
             }
             return message
         }
-        else{
-            // // 2. 사용자 포인트에서 아이템 금액만큼 차감 후 업데이트
-            const userPoint = +userData.point // 에러가 남
-            console.log('price', typeof price, price)
-            console.log('userPoint', typeof userPoint, userPoint)
 
-            // await userModel.findOneAndUpdate({ email: email },{ point: 5000 },{ returnOriginal: false },)
+        // // 2. 사용자 포인트에서 아이템 금액만큼 차감 후 업데이트
+        const userPoint = +userData.point
 
-            if (userPoint >= price){
-                const newPoint = userPoint - +price
-                // 사용자 정보 중에서 업데이트 할 부분(금액) 수정
-                const userResult = await userModel.findOneAndUpdate({ email: email },{ point: newPoint },{ returnOriginal: false },)
+        // await userModel.findOneAndUpdate({ email: email },{ point: 5000 },{ returnOriginal: false },)
+
+        if (userPoint < price){
+            const message = {
+                "status": false,
+                "message": '포인트 부족 - 잔여 포인트를 다시 한 번 확인 바랍니다'
             }
-            else {
-                const message = {
-                    "status": false,
-                    "message": '포인트 부족 - 잔여 포인트를 다시 한 번 확인 바랍니다'
-                }
-                return message
-            }
+            return message
         }
-        return itemResult
+        const newPoint = userPoint - +price
+        // 사용자 정보 중에서 업데이트 할 부분(금액) 수정
+        const userResult = await userModel.findOneAndUpdate({ email: email },{ point: newPoint },{ returnOriginal: false },)
+
+        return userResult
     }
 
     // POST localhost:5000/userItem/use
@@ -102,7 +98,7 @@ class UserItemService {
         const newExp = characterExp + itemExp
 
 
-        if (characterExp >= 100){
+        if (characterExp >= 10000){
             const message = {
                 "status": false,
                 "message": '캐릭터 애정도 - 해당 캐릭터는 이미 애정도가 100입니다.'
