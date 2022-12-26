@@ -40,21 +40,21 @@ class CharacterListService {
   }
 
   // // 대표캐릭터 조회
-  // async getOnePick(email:string) {
-  //   const filter = {email: email, onePick: true}
-  //   const result =  await this.characterList.findOne(filter);
-  //   return result;
-  // }
-  //
-  // // 대표캐릭터 변경
-  // async changeOnePick(email: string, _id:string) {
-  //   // 기존꺼 false
-  //   const filter = {email: email, onePick: true}
-  //   await this.characterList.findOneAndUpdate(filter, {onePick: false});
-  //   // 현재꺼 true
-  //   const result =  await this.characterList.findOneAndUpdate({_id: _id}, {onePick: true});
-  //   return result;
-  // }
+  async getOnePick(email:string) {
+    const filter = {email: email, onePick: true}
+    const result =  await this.characterList.findOne(filter);
+    return result;
+  }
+
+  // 대표캐릭터 변경
+  async changeOnePick(email: string, characterId:string) {
+    // 기존꺼 false
+    // const filter = {email: email}
+    // const result =  await this.characterList.updateMany(filter, {onePick: false});
+    // 현재꺼 true
+    // const result =  await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
+    return;
+  }
 
   // 해당 사용자 캐릭터 리스트 초기화
   async deleteCharacterList(email: string) {
