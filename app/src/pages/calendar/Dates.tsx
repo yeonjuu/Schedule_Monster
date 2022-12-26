@@ -23,7 +23,7 @@ const checkHoliday = (holiday: Array<DateData>) => {
         key={`${holiday[i].date}-${i}`}
         description={holiday[i].description}
       >
-        <span>{holiday[i].name}</span>
+      <p>{holiday[i].name}</p>
       </HolidayLabel>,
     );
   }
@@ -49,7 +49,7 @@ const checkTodo = (
           navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
       >
-        <span>{todo[i].title}</span>
+        <p>{todo[i].title}</p>
       </TodoLabel>,
     );
   }
@@ -75,7 +75,7 @@ const checkSchedule = ( dispatch: Dispatch<AnyAction>,
           navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
       >
-        <span>{todo[i].title}</span>
+        <p>{todo[i].title}</p>
       </ScheduleLabel>,
     );
   }

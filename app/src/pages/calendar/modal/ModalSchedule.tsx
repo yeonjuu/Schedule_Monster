@@ -20,12 +20,12 @@ import { closeModal } from '../slice/modalSlice';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { checkTodo } from 'types/calendarTypes';
 import { post } from 'api';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 
 const Schedule = ({ dates }: { dates: string | any }) => {
-  // const year: number = Number(dates.slice(0, 4));
-  // const month: number = Number(dates.slice(5, 7));
-  // const day: number = Number(dates.slice(8, 10));
+  const year: number = Number(dates.slice(0, 4));
+  const month: number = Number(dates.slice(5, 7))-1;
+  const day: number = Number(dates.slice(8, 10));
   const todayData = new Date(dates);
 
   const {
@@ -35,8 +35,8 @@ const Schedule = ({ dates }: { dates: string | any }) => {
     clearErrors,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
-  const [startDate, setStartDate] = useState<Date>(todayData);
-  const [endDate, setEndDate] = useState<Date>(todayData);
+  const [startDate, setStartDate] = useState<Date>(new Date(year, month, day));
+  const [endDate, setEndDate] = useState<Date>(add(startDate, {minutes: 30}));
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState(`${mainColor}`);
 

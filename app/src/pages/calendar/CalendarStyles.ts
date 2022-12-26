@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+
 export const Calendar = styled.div`
   display: flex;
   flex-direction: column;
@@ -139,32 +140,31 @@ export const CalendarController = styled.div`
   height: 40px;
   width: 100%;
   font-size: 18px;
-  margin: 20px 0;
-  & > button {
+  margin: 20px 0 50px 0;
+  & > svg {
     cursor: pointer;
     border: none;
-    width:30px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     background-color: transparent;
     color: #414656;
     font-size: 22px;
-    padding: 0 10px;
+    padding: 0 5px;
   }
-& > div{
-  display: flex;
-}
+  & > div {
+    display: flex;
+  }
+
 `;
 
 export const MonsterBox = styled.div`
-position: absoulute;
-  display: flex;
-  background-color: #ffeeca;
-  height: 150px;
+  position: absolute;
+  top: 0px;
+  background-color: transparent;
+  height: 160px;
   width: 100%;
-  border-radius: 10px;
+  z-index: -10;
 `;
-
-
 
 export const HolidayLabel = styled.div<{ description: string }>`
   height: 15%;
@@ -173,13 +173,16 @@ export const HolidayLabel = styled.div<{ description: string }>`
   margin-top: 2px;
 
   color: white;
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 550;
-  line-height: 19px;
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    text-align: center;
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 19px;
+  }
+
   ${(props) =>
     props.description === '공휴일'
       ? css`
@@ -190,7 +193,10 @@ export const HolidayLabel = styled.div<{ description: string }>`
         `}
 `;
 
-export const ScheduleLabel = styled.div<{ labelColor: string, isCompleted: boolean }>`
+export const ScheduleLabel = styled.div<{
+  labelColor: string;
+  isCompleted: boolean;
+}>`
   height: 15%;
   width: 100%;
   cursor: pointer;
@@ -203,16 +209,18 @@ export const ScheduleLabel = styled.div<{ labelColor: string, isCompleted: boole
   font-size: 13px;
   font-weight: 550;
   line-height: 19px;
-  ${props=>props.isCompleted&& css`
-  text-decoration:line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: '#D6A319';
-  `}
+  ${(props) =>
+    props.isCompleted &&
+    css`
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: '#D6A319';
+    `}
 `;
 
-export const TodoLabel=styled(ScheduleLabel)`
-border-radius: 6px;
-`
+export const TodoLabel = styled(ScheduleLabel)`
+  border-radius: 6px;
+`;
 
 export const PickCalBox = styled.div`
   white-space: nowrap;

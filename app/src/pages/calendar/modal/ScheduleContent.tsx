@@ -21,7 +21,7 @@ import { checkTodo, todoData } from 'types/calendarTypes';
 import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
 import * as API from 'api';
 import { ko } from 'date-fns/esm/locale';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 
 const ScheduleContent = ({
   scheduleId,
@@ -36,15 +36,15 @@ const ScheduleContent = ({
 
   const content = { ...tmp };
 
-  const tmpYear = Number(content.startDate?.slice(0, 4));
-  const tmpMonth = Number(content.startDate?.slice(4, 6));
-  const tmpDay = Number(content.startDate?.slice(6, 8));
+  const year = Number(content.startDate?.slice(0, 4));
+  const month = Number(content.startDate?.slice(4, 6))-1;
+  const day = Number(content.startDate?.slice(6, 8));
 
   const [startDate, setStartDate] = useState<Date>(
-    new Date(),
+    new Date(year, month, day),
   );
   const [endDate, setEndDate] = useState<Date>(
-    new Date(),
+    new Date(add(startDate, {minutes: 30})),
   );
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
