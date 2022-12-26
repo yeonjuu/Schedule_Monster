@@ -6,7 +6,7 @@ import {
   ScheduleLabel,
   TodoLabel,
 } from './CalendarStyles';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { DateData, Days, todoData } from '../../types/calendarTypes';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,8 +42,9 @@ const checkTodo = (
       isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}
-        onClick={(e:React.MouseEvent<HTMLDivElement>) => {
+        onClick={(e:React.MouseEvent) => {
           e.preventDefault();
+         
           dispatch(toggleTodo());
           navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
@@ -58,15 +59,19 @@ const checkTodo = (
 const checkSchedule = ( dispatch: Dispatch<AnyAction>,
   navigate: NavigateFunction,todo: Array<todoData>) => {
   const arr = [];
+  // const [disabled, setDisabled]=useState(false);
   for (let i = 0; i < todo.length; i++) {
     arr.push(
       <ScheduleLabel
       isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}
-        onClick={(e:React.MouseEvent<HTMLDivElement>) => {
+        onClick={(e:React.MouseEvent) => {
           e.preventDefault();
-          dispatch(toggleTodo());
+          
+          setTimeout(()=>{ dispatch(toggleTodo());}
+          ,20) 
+         
           navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
         }}
       >
@@ -85,6 +90,7 @@ const Dates = ({
   date,
   holidayData,
 }: Days) => {
+  
   const todoData = useSelector((state: RootState) => state.todoSlice.todoList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,7 +112,9 @@ const Dates = ({
     <DateContainer
       onDoubleClick={(e:React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
-        dispatch(openModal());
+       
+        setTimeout(()=>{dispatch(openModal());}
+        ,15) 
         navigate(`/calendar/todos/${format(date, 'yyyy-MM-dd')}`);
       }}
     >

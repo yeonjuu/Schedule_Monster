@@ -36,14 +36,15 @@ const ScheduleContent = ({
 
   const content = { ...tmp };
 
-  const tmpYear = Number(content.startDate!.slice(0, 4));
-  const tmpMonth = Number(content.startDate!.slice(4, 6));
-  const tmpDay = Number(content.startDate!.slice(6, 8));
+  const tmpYear = Number(content.startDate?.slice(0, 4));
+  const tmpMonth = Number(content.startDate?.slice(4, 6));
+  const tmpDay = Number(content.startDate?.slice(6, 8));
+
   const [startDate, setStartDate] = useState<Date>(
-    new Date(tmpYear, tmpMonth - 1, tmpDay),
+    new Date(),
   );
   const [endDate, setEndDate] = useState<Date>(
-    new Date(tmpYear, tmpMonth - 1, tmpDay),
+    new Date(),
   );
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);

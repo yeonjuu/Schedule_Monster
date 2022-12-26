@@ -29,6 +29,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { TodoModal } from './modal/TodosModal';
+import { Logo } from 'components/logo/Logo';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -102,6 +103,13 @@ const CalendarPage = () => {
     next: () => {
       setDate((curr) => add(curr, { months: 1 }));
     },
+    up: () => {
+      setDate((curr) => add(curr, { years: 1 }));
+    },
+    down: () => {
+      setDate((curr) => sub(curr, { years: 1 }));
+    },
+
     now: () => {
       setDate(new Date());
     },
@@ -140,7 +148,9 @@ const CalendarPage = () => {
 
   return (
     <Layout>
+      
       <Container>
+      <Logo/>
         <NavBar />
         <MonsterBox>스킨</MonsterBox>
         <div>

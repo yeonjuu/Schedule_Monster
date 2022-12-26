@@ -116,10 +116,16 @@ export const HeaderCalendar = styled.div`
   }
 `;
 
+export const Layout = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
 export const Container = styled.div`
   width: 84vw;
-  max-width: 1024px;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -130,35 +136,35 @@ export const CalendarController = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90px;
+  height: 40px;
   width: 100%;
   font-size: 18px;
-  margin: 15px 0;
+  margin: 20px 0;
   & > button {
     cursor: pointer;
     border: none;
+    width:30px;
+    height: 20px;
     background-color: transparent;
     color: #414656;
-    font-size: 20px;
-    padding: 0 15px;
+    font-size: 22px;
+    padding: 0 10px;
   }
+& > div{
+  display: flex;
+}
 `;
 
 export const MonsterBox = styled.div`
+position: absoulute;
   display: flex;
   background-color: #ffeeca;
   height: 150px;
   width: 100%;
-  margin-top: 20px;
   border-radius: 10px;
 `;
 
-export const Layout = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
+
 
 export const HolidayLabel = styled.div<{ description: string }>`
   height: 15%;
@@ -168,6 +174,7 @@ export const HolidayLabel = styled.div<{ description: string }>`
 
   color: white;
   text-align: center;
+  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   font-size: 13px;
@@ -186,7 +193,7 @@ export const HolidayLabel = styled.div<{ description: string }>`
 export const ScheduleLabel = styled.div<{ labelColor: string, isCompleted: boolean }>`
   height: 15%;
   width: 100%;
-  
+  cursor: pointer;
   margin-top: 2px;
   background-color: ${(props) => props.labelColor};
   color: white;

@@ -23,9 +23,9 @@ import { post } from 'api';
 import { format } from 'date-fns';
 
 const Schedule = ({ dates }: { dates: string | any }) => {
-  const year: number = Number(dates.slice(0, 4));
-  const month: number = Number(dates.slice(5, 7));
-  const day: number = Number(dates.slice(8, 10));
+  // const year: number = Number(dates.slice(0, 4));
+  // const month: number = Number(dates.slice(5, 7));
+  // const day: number = Number(dates.slice(8, 10));
   const todayData = new Date(dates);
 
   const {
@@ -95,7 +95,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <span>
-        {year}년 {month}월 {day}일
+        {/* {year}년 {month}월 {day}일 */}
       </span>
 
       <InputBox>

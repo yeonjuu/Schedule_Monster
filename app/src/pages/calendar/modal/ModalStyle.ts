@@ -12,7 +12,7 @@ export const ModalContainer = styled.div`
 
   padding: 20px;
   /* 최상단 위치 */
-  z-index: 999;
+  z-index: 30;
 
   /* 중앙 배치 */
   /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
@@ -64,7 +64,7 @@ export const Tab = styled.div<{ active: boolean }>`
     `}
 `;
 
-export const PickColor = styled.button<{ labelColor: string| undefined }>`
+export const PickColor = styled.button<{ labelColor: string | undefined }>`
   cursor: pointer;
   margin-left: 10px;
   width: 55px;
@@ -73,9 +73,22 @@ export const PickColor = styled.button<{ labelColor: string| undefined }>`
   border: none;
   font-weight: bold;
   ${(props) =>
-    props.labelColor ?
-    css`
-      background-color: ${props.labelColor};
-    ` : css`
-    background-color: ${mainColor}`}
+    props.labelColor
+      ? css`
+          background-color: ${props.labelColor};
+        `
+      : css`
+          background-color: ${mainColor};
+        `}
+`;
+
+export const Background = styled.div`
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 20;
 `;
