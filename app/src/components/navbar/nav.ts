@@ -2,10 +2,8 @@ import styled, { css } from 'styled-components';
 
 export const TabWrapper = styled.div`
   display: flex;
-  position: absolute;
   width: auto;
   right: 20px;
-  top: 35px;
   > div:first-child {
     border: none;
   }
@@ -24,4 +22,9 @@ export const Tab = styled.div<{ nolink?: boolean }>`
     css`
       pointer-events: none;
     `}
+`;
+
+export const Wrapper = styled.div`
+  align-items: center;
+  padding: 33px 0;
 `;
