@@ -13,6 +13,8 @@ import { useParams } from 'react-router-dom';
 import MonsterProfile from '../../components/characters/MonsterProfile';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
+import { Logo } from 'components/logo/Logo';
+import { NavBar } from 'components/navbar/NavBar';
 
 export default function Items() {
 
@@ -33,36 +35,44 @@ export default function Items() {
   );
 
   return (
-    <ContentsBox>
-      <ItemList>
+    <>
+      {/* <div>
+        <Logo />
+        <NavBar />
+      </div> */}
 
-        <BannerItem
-          categories={itemCategoryList}
-          setCategory={setCategory}
-        ></BannerItem>
+      <ContentsBox>
+        <ItemList>
 
-        <Search setState={setInputState}></Search>
+          <BannerItem
+            categories={itemCategoryList}
+            setCategory={setCategory}
+          ></BannerItem>
 
-        <ItemContainer>
-          <CategoryBox>
+          <Search setState={setInputState}></Search>
+
+          <ItemContainer>
+            <CategoryBox>
+          
+              <ItemList2
+                category={category === 'all' ? 'all' : category}
+                inputValue={inputState}
+                url={'/store/item/'}
+                purpose={'구매'}
+
+              ></ItemList2>
+
+            </CategoryBox>
+          </ItemContainer>
+
+        </ItemList>
+
+
+        <MonsterProfile/>
         
-            <ItemList2
-              category={category === 'all' ? 'all' : category}
-              inputValue={inputState}
-              url={'/store/item/'}
-              purpose={'구매'}
 
-            ></ItemList2>
+      </ContentsBox>
+    </>
 
-          </CategoryBox>
-        </ItemContainer>
-
-      </ItemList>
-
-
-      <MonsterProfile/>
-      
-
-    </ContentsBox>
   );
 }

@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 
 export const Input = styled.input<{
   errors: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
+  type: string;
 }>`
   width: 100%;
   height: 33px;
@@ -19,6 +20,7 @@ export const Input = styled.input<{
       font-weight: bold;
       border: 1.5px solid #ffa4b2;
     `}
+  
 `;
 
 export const SelectCal = styled.select<{
@@ -60,15 +62,29 @@ export const SchedulePicker = styled(DatePicker)`
   text-align: center;
 `;
 export const ScheduleBox = styled.div`
-
   display: flex;
   height: 33px;
   align-items: center;
   justify-content: center;
 `;
 
-export const ErrorWord=styled.small`
-margin-left: 13px;
-color: #D83167;
-font-weight: bold;
-`
+export const ErrorWord = styled.small`
+  margin-left: 13px;
+  color: #d83167;
+  font-weight: bold;
+`;
+
+export const CheckBox = styled.input`
+  height: 30px;
+  width: 30px;
+`;
+
+export const CheckInput = styled(Input)`
+  width: calc(100% - 115px);
+`;
+
+export const CheckContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

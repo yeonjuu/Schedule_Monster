@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-import { ItemBox, ItemButton, QuanButton } from './../characters/StoreStyle';
+import { ItemBox, ItemButton, QuanButton, Tooltip } from './../characters/StoreStyle';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
@@ -79,6 +79,9 @@ function Item({ setItem, item, purpose }: any) {
             >
               {`${purpose}`}
             </ItemButton>
+            <Tooltip>{item.itemInfo}</Tooltip>
+
+
           </>
         ) : null}
       </div>

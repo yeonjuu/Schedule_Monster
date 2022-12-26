@@ -1,21 +1,26 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  BtnBox,
-  PickColor,
-} from './ModalStyle';
+import { useDispatch } from 'react-redux';
+import { BtnBox, PickColor } from './ModalStyle';
 
 import { useState, useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
-import { ErrorWord, Input, InputBox, ScheduleBox, SchedulePicker, SelectCal } from 'components/input/inputs';
+import {
+  ErrorWord,
+  Input,
+  InputBox,
+  ScheduleBox,
+  SchedulePicker,
+  SelectCal,
+} from 'components/input/inputs';
 import { ModalBtn } from 'components/button/buttons';
 import { useNavigate } from 'react-router-dom';
 import TwitterPicker from 'react-color/lib/components/twitter/Twitter';
-import { MAIN_COLOR } from 'assets/styles';
+import { mainColor } from 'assets/styles';
 import { closeModal } from '../slice/modalSlice';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { checkTodo } from 'types/calendarTypes';
 import { post } from 'api';
+import { format } from 'date-fns';
 
 const Schedule = ({ dates }: { dates: string | any }) => {
   const year: number = Number(dates.slice(0, 4));
@@ -33,7 +38,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
   const [startDate, setStartDate] = useState<Date>(todayData);
   const [endDate, setEndDate] = useState<Date>(todayData);
   const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState(`${MAIN_COLOR}`);
+  const [color, setColor] = useState(`${mainColor}`);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,7 +53,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
     } else {
       clearErrors('date');
     }
-  }, [endDate, startDate]);
+  }, [endDate, startDate, setError, clearErrors]);
 
   const onValid = async (input: checkTodo) => {
     if (!startDate || !endDate) {
@@ -58,19 +63,22 @@ const Schedule = ({ dates }: { dates: string | any }) => {
         message: '종료 일자는 시작 일자보다 커야 합니다',
       });
     } else {
+      
       const data = {
         calendarId: input.calendar,
-        scheduleId: '??', //얘는 어떻게 주지?
         startDate: startDate,
         endDate: endDate,
         title: input.title,
         labelColor: color,
         isTodo: false,
       };
-
+      console.log(data);
+      console.log(format(startDate,'yyyyMMddhhmm'))
+      console.log(format(endDate,'yyyyMMddhhmm'))
       try {
-        await post('/schedule/day', data);
-        alert('할 일을 등록하였습니다');
+        console.log(data);
+        await post(`/schedule/day`, data);
+        alert('일정을 등록하였습니다');
         dispatch(closeModal());
         navigate('/calendar');
       } catch (err) {
@@ -92,6 +100,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
 
       <InputBox>
         <Input
+        type='text'
           placeholder="내용을 입력해주세요"
           {...register('title', {
             required: '내용을 입력해 주세요',
@@ -138,7 +147,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
             required: '캘린더를 선택해 주세요',
             validate: {
               checkValue: (value) =>
-                value != 'no' || '소유 중인 캘린더 중에서 선택해 주세요',
+                value !== 'no' || '소유 중인 캘린더 중에서 선택해 주세요',
             },
           })}
           errors={errors.calendar}

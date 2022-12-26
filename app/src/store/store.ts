@@ -16,9 +16,9 @@ import storage from 'redux-persist/lib/storage';
 import userListSlice from 'pages/admin/slice/userListSlice';
 import itemListSlice from 'pages/admin/slice/itemListSlice';
 import categoryListSlice from 'pages/admin/slice/categoryListSlice';
-import paletteSlice from '../pages/calendar/slice/paletteSlice';
 import monsterListSlice from 'pages/admin/slice/monsterListSlice';
 import modalSlice from '../pages/calendar/slice/modalSlice';
+import todoSlice from 'pages/calendar/slice/todoSlice';
 const persistConfig = {
   key: 'root',
   storage,
@@ -38,9 +38,8 @@ const store = configureStore({
     itemListReducer: itemListSlice.reducer,
     categoryListReducer: categoryListSlice.reducer,
     monsterListReducer: monsterListSlice.reducer,
-
-    paletteSlice,
     modalSlice,
+    todoSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
