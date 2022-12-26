@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Logo } from 'components/logo/Logo';
-import { NavBar } from 'components/navbar/NavBar';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import * as Style from './style';
@@ -8,14 +6,14 @@ import { changeNickname } from 'pages/login/userSlice';
 import * as API from '../../api';
 import { IUser } from '../../types/userInterface';
 import { useNavigate } from 'react-router-dom';
+import { Header } from '../../components/header/Header';
 
 export const MyPage = () => {
   const user: IUser = useSelector((state: RootState) => state.persistedReducer);
   const { nickname, email } = user;
   return (
     <div>
-      <Logo />
-      <NavBar />
+      <Header />
       <UserInfo nickname={nickname} email={email} />
       <UserStatic email={user.email} />
     </div>
