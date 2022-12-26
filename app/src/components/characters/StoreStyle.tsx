@@ -5,7 +5,7 @@ export const Main = styled.main`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     /* margin-left: 5rem; */
 `
 
@@ -264,13 +264,17 @@ export const Tooltip = styled.div`
     color: #1616c6;
     font-weight: bolder;
     font-size: 13px;
-    opacity: 90%;
+    opacity: 80%;
     display: flex;
     text-align: center;
     align-items: center;
     position: absolute;
     bottom: 3.4rem;
     left: 0.5rem;
+
+    /* white-space : nowrap; */
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
     
     visibility: hidden;
 `

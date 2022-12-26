@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-
+import { NavBar } from 'components/navbar/NavBar';
+import { Logo } from 'components/logo/Logo';
 
 
 export default function MyitemList ({ myItems, setMyItems, category, inputValue } :
@@ -32,13 +33,13 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
     },[]);
 
 
-        //검색기능
-        const myitemList =
-        inputValue === ''
-          ? filterCategory(category, myItems)
-          : myItems.filter((val: any) => {
-              return createFuzzyMatcher(inputValue, val.itemName);
-            });
+    //검색기능
+    const myitemList =
+    inputValue === ''
+      ? filterCategory(category, myItems)
+      : myItems.filter((val: any) => {
+          return createFuzzyMatcher(inputValue, val.itemName);
+        });
 
 
     return (

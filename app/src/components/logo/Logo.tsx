@@ -26,6 +26,10 @@ export const Logo = () => {
 
 const ImageWrapper = styled.div`
   width: 400px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.img`
