@@ -7,40 +7,46 @@ import { useNavigate } from 'react-router-dom';
 
 type IProps = {
   nickname: string;
-  point: number;
+  point?: number;
   onClick: () => void;
 };
 
 export const NavBar = () => {
   const user = useSelector((state: RootState) => state.persistedReducer);
+  const point = useSelector((state: RootState) => state.persistedReducer.point);
   const dispatch = useDispatch();
 
-  const { nickname, point, isLogin } = user;
+  const { nickname, auth, isLogin } = user;
 
   const clickLogoutHandler = () => {
     const isLogout = window.confirm('로그아웃하시겠습니까?');
     if (isLogout) {
       dispatch(logout());
+      localStorage.removeItem('accessToken');
     }
     return;
   };
 
   return (
-    <div>
+    <Nav.Wrapper>
       {isLogin ? (
-        <StateLogin
-          nickname={nickname}
-          point={point}
-          onClick={clickLogoutHandler}
-        />
+        auth !== 'admin' ? (
+          <StateAdminLogin nickname={nickname} onClick={clickLogoutHandler} />
+        ) : (
+          <StateUserLogin
+            nickname={nickname}
+            point={point}
+            onClick={clickLogoutHandler}
+          />
+        )
       ) : (
         <StateLogout />
       )}
-    </div>
+    </Nav.Wrapper>
   );
 };
 
-const StateLogin = ({ nickname, point, onClick }: IProps) => {
+const StateUserLogin = ({ nickname, point, onClick }: IProps) => {
   const navigate = useNavigate();
 
   return (
@@ -57,7 +63,7 @@ const StateLogin = ({ nickname, point, onClick }: IProps) => {
           navigate('/store');
         }}
       >
-        캐릭터관리
+        상점
       </Nav.Tab>
       <Nav.Tab nolink>💰{point}</Nav.Tab>
       <Nav.Tab onClick={onClick}>로그아웃</Nav.Tab>
@@ -67,6 +73,7 @@ const StateLogin = ({ nickname, point, onClick }: IProps) => {
 
 const StateLogout = () => {
   const navigate = useNavigate();
+
   return (
     <Nav.TabWrapper>
       <Nav.Tab
@@ -76,6 +83,15 @@ const StateLogout = () => {
       >
         로그인
       </Nav.Tab>
+    </Nav.TabWrapper>
+  );
+};
+
+const StateAdminLogin = ({ nickname, onClick }: IProps) => {
+  return (
+    <Nav.TabWrapper>
+      <Nav.Tab nolink>{nickname} 관리자님</Nav.Tab>
+      <Nav.Tab onClick={onClick}>로그아웃</Nav.Tab>
     </Nav.TabWrapper>
   );
 };
