@@ -2,10 +2,12 @@ import axios from 'axios';
 
 const cloudDB = process.env.REACT_APP_CLOUD_DB;
 
-async function get(endpoint) {
-  const apiUrl = `${cloudDB}${endpoint}`;
+async function get(endpoint, data = '') {
+  const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.get(apiUrl, {
+      'Content-type': 'application/json',
+      data: { data },
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       //accessToken,,, refreshtoken,, cookies
     });
@@ -28,10 +30,11 @@ async function get(endpoint) {
 }
 
 async function post(endpoint, data) {
-  const apiUrl = `${cloudDB}${endpoint}`;
+  const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.post(apiUrl, data, {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     });
@@ -50,10 +53,11 @@ async function post(endpoint, data) {
 //patch : 덮어쓰기? 틀은 그대로 있고 안에 내용을 바꾸는거
 //기존 데이터 + 바뀌는 데이터 다 작성
 async function put(endpoint, data) {
-  const apiUrl = `${cloudDB}${endpoint}`;
+  const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.put(apiUrl, data, {
       headers: {
+        'Content-type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     });
@@ -71,10 +75,11 @@ async function put(endpoint, data) {
 
 //변경할 데이터만 작성
 async function patch(endpoint, data) {
-  const apiUrl = `${cloudDB}${endpoint}`;
+  const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.patch(apiUrl, data, {
       headers: {
+        'Content-type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     });
@@ -92,14 +97,14 @@ async function patch(endpoint, data) {
 }
 
 async function del(endpoint) {
-  const apiUrl = `${cloudDB}${endpoint}`;
+  const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.delete(apiUrl, {
       headers: {
+        'Content-type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     });
-
     return response.data;
   } catch (error) {
     if (error.response) {
