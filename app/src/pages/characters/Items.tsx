@@ -13,8 +13,7 @@ import { useParams } from 'react-router-dom';
 import MonsterProfile from '../../components/characters/MonsterProfile';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
-import { Logo } from 'components/logo/Logo';
-import { NavBar } from 'components/navbar/NavBar';
+import styled from 'styled-components';
 
 export default function Items() {
 
@@ -35,12 +34,7 @@ export default function Items() {
   );
 
   return (
-    <>
-      {/* <div>
-        <Logo />
-        <NavBar />
-      </div> */}
-
+    <StoreContainer>
       <ContentsBox>
         <ItemList>
 
@@ -72,7 +66,13 @@ export default function Items() {
         
 
       </ContentsBox>
-    </>
+    </StoreContainer>
 
   );
 }
+
+
+const StoreContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`

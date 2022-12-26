@@ -54,10 +54,10 @@ const NavMenuContainer = styled.div`
   display: flex;
   position: relative;
   top: 3rem;
-  left: 2.4rem;
+  left: 6rem;
 `
 
-const NavMenu = styled.li`
+const NavMenu = styled.h3`
   color: black;
   font-weight: 500;
   font-size: medium;
@@ -71,6 +71,6 @@ const NavMenu = styled.li`
   list-style: none;
 
   &:hover {
-    font-weight: bolder;
+    opacity: 50%;
   }
 `;

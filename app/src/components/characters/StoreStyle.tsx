@@ -10,10 +10,15 @@ export const Main = styled.main`
 `
 
 //상점 메인 페이지
+export const StoreContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
 export const ContentsBox = styled.div`
     background-color: #85A6FC;
     border-radius: 1rem;
-    height: 75vh;
+    width: 84vw;
 
     display: flex;
     justify-content: space-around;
@@ -65,13 +70,15 @@ export const MonsterImageContainer = styled.div`
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+`
 
-    &:hover{
-        width: 16rem;
-        height: 16rem;
-        background-color: aliceblue;
-        border-radius: 50%;
-        margin-bottom: 1.5rem;
+export const MonsterImage = styled.img`
+    width: 13rem;
+    height: 13rem;
+
+    &:hover {
+        width: 14rem;
+        height: 14rem;
     }
 `
 
@@ -271,9 +278,7 @@ export const Tooltip = styled.div`
     position: absolute;
     bottom: 3.4rem;
     left: 0.5rem;
-
-    /* white-space : nowrap; */
-    /* overflow: hidden; */
+    
     text-overflow: ellipsis;
     
     visibility: hidden;
