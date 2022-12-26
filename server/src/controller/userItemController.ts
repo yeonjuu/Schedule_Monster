@@ -16,7 +16,7 @@ export const userItemController: userItemControllerInterface = {
         res.json(items);
     },
     async getUserItem(req, res) {
-        const { email } = req.body;
+        const { email } = req.params;
         const item = await userItemService.getUserItem(email);
         res.json(item);
     },
