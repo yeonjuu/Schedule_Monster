@@ -77,7 +77,7 @@ export const userController: userControllerInterface = {
   async resetPassword(req, res) {
     const { email } = req.params;
     const result = await userService.resetPassword(email);
-    res.json;
+    res.json(result);
   },
   async checkNickname(req, res) {
     const { nickname } = req.params;
