@@ -4,7 +4,7 @@ export const InfoWrapper = styled.div`
   display: grid;
   margin: 0 auto;
   grid-template-rows: 50px 200px;
-  width: 60%;
+  width: 84vw;
   position: relative;
   background-color: #a2bcfe;
 `;
@@ -29,7 +29,7 @@ export const Infos = styled.div`
 
 export const StaticWrapper = styled.div`
   display: grid;
-  width: 60%;
+  width: 84vw;
   margin: 0 auto;
   grid-template-areas:
     'h h'
