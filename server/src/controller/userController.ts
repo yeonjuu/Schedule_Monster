@@ -9,17 +9,19 @@ interface userControllerInterface {
   loginUser: AsyncRequestHandler;
   logoutUser: AsyncRequestHandler;
   addCharater: AsyncRequestHandler;
+  postManager: AsyncRequestHandler;
 }
 
 export const userController: userControllerInterface = {
   // 전체 사용자 정보 조회
   async getUsers(req, res) {
-    const users = await userService.getUsers();
+    const { email } = req.params;
+    const users = await userService.getUsers(email);
     res.json(users);
   },
   // 사용자 정보 조회
   async getUser(req, res) {
-    const email = req.body.email;
+    const { email } = req.params;
     const user = await userService.getUser(email);
     res.json(user);
   },
@@ -36,7 +38,7 @@ export const userController: userControllerInterface = {
   },
   // 계정 삭제
   async deleteUser(req, res) {
-    const email = req.body.email;
+    const { email } = req.params;
     const deleteInfo = await userService.deleteUser(email);
     res.json(deleteInfo);
   },
@@ -57,5 +59,10 @@ export const userController: userControllerInterface = {
   async addCharater(req, res) {
     const addCharaterResult = await userService.addCharater(req.body);
     res.json(addCharaterResult);
+  },
+
+  async postManager(req, res) {
+    const user = await userService.postManager(req.body);
+    res.json(user);
   },
 };

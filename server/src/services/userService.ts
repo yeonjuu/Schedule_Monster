@@ -17,9 +17,18 @@ class UserService {
   }
 
   async getUser(email: string) {
-    return await this.User.findOne({ email });
+    const user = await this.User.findOne({ email });
+    if (!user)
+      throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
+    return user;
   }
-  async getUsers() {
+  // 관리자용 전체 사용자 조회
+  async getUsers(email: string) {
+    const user = await this.User.findOne({ email });
+    if (!user)
+      throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
+    const { auth } = user;
+    if (auth !== 'manager') throw new Error('type:Forbidden,content:해당 요청에 대한 접근 권한이 존재하지 않습니다.');
     return await this.User.find({});
   }
   async createUser(userInfo: RegisterInterface) {
@@ -137,6 +146,25 @@ class UserService {
     });
     const result = await this.User.findOne({ email });
     return result;
+  }
+
+  async postManager(userInfo: RegisterInterface) {
+    const { email, password, nickname } = userInfo;
+    const auth = 'manager';
+    const point = 0;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const active = true;
+    const RegisterInfo = {
+      email,
+      password: hashedPassword,
+      nickname,
+      auth,
+      active,
+      point,
+    };
+    //캐릭터리스트 초기
+    await characterListService.addCharacterList(email);
+    return await this.User.create(RegisterInfo);
   }
 }
 const userService = new UserService(userModel);

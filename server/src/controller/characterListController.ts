@@ -13,14 +13,15 @@ interface characterListControllerInterface {
 
 export const characterListController: characterListControllerInterface = {
   async getCharacterList(req, res) {
-    const { email } = req.body;
-    const result = await characterListService.getCharacterList(email);
-    return res.json(result);
+    const { email } = req.params;
+    const list = await characterListService.getCharacterList(email);
+    return res.json(list);
   },
+  // 관리자용
   async getCharacterLists(req, res) {
-    const { email } = req.body;
-    const result = await characterListService.getCharacterLists(email);
-    return res.json(result);
+    const { email } = req.params;
+    const lists = await characterListService.getCharacterLists(email);
+    return res.json(lists);
   },
   async createCharacterList(req, res) {
     const result = await characterListService.createCharacterList(req.body);
@@ -41,7 +42,7 @@ export const characterListController: characterListControllerInterface = {
   //   return res.json(result);
   // },
   async deleteCharacterList(req, res) {
-    const { email } = req.body;
+    const { email } = req.params;
     const result = await characterListService.deleteCharacterList(email);
     return res.json(result);
   },
