@@ -56,7 +56,7 @@ const StateUserLogin = ({ nickname, point, onClick }: IProps) => {
           navigate('/mypage');
         }}
       >
-        {nickname}님 마이페이지
+        마이페이지
       </Nav.Tab>
       <Nav.Tab
         onClick={() => {
