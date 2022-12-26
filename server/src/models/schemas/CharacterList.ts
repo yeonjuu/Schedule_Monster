@@ -3,18 +3,18 @@ import { Schema } from 'mongoose';
 // 인터페이스
 export interface CharacterListInterface {
   email: string;
-  myPoint: number;
+  myExp: number;
   onePick?: boolean;
   characterId: string;
   nameKo: string;
   nameEn: string;
-  levelupPoint: number;
+  levelupPoint?: number;
   image: object;
 }
 export interface UpdateCharacterListInterface {
-  _id?: string;
-  email: string;
-  myPoint: number;
+  _id: string;
+  email?: string;
+  myExp?: number;
   onePick?: boolean;
   characterId?: string;
   nameKo?: string;
@@ -29,13 +29,13 @@ export const CharacterListSchema = new Schema<CharacterListInterface>(
         type: String,
         required: true,
     },
-    myPoint: {
+    myExp: {
         type: Number,
         required: true,
     },
     onePick:{
         type: Boolean,
-        required: true,
+        required: false,
     },
     characterId: {
         type: String,
@@ -51,7 +51,7 @@ export const CharacterListSchema = new Schema<CharacterListInterface>(
     },
     levelupPoint: {
         type: Number,
-        required: true,
+        required: false,
     },
     image: {
         type: Object,

@@ -33,15 +33,12 @@ class CharacterListService {
 
   // 캐릭터 리스트 수정
   async updateCharacterList(updateInfo: UpdateCharacterListInterface) {
-    const { _id, email, myPoint, onePick } = updateInfo;
-    // const origin = await this.characterList.findOne({ _id: _id });
-    // const originData = origin?._id;
+    const { _id, myExp, onePick } = updateInfo;
     const toUpdate = {
-      ...(email && { email }),
-      ...(myPoint && { myPoint }),
+      ...(myExp && { myExp }),
       ...({onePick: onePick})
     };
-    const result = await this.characterList.findOneAndUpdate({ email }, toUpdate, { returnOriginal: false });
+    const result = await this.characterList.findOneAndUpdate({ _id: _id }, toUpdate, { returnOriginal: false });
     return result;
   }
 

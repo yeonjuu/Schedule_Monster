@@ -4,6 +4,8 @@ import { Schema, model, Model } from 'mongoose';
 export interface UserItemInterface {
     email: String;
     itemName: String;
+    itemImage: String;
+    itemInfo: String;
     price: Number;
     exp: Number;
     categoryName: String;
@@ -17,6 +19,14 @@ export const userItemSchema = new Schema<UserItemInterface>(
             required: true,
         },
         itemName: {
+            type: String,
+            required: true,
+        },
+        itemImage: {
+            type: String,
+            required: true,
+        },
+        itemInfo: {
             type: String,
             required: true,
         },
