@@ -13,26 +13,28 @@ export const LoginRegister = () => {
   };
 
   return (
-    <Style.Container>
+    <div>
       <Style.LogoWrapper onClick={logoClickHandler}>
         <img src="/logo.png" alt="스케줄몬스터로고" />
       </Style.LogoWrapper>
-      <Style.Title>로그인 또는 회원가입</Style.Title>
-      <Style.Tabs>
-        <Style.Tab
-          active={currTab === 'login'}
-          onClick={() => setCurrTab('login')}
-        >
-          로그인
-        </Style.Tab>
-        <Style.Tab
-          active={currTab === 'register'}
-          onClick={() => setCurrTab('register')}
-        >
-          회원가입
-        </Style.Tab>
-      </Style.Tabs>
-      {currTab === 'login' ? <Login /> : <Register />}
-    </Style.Container>
+
+      <Style.Container>
+        <Style.Tabs>
+          <Style.Tab
+            active={currTab === 'login'}
+            onClick={() => setCurrTab('login')}
+          >
+            로그인
+          </Style.Tab>
+          <Style.Tab
+            active={currTab === 'register'}
+            onClick={() => setCurrTab('register')}
+          >
+            회원가입
+          </Style.Tab>
+        </Style.Tabs>
+        {currTab === 'login' ? <Login /> : <Register />}
+      </Style.Container>
+    </div>
   );
 };

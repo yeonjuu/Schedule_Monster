@@ -2,29 +2,29 @@ import axios from 'axios';
 
 const cloudDB = process.env.REACT_APP_CLOUD_DB;
 
-async function get(endpoint, data = '') {
+async function get(endpoint) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.get(apiUrl, {
       'Content-type': 'application/json',
-      data: { data },
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      //accessToken,,, refreshtoken,, cookies
     });
     //응답 값 데이터만 전송
     return response.data;
   } catch (error) {
     if (error.response) {
       // 요청이 전송되었고, 서버는 2xx 외의 상태 코드로 응답했습니다.
-      throw new Error(error);
+      const { data, status } = error.response;
+      const errorContent = { status, data };
+      throw errorContent;
     } else if (error.request) {
       // 요청이 전송되었지만, 응답이 수신되지 않았습니다.
       // 'error.request'는 브라우저에서 XMLHtpRequest 인스턴스이고,
       // node.js에서는 http.ClientRequest 인스턴스입니다.
-      throw new Error(error.request);
+      throw error.request;
     } else {
       // 오류가 발생한 요청을 설정하는 동안 문제가 발생했습니다.
-      throw new Error(error.message);
+      throw error.message;
     }
   }
 }
@@ -41,11 +41,13 @@ async function post(endpoint, data) {
     return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error);
+      const { data, status } = error.response;
+      const errorContent = { status, data };
+      throw errorContent;
     } else if (error.request) {
-      throw new Error(error.request);
+      throw error.request;
     } else {
-      throw new Error(error.message);
+      throw error.message;
     }
   }
 }
@@ -64,11 +66,13 @@ async function put(endpoint, data) {
     return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error);
+      const { data, status } = error.response;
+      const errorContent = { status, data };
+      throw errorContent;
     } else if (error.request) {
-      throw new Error(error.request);
+      throw error.request;
     } else {
-      throw new Error(error.message);
+      throw error.message;
     }
   }
 }
@@ -87,11 +91,13 @@ async function patch(endpoint, data) {
     return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error);
+      const { data, status } = error.response;
+      const errorContent = { status, data };
+      throw errorContent;
     } else if (error.request) {
-      throw new Error(error.request);
+      throw error.request;
     } else {
-      throw new Error(error.message);
+      throw error.message;
     }
   }
 }
@@ -108,11 +114,13 @@ async function del(endpoint) {
     return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error);
+      const { data, status } = error.response;
+      const errorContent = { status, data };
+      throw errorContent;
     } else if (error.request) {
-      throw new Error(error.request);
+      throw error.request;
     } else {
-      throw new Error(error.message);
+      throw error.message;
     }
   }
 }

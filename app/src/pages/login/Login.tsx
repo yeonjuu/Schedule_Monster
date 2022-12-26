@@ -48,11 +48,8 @@ export const Login = () => {
         }
       }
     } catch (error) {
-      console.log(error);
-      if (error.status === 403) {
-        const msg = error.message;
-        setErrorContent(msg);
-      }
+      const msg = error.data.message.split('.')[0];
+      setErrorContent(msg);
     }
   };
 
@@ -75,7 +72,7 @@ export const Login = () => {
         autoComplete="off"
         onChange={(e) => setPw(e.target.value)}
       />
-      {errorContent}
+      <Style.Message error>{errorContent}</Style.Message>
       <Style.SubminInput type="submit" value="로그인" />
     </Style.Form>
   );
