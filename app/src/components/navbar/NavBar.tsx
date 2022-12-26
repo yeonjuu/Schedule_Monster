@@ -30,7 +30,7 @@ export const NavBar = () => {
   return (
     <Nav.Wrapper>
       {isLogin ? (
-        auth !== 'admin' ? (
+        auth === 'admin' ? (
           <StateAdminLogin nickname={nickname} onClick={clickLogoutHandler} />
         ) : (
           <StateUserLogin
