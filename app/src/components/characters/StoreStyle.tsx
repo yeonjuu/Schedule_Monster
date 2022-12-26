@@ -5,15 +5,20 @@ export const Main = styled.main`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     /* margin-left: 5rem; */
 `
 
 //상점 메인 페이지
+export const StoreContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
 export const ContentsBox = styled.div`
     background-color: #85A6FC;
     border-radius: 1rem;
-    height: 75vh;
+    width: 84vw;
 
     display: flex;
     justify-content: space-around;
@@ -65,13 +70,15 @@ export const MonsterImageContainer = styled.div`
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+`
 
-    &:hover{
-        width: 16rem;
-        height: 16rem;
-        background-color: aliceblue;
-        border-radius: 50%;
-        margin-bottom: 1.5rem;
+export const MonsterImage = styled.img`
+    width: 13rem;
+    height: 13rem;
+
+    &:hover {
+        width: 14rem;
+        height: 14rem;
     }
 `
 
@@ -148,27 +155,6 @@ export const CategoryBox = styled.div`
     overflow-y: scroll;
 
 `
-export const ItemBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: aliceblue;
-    width: 130px;
-    height: 150px;
-    margin: 1rem;
-    
-    border-radius: 1rem;
-
-    flex-shrink: 0;
-
-    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
-    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
-    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
-    
-    &:hover {
-        transform: scale(1.1);
-    }
-`
 
 //수집도감 리스트
 export const CharacterContainer = styled.div`
@@ -239,6 +225,24 @@ export const Searchbar = styled.input`
     }
 `
 
+//구매 수량 버튼
+export const QuanButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 50%;
+    background-color: #a2bcff;
+    font-size: large;
+    font-weight: 500;
+    &:hover {
+     background-color: #84a5f8;
+    }
+`
+
 //구매, 사용 버튼
 export const ItemButton = styled.button`
     background-color: #a2bcff;
@@ -257,20 +261,55 @@ export const ItemButton = styled.button`
     }
 `
 
-//구매 수량 버튼
-export const QuanButton = styled.button`
+
+//툴팁
+export const Tooltip = styled.div`
+    width: 7rem;
+    height: 4rem;
+    border-radius: 1rem;
+    background-color: gray;
+    color: #1616c6;
+    font-weight: bolder;
+    font-size: 13px;
+    opacity: 80%;
     display: flex;
+    text-align: center;
     align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-    border-style: none;
-    border-radius: 50%;
-    background-color: #a2bcff;
-    font-size: large;
-    font-weight: 500;
-    &:hover {
-     background-color: #84a5f8;
-    }
+    position: absolute;
+    bottom: 3.4rem;
+    left: 0.5rem;
+    
+    text-overflow: ellipsis;
+    
+    visibility: hidden;
 `
+
+export const ItemBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: aliceblue;
+    width: 130px;
+    height: 150px;
+    margin: 1rem;
+    position: relative;
+    
+    border-radius: 1rem;
+
+    flex-shrink: 0;
+
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    &:hover ${Tooltip} {
+    visibility: visible;
+}
+`
+
+
+

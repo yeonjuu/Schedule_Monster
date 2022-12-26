@@ -1,12 +1,13 @@
 import React,{ useEffect,useState } from 'react';
-import { ItemBox, ItemButton } from './StoreStyle';
+import { ContentsBox, ItemBox, ItemButton, StoreContainer } from './StoreStyle';
 import * as API from '../../api';
 import { applyItem } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-
+import { NavBar } from 'components/navbar/NavBar';
+import { Logo } from 'components/logo/Logo';
 
 
 export default function MyitemList ({ myItems, setMyItems, category, inputValue } :
@@ -32,13 +33,13 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
     },[]);
 
 
-        //검색기능
-        const myitemList =
-        inputValue === ''
-          ? filterCategory(category, myItems)
-          : myItems.filter((val: any) => {
-              return createFuzzyMatcher(inputValue, val.itemName);
-            });
+    //검색기능
+    const myitemList =
+    inputValue === ''
+      ? filterCategory(category, myItems)
+      : myItems.filter((val: any) => {
+          return createFuzzyMatcher(inputValue, val.itemName);
+        });
 
 
     return (
@@ -47,9 +48,9 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
             <div
               style={{
                 display: 'flex',
+                justifyContent: 'center',
                 alignItems: 'center',
-                alignSelf: 'center',
-                margin: '0 auto',
+                margin: '0 auto'
               }}
             >
               <h3>Loading...</h3>
@@ -71,7 +72,8 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                         padding: '0.3rem',
                         }}
                     >
-                    <span>+ ❤️{myitems.exp}</span>
+                    {myitems.exp > 0 ? <span>+ ❤️{myitems.exp}</span> : null}
+                    
                     </div>
 
                     <div>{myitems.itemName}</div>
