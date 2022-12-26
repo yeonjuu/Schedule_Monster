@@ -8,6 +8,7 @@ interface userItemControllerInterface {
     deleteUserItem: AsyncRequestHandler;
     buyUserItem: AsyncRequestHandler;
     useUserItem: AsyncRequestHandler;
+    breakEgg: AsyncRequestHandler;
 }
 
 export const userItemController: userItemControllerInterface = {
@@ -38,4 +39,9 @@ export const userItemController: userItemControllerInterface = {
         const response = await userItemService.useUserItem(email, itemId, characterId);
         res.json(response);
     },
+    async breakEgg(req, res) {
+        const { email, itemId } = req.body;
+        const response = await userItemService.breakEgg(email, itemId);
+        res.json(response);
+    }
 };

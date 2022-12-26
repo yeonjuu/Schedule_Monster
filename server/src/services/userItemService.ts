@@ -3,6 +3,7 @@ import {
     userItemModelType,
     UserItemInterface,
 } from '../models/schemas/UserItem';
+import { characterModel } from '../models/schemas/Character';
 import { userModel, characterListModel } from '../models/';
 
 class UserItemService {
@@ -53,9 +54,6 @@ class UserItemService {
 
         // // 2. 사용자 포인트에서 아이템 금액만큼 차감 후 업데이트
         const userPoint = +userData.point
-
-        // await userModel.findOneAndUpdate({ email: email },{ point: 5000 },{ returnOriginal: false },)
-
         if (userPoint < price){
             const message = {
                 "status": false,
@@ -70,6 +68,7 @@ class UserItemService {
         return userResult
     }
 
+    //=================================================================
     // POST localhost:5000/userItem/use
 
     // 아이템 사용 (=사용자 수집 아이템 목록에서 삭제, 수집한 캐릭터의 애정도는 증가)
@@ -98,7 +97,7 @@ class UserItemService {
         const newExp = characterExp + itemExp
 
 
-        if (characterExp >= 10000){
+        if (characterExp >= 100){
             const message = {
                 "status": false,
                 "message": '캐릭터 애정도 - 해당 캐릭터는 이미 애정도가 100입니다.'
@@ -111,6 +110,51 @@ class UserItemService {
             // 2. 사용자수집아이템 리스트에서 삭제
             await this.UserItem.remove({ _id: itemId });
             return result;
+        }
+    }
+
+
+    //=================================================================
+    // POST localhost:5000/userItem/egg
+
+    // 알 깨기 (=사용자 수집 아이템 목록에서 알 삭제, 수집한 캐릭터리스트에 추가)
+    async breakEgg(email: string, itemId: string) {
+        // 아이템 정보 받아옴
+        const itemResult = await this.UserItem.findOne({_id: itemId})
+        const characterCount = await characterListModel.countDocuments({email: email})
+
+        if(!itemResult) {
+            const message = {
+                "status": false,
+                "message": '아이템 오류 - 해당 아이템은 존재하지 않습니다.'
+            }
+            return message
+        }
+
+        if (itemResult.categoryName == '알') {
+            console.log(itemResult, itemResult.categoryName)
+            // 1. 사용자가 수집한 캐릭터에 랜덤으로 하나 추가
+            const random = await characterModel.aggregate(
+                [
+                    { $sample: { size: 1 } }
+                ],
+            );
+            const randomCharacter = random[0]
+            delete randomCharacter["_id"]
+            randomCharacter.email = email
+            randomCharacter.myExp = 0 // 애정도 초기값 0
+            randomCharacter.onePick = (characterCount == 0) // 최초 캐릭터가 대표캐릭터
+            const result = await characterListModel.create(randomCharacter);
+
+            // 2. 사용자수집아이템 리스트에서 삭제
+            await this.UserItem.remove({ _id: itemId });
+            return result
+        } else {
+            const message = {
+                "status": false,
+                "message": '알 부화 오류 - 해당 아이템은 알이 아닙니다.'
+            }
+            return message
         }
     }
 }
