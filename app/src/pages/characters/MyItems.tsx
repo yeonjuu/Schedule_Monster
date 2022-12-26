@@ -4,7 +4,7 @@ import Search from 'components/shop/search';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { ContentsBox, ItemList, CategoryBox, ItemContainer } from '../../components/characters/StoreStyle';
+import { ContentsBox, ItemList, CategoryBox, ItemContainer, StoreContainer } from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
 import MyitemList from '../../components/characters/MyItemList';
 
@@ -24,6 +24,8 @@ export default function MyItems() {
     );
 
     return (
+      <StoreContainer>
+
         <ContentsBox>
             
             <ItemList>
@@ -54,6 +56,8 @@ export default function MyItems() {
           <MonsterProfile />
 
         </ContentsBox>
+
+      </StoreContainer>
     );
 }
 

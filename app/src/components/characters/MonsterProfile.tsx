@@ -1,5 +1,5 @@
 import React from 'react';
-import { MonsterContainer, MonsterImageContainer, MonsterLine, MonsterStatus } from './StoreStyle';
+import { MonsterContainer, MonsterImage, MonsterImageContainer, MonsterLine, MonsterStatus } from './StoreStyle';
 import { useSelector } from 'react-redux';
 
 export default function MonsterProfile() {
@@ -13,9 +13,7 @@ export default function MonsterProfile() {
         <>
           <MonsterContainer>
                 <MonsterImageContainer>
-                  <img
-                    style={{ width: '13rem', height: '13rem' }}
-                    src={mainImage}
+                  <MonsterImage src={mainImage}
                   />
                 </MonsterImageContainer>
 

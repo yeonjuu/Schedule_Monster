@@ -5,6 +5,7 @@ import {
   CharacterContainer,
   CharacterBox,
   MonsterStatus,
+  StoreContainer,
 } from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +29,7 @@ export default function CharactersList() {
   }, []);
 
   return (
-    <>
+    <StoreContainer>
       <ContentsBox>
         <CharacterContainer>
           {isLoading ? (
@@ -56,18 +57,18 @@ export default function CharactersList() {
                       (p) => p._id == pokemon._id,
                     );
                     const isMain = window.confirm(
-                      `${clicked.name} 포켓몬을 대표 캐릭터로 지정하시겠습니까?`,
+                      `'${clicked.nameKo}'을/를 대표 캐릭터로 지정하시겠습니까?`,
                     );
                     if (isMain) {
-                      dispatch(mainImage(clicked.image));
-                      dispatch(mainName(clicked.name));
+                      dispatch(mainImage(clicked.image.front_default));
+                      dispatch(mainName(clicked.nameKo));
                     }
                     // console.log(isMain);
                   }}
                   key={pokemon._id}
                 >
-                  <img src={pokemon.image} />
-                  <h4 style={{ alignSelf: 'center' }}>{pokemon.name}</h4>
+                  <img src={pokemon.image.front_default} />
+                  <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
                 </CharacterBox>
               ))}
             </>
@@ -76,6 +77,6 @@ export default function CharactersList() {
 
         <MonsterProfile />
       </ContentsBox>
-    </>
+    </StoreContainer>
   );
 }
