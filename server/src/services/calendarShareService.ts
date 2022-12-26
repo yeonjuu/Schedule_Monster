@@ -6,9 +6,9 @@ class CalendarShareService {
   constructor(calendarShareModel: calendarShareModelType) {
     this.calendarshare = calendarShareModel;
   }
-  async getCalendarShare(calendarId: string, email: string) {
+  async getCalendarShare(calendarId: string) {
     // 등록한 달력의 주인이 추가했던 친구들의 목록을 확인
-    const result = await this.calendarshare.find({ calendarId, email });
+    const result = await this.calendarshare.find({ calendarId });
     return result;
   }
   async postCalendarShare(postInfo: CalendarShareInterface) {
@@ -17,7 +17,7 @@ class CalendarShareService {
     return result;
   }
   async deleteCalendarShare(calendarId: string, friendEmail: string) {
-    const result = await this.calendarshare.findOneAndRemove({ calendarId, friendEmail });
+    const result = await this.calendarshare.remove({ calendarId, friendEmail });
     return result;
   }
 }

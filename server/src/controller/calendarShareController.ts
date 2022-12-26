@@ -10,8 +10,9 @@ interface calendarShareControllerInterface {
 export const calendarShareController: calendarShareControllerInterface = {
   // 공유 달력 친구목록 반환
   async getCalendarShare(req, res) {
-    const { calendarId, email } = req.params;
-    const calendars = await calendarShareService.getCalendarShare(calendarId, email);
+    const { calendarId } = req.params;
+    console.log(calendarId);
+    const calendars = await calendarShareService.getCalendarShare(calendarId);
     res.json(calendars);
   },
   // 공유달력 친구 추가
