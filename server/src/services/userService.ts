@@ -1,6 +1,5 @@
 import { userModel, userModelType } from '../models/';
 import {
-  UserInterface,
   LoginInterface,
   RegisterInterface,
   UpdateInterface,
@@ -9,7 +8,6 @@ import {
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '../utils/config';
-import { characterListService } from './characterListService';
 class UserService {
   private User: userModelType;
   constructor(userModel: userModelType) {
@@ -162,8 +160,6 @@ class UserService {
       active,
       point,
     };
-    //캐릭터리스트 초기
-    await characterListService.addCharacterList(email);
     return await this.User.create(RegisterInfo);
   }
 }
