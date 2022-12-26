@@ -1,20 +1,23 @@
 import { RootState } from 'store/store';
-import { MonsterBox } from './CalendarStyles';
-import { useDispatch, useSelector } from 'react-redux';
+import { Monster, MonsterBox } from './CalendarStyles';
+import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 
 const MainMonster = () => {
   const monster = useSelector(
     (state: RootState) => state.mainCharacterSlice.main,
   );
-  const [move, setMove] = useState<string>('');
-
+  const [move, setMove] = useState<string>('/MonsterGoing.gif');
+  const [number, setNum] = useState<number>(1600);
   //useEffect로 랜덤 숫자의 범위에 따라 다른 이미지 링크를 img태그에 넣음
+
+  setTimeout(() => {
+    setNum(4500);
+  }, number);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
-      console.log(num);
       if (num <= 1) {
         setMove(monster.image.versions.blackwhite.animated.front_default);
       } else if (2 <= num && num < 4) {
@@ -26,16 +29,14 @@ const MainMonster = () => {
       } else if (8 <= num && num < 10) {
         setMove(monster.image.versions.blackwhite.animated.back_default);
       }
-    }, 5000);
-
-    console.log(move);
+    }, number);
 
     return () => clearInterval(interval);
   }, [move]);
 
   return (
     <MonsterBox>
-      <img style={{ transform: 'scaleX(-1)' }} src={move} alt="" />
+      <Monster style={{ transform: 'scaleX(-1)' }} src={move} alt="" />
     </MonsterBox>
   );
 };

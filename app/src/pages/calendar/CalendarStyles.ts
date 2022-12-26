@@ -162,7 +162,7 @@ export const MonsterBox = styled.div`
   top: 0px;
   background-color: transparent;
   height: 160px;
-  width: 100%;
+  width: 84vw;
   z-index: -10;
 `;
 
@@ -228,3 +228,9 @@ export const PickCalBox = styled.div`
   width: 500px;
   height: 30px;
 `;
+
+export const Monster=styled.img`
+position: relative;
+left: 50%;
+top: 20%;
+`

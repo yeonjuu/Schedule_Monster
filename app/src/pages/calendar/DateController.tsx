@@ -15,10 +15,12 @@ const DateController = ({ date, onClick }: Controller) => {
   return (
     <CalendarController>
       <FontAwesomeIcon onClick={onClick.prev} icon={faCaretLeft} />
-      <h3>{format(date, 'yyyy')}</h3><p>&nbsp;년&nbsp;&nbsp;</p><h3>{format(date, 'M')}</h3><p>&nbsp;월</p>
-      <FontAwesomeIcon onClick={onClick.next} icon={faCaretRight} />
       <FontAwesomeIcon onClick={onClick.up} icon={faCaretUp} />
+      <h3>{format(date, 'yyyy')}</h3><p>&nbsp;년&nbsp;&nbsp;</p><h3>{format(date, 'M')}</h3><p>&nbsp;월</p>
       <FontAwesomeIcon onClick={onClick.down} icon={faCaretDown} />
+      <FontAwesomeIcon onClick={onClick.next} icon={faCaretRight} />
+     
+      
       <FontAwesomeIcon onClick={onClick.now} icon={faRotateRight} />
     </CalendarController>
   );
