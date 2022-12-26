@@ -248,6 +248,16 @@ class UserService {
     const result = await this.User.findOne({ nickname });
     return !result; // 존재하면 False, 없으면 True
   }
+  // 다른 서비스에서 관리자 권한을 확인하기 위한 용도
+  async checkAuth(email: string) {
+    const user = await this.User.findOne({ email });
+    if (!user) {
+      return false;
+    }
+    const { auth } = user;
+    if (auth === 'manager') return true;
+    else false;
+  }
 }
 const userService = new UserService(userModel);
 
