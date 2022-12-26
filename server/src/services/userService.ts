@@ -1,13 +1,10 @@
 import { userModel, userModelType } from '../models/';
-import {
-  LoginInterface,
-  RegisterInterface,
-  UpdateInterface,
-  CharaterListInterface,
-} from '../models/schemas/User';
+import { LoginInterface, RegisterInterface, UpdateInterface, CharaterListInterface } from '../models/schemas/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '../utils/config';
+import { generateRandomString } from '../utils/generateRandomString';
+import nodemailer from 'nodemailer';
 class UserService {
   private User: userModelType;
   constructor(userModel: userModelType) {
@@ -161,6 +158,95 @@ class UserService {
       point,
     };
     return await this.User.create(RegisterInfo);
+  }
+
+  // 이메일 인증
+  async authEmail(email: string) {
+    const userEmailValidation = await this.User.findOne({ email: email });
+    if (userEmailValidation) {
+      throw new Error('type:Forbidden,content:이 이메일은 사용중입니다. 다른 이메일을 입력해 주세요');
+    }
+    const SMTPID = process.env.SMTPID;
+    const SMTPPW = process.env.SMTPPW;
+    const smtpTransport = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.naver.com',
+      auth: {
+        user: SMTPID,
+        pass: SMTPPW,
+      },
+      port: 465,
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    const authNum = generateRandomString(10);
+    const mailOptions = {
+      from: `ScheduleMonster<${SMTPID}>`,
+      to: email,
+      subject: '[ScheduleMonster]이메일 인증 요청',
+      text: '다음 숫자 6자리를 이메인 인증 칸란에 기입해주시기 바랍니다. : ' + authNum,
+    };
+
+    const status = await smtpTransport.sendMail(mailOptions);
+    const result = { ...status, authNum };
+    return result;
+  }
+  async resetPassword(email: string) {
+    const user = await this.User.findOne({ email: email });
+    const SMTPID = process.env.SMTPID;
+    const SMTPPW = process.env.SMTPPW;
+
+    if (!user) {
+      throw new Error('type:Forbidden,content:입력하신 정보의 계정은 존재하지 않습니다');
+    } else {
+      const authNum = generateRandomString(10);
+      const smtpTransport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: SMTPID, // 네이버이메일
+          pass: SMTPPW, // 네이버비밀번호
+        },
+      });
+
+      const mailOptions = {
+        from: `ScheduleMonster<${process.env.SMTPID}>`,
+        to: email,
+        subject: '[ScheduleMonster] 비밀번호 초기화 안내 ',
+        text:
+          '요청하신대로 비밀번호를 초기화 하였습니다. 다음의 문자를 입력하셔서 로그인 하신 후 비밀번호를 변경해주시기 바랍니다 : ' +
+          authNum,
+      };
+
+      try {
+        await smtpTransport.sendMail(mailOptions);
+      } catch (err) {
+        throw new Error('type:Forbidden,content:비밀번호 초기화 메일전송에 실패하였습니다');
+      }
+
+      try {
+        const password = await bcrypt.hash(authNum, 10);
+        await this.User.findOneAndUpdate(
+          { email: user.email },
+          {
+            password,
+          },
+          { returnOriginal: false },
+        );
+      } catch (err) {
+        throw new Error('type:Forbidden,content:비밀번호 초기화 및 인증메일 전송에 실패하였습니다.');
+      }
+      return {
+        status: 'OK',
+        message: '비밀번호 초기화 후 메일전송을 완료하였습니다.',
+      };
+    }
+  }
+  async checkNickname(nickname: string) {
+    if (!nickname) throw new Error('type:BadRequest,content:요청에 필요한 데이터 수신이 안 됩니다.');
+    const result = await this.User.findOne({ nickname });
+    return !result; // 존재하면 False, 없으면 True
   }
 }
 const userService = new UserService(userModel);
