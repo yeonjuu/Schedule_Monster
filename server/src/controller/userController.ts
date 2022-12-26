@@ -13,6 +13,7 @@ interface userControllerInterface {
   authEmail: AsyncRequestHandler;
   resetPassword: AsyncRequestHandler;
   checkNickname: AsyncRequestHandler;
+  checkPassword: AsyncRequestHandler;
 }
 
 export const userController: userControllerInterface = {
@@ -82,6 +83,11 @@ export const userController: userControllerInterface = {
   async checkNickname(req, res) {
     const { nickname } = req.params;
     const result = await userService.checkNickname(nickname);
+    res.json(result);
+  },
+  async checkPassword(req, res) {
+    const { email, password } = req.body;
+    const result = await userService.checkPassword(email, password);
     res.json(result);
   },
 };

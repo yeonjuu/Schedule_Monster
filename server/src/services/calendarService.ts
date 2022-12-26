@@ -25,10 +25,8 @@ class CalendarService {
     return result;
   }
 
-  async postCalendar(email: string) {
+  async postCalendar(email: string, calendarName: string) {
     const calendarId = generateRandomString(10);
-    const calendarNum = (await this.calendar.find({ email })).length;
-    const calendarName = '캘린더' + calendarNum;
     const info = {
       email,
       calendarId,

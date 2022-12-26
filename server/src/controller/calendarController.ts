@@ -26,9 +26,9 @@ export const calendarController: calendarControllerInterface = {
   },
   // 캘린더 생성
   async postCalendar(req, res) {
-    const { email } = req.body;
-    if (!email) errorResponse(res, 'BadRequest', '요청 데이터를 참조할 수 없습니다');
-    const calendar = await calendarService.postCalendar(email);
+    const { email, calendarName } = req.body;
+    if (!email || !calendarName) errorResponse(res, 'BadRequest', '요청 데이터를 참조할 수 없습니다');
+    const calendar = await calendarService.postCalendar(email, calendarName);
     res.json(calendar);
   },
   // 캘린더 이름 수정

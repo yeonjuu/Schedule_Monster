@@ -17,3 +17,4 @@ userRouter.post('/character', asyncHandler(userController.addCharater));
 userRouter.post('/manager', asyncHandler(userController.postManager));
 userRouter.get('/auth/:email', asyncHandler(userController.authEmail));
 userRouter.get('/nickname/:nickname', asyncHandler(userController.checkNickname));
+userRouter.post('/check/password', asyncHandler(userController.checkPassword));

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '../utils/config';
 import { generateRandomString } from '../utils/generateRandomString';
 import nodemailer from 'nodemailer';
+import { calendarService } from './calendarService';
 class UserService {
   private User: userModelType;
   constructor(userModel: userModelType) {
@@ -42,7 +43,13 @@ class UserService {
     };
     //캐릭터리스트 초기
     // await characterListService.createCharacterList(email);
-    return await this.User.create(RegisterInfo);
+    const calendar = await calendarService.postCalendar(email, '캘린더0');
+    if (!calendar)
+      throw new Error('type:Internal Server Error,content:서버 내부 오류가 발생했습니다 잠시후 다시 진행해주세요');
+    const { calendarId } = calendar;
+
+    const result = await this.User.create(RegisterInfo);
+    return { ...result.toObject(), calendarId };
   }
 
   async updateUser(updateInfo: UpdateInterface) {
@@ -252,6 +259,18 @@ class UserService {
     const { auth } = user;
     if (auth === 'manager') return true;
     else false;
+  }
+
+  async checkPassword(email: string, password: string) {
+    const user = await this.User.findOne({ email });
+    if (!user) throw new Error('type:Forbidden,content:요청하신 정보를 찾을 수 없습니다');
+
+    // 비밀번호 일치 여부 확인
+    const correctPasswordHash = user.password;
+    const isPasswordCorrect = await bcrypt.compare(password, correctPasswordHash);
+
+    if (!isPasswordCorrect) return false;
+    else return true;
   }
 }
 const userService = new UserService(userModel);
