@@ -4,6 +4,7 @@ import {
   ItemList,
   ItemContainer,
   CategoryBox,
+  Contents
 } from '../../components/characters/StoreStyle';
 import ItemList2 from 'components/shop/ItemList';
 import BannerItem from 'components/shop/categories';
@@ -14,6 +15,7 @@ import MonsterProfile from '../../components/characters/MonsterProfile';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
 import styled from 'styled-components';
+import Navbar from 'components/characters/Navbar';
 
 export default function Items() {
 
@@ -36,33 +38,36 @@ export default function Items() {
   return (
     <StoreContainer>
       <ContentsBox>
-        <ItemList>
+        <Navbar/>
 
-          <BannerItem
-            categories={itemCategoryList}
-            setCategory={setCategory}
-          ></BannerItem>
+        <Contents>
+          <ItemList>
 
-          <Search setState={setInputState}></Search>
+            <BannerItem
+              categories={itemCategoryList}
+              setCategory={setCategory}
+            ></BannerItem>
 
-          <ItemContainer>
-            <CategoryBox>
-          
-              <ItemList2
-                category={category === 'all' ? 'all' : category}
-                inputValue={inputState}
-                url={'/store/item/'}
-                purpose={'구매'}
+            <Search setState={setInputState}></Search>
 
-              ></ItemList2>
+            <ItemContainer>
+              <CategoryBox>
+            
+                <ItemList2
+                  category={category === 'all' ? 'all' : category}
+                  inputValue={inputState}
+                  url={'/store/item/'}
+                  purpose={'구매'}
 
-            </CategoryBox>
-          </ItemContainer>
+                ></ItemList2>
 
-        </ItemList>
+              </CategoryBox>
+            </ItemContainer>
 
+          </ItemList>
+          <MonsterProfile/>
+        </Contents>
 
-        <MonsterProfile/>
         
 
       </ContentsBox>
@@ -76,3 +81,4 @@ const StoreContainer = styled.div`
   display: flex;
   justify-content: center;
 `
+

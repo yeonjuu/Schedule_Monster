@@ -4,21 +4,12 @@ import styled from 'styled-components';
 import { ContentsBox, Main } from './StoreStyle';
 import { useDispatch } from 'react-redux';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
-import { NavBar } from 'components/navbar/NavBar';
-import { Logo } from 'components/logo/Logo';
 
 
 export default function Navbar() {
   const dispatch = useDispatch<any>();
   return (
-    <Container>
-      <Main>
-        <Logo />
-        <NavBar />
-
-
-      </Main>
-
+    <>
       <NavMenuContainer>
           <Link style={{ textDecoration: 'none' }} to="/store">
             <NavMenu
@@ -39,32 +30,22 @@ export default function Navbar() {
           </Link>
 
       </NavMenuContainer>
-    </Container>
+    </>
   );
 }
 
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-
 const NavMenuContainer = styled.div`
   display: flex;
-  position: relative;
-  top: 3rem;
-  left: 6rem;
+  align-self: flex-start;
+  margin: 1rem 0 1rem 1rem;
 `
 
-const NavMenu = styled.h3`
+const NavMenu = styled.li`
   color: black;
   font-weight: 500;
-  font-size: medium;
-  font-weight: bold;
-  margin-left: 1.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  font-size: large;
+  margin-left: 1.7rem;
 
   text-decoration: none;
   text-decoration-line: none;

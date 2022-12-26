@@ -4,12 +4,12 @@ import Search from 'components/shop/search';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { ContentsBox, ItemList, CategoryBox, ItemContainer, StoreContainer } from '../../components/characters/StoreStyle';
+import { ContentsBox, ItemList, CategoryBox, ItemContainer, StoreContainer, Contents } from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
 import MyitemList from '../../components/characters/MyItemList';
 
 import { Container } from '../../pages/admin/adminCss';
-
+import Navbar from 'components/characters/Navbar';
 
 export default function MyItems() {
 
@@ -27,33 +27,36 @@ export default function MyItems() {
       <StoreContainer>
 
         <ContentsBox>
-            
-            <ItemList>
+            <Navbar />
 
-                <BannerItem
-                categories={itemCategoryList}
-                setCategory={setCategory}
-                ></BannerItem>
+            <Contents>
+              <ItemList>
 
-                <Search setState={setInputState}></Search>
+                  <BannerItem
+                  categories={itemCategoryList}
+                  setCategory={setCategory}
+                  ></BannerItem>
 
-                <ItemContainer>
-                  <CategoryBox>
+                  <Search setState={setInputState}></Search>
 
-                    <MyitemList 
-                    myItems={myItems} 
-                    setMyItems={setMyItems} 
-                    category={category === 'all' ? 'all' : category}
-                    inputValue={inputState}
-                    />
+                  <ItemContainer>
+                    <CategoryBox>
 
-                      
-                  </CategoryBox>
-                </ItemContainer>
+                      <MyitemList 
+                      myItems={myItems} 
+                      setMyItems={setMyItems} 
+                      category={category === 'all' ? 'all' : category}
+                      inputValue={inputState}
+                      />
 
-          </ItemList>
+                        
+                    </CategoryBox>
+                  </ItemContainer>
 
-          <MonsterProfile />
+              </ItemList>
+
+              <MonsterProfile />
+            </Contents>
 
         </ContentsBox>
 
