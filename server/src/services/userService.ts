@@ -170,14 +170,9 @@ class UserService {
     const SMTPPW = process.env.SMTPPW;
     const smtpTransport = nodemailer.createTransport({
       service: 'gmail',
-      host: 'smtp.naver.com',
       auth: {
         user: SMTPID,
         pass: SMTPPW,
-      },
-      port: 465,
-      tls: {
-        rejectUnauthorized: false,
       },
     });
 
