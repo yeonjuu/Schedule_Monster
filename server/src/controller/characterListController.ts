@@ -4,8 +4,10 @@ import { AsyncRequestHandler } from '../types';
 interface characterListControllerInterface {
   getCharacterList: AsyncRequestHandler;
   getCharacterLists: AsyncRequestHandler;
-  addCharacterList: AsyncRequestHandler;
+  createCharacterList: AsyncRequestHandler;
   updateCharacterList: AsyncRequestHandler;
+  // getOnePick: AsyncRequestHandler;
+  // changeOnePick: AsyncRequestHandler;
   deleteCharacterList: AsyncRequestHandler;
 }
 
@@ -21,15 +23,24 @@ export const characterListController: characterListControllerInterface = {
     const lists = await characterListService.getCharacterLists(email);
     return res.json(lists);
   },
-  async addCharacterList(req, res) {
-    const email = req.body.email;
-    const list = await characterListService.addCharacterList(email);
-    return res.json(list);
+  async createCharacterList(req, res) {
+    const result = await characterListService.createCharacterList(req.body);
+    return res.json(result);
   },
   async updateCharacterList(req, res) {
-    const list = await characterListService.updateCharacterList(req.body);
-    return res.json(list);
+    const result = await characterListService.updateCharacterList(req.body);
+    return res.json(result);
   },
+  // async getOnePick(req, res) {
+  //   const { email } = req.body
+  //   const result = await characterListService.getOnePick(email);
+  //   return res.json(result);
+  // },
+  // async changeOnePick(req, res) {
+  //   const { _id, onePick } = req.body
+  //   const result = await characterListService.changeOnePick(_id, onePick);
+  //   return res.json(result);
+  // },
   async deleteCharacterList(req, res) {
     const { email } = req.params;
     const result = await characterListService.deleteCharacterList(email);

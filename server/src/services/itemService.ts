@@ -35,12 +35,14 @@ class ItemService {
 
   // 아이템 수정
   async updateItem(updateInfo: UpdateItemInterface) {
-    const { _id, itemName, price, exp, categoryName: category } = updateInfo;
+    const { _id, itemName, itemImage, itemInfo, price, exp, categoryName } = updateInfo;
     const toUpdate = {
       ...(itemName && { itemName }),
+      ...(itemImage && { itemImage }),
+      ...(itemInfo && { itemInfo }),
       ...(price && { price }),
       ...(exp && { exp }),
-      ...(category && { category }),
+      ...(categoryName && { categoryName }),
     };
     const result = await this.Item.findOneAndUpdate({ _id: _id }, toUpdate, {
       returnOriginal: false,

@@ -3,6 +3,8 @@ import { Schema, model, Model } from 'mongoose';
 // 인터페이스
 export interface ItemInterface {
     itemName: String;
+    itemImage: String;
+    itemInfo: String;
     price: Number;
     exp: Number;
     categoryName: String;
@@ -10,6 +12,8 @@ export interface ItemInterface {
 export interface UpdateItemInterface {
     _id: String;
     itemName?: String;
+    itemImage?: String;
+    itemInfo?: String;
     price?: Number;
     exp?: Number;
     categoryName?: String;
@@ -19,6 +23,14 @@ export interface UpdateItemInterface {
 export const itemSchema = new Schema<ItemInterface>(
     {
         itemName: {
+            type: String,
+            required: true,
+        },
+        itemImage: {
+            type: String,
+            required: true,
+        },
+        itemInfo: {
             type: String,
             required: true,
         },

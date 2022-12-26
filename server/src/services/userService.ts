@@ -46,7 +46,7 @@ class UserService {
       point,
     };
     //캐릭터리스트 초기
-    await characterListService.addCharacterList(email);
+    // await characterListService.createCharacterList(email);
     return await this.User.create(RegisterInfo);
   }
 
