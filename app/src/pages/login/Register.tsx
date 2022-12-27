@@ -85,6 +85,7 @@ export const Register = () => {
     //로그인 연결
     const resData = await API.post('/register/login', { email, password: pw });
     console.log(resData);
+    const { calendarId } = resData.calendar;
     const { auth, point, nickname: resNickname } = resData.loginUser;
     const { accessToken } = resData;
     if (accessToken) {
@@ -93,6 +94,7 @@ export const Register = () => {
         nickname: resNickname,
         point,
         auth,
+        calendarId,
       };
       //store에 로그인 유저 정보 저장
       dispatch(login(user));
