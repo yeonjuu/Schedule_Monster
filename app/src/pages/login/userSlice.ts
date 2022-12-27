@@ -19,6 +19,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.point = action.payload.point;
       state.auth = action.payload.auth;
+      state.calendarId = action.payload.calendarId;
       state.isLogin = true;
     },
     logout: (state) => {
