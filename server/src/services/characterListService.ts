@@ -1,19 +1,16 @@
-import { characterListModel, characterListModelType } from '../models';
+import { userModel, characterListModel, characterListModelType } from '../models';
 import {CharacterListInterface, UpdateCharacterListInterface} from '../models/schemas/CharacterList';
-import { userModel, userModelType } from '../models';
 class CharacterListService {
   private characterList: characterListModelType;
-  private user: userModelType;
 
-  constructor(characterListModel: characterListModelType, userModel: userModelType) {
+  constructor(characterListModel: characterListModelType) {
     this.characterList = characterListModel;
-    this.user = userModel;
   }
 
   // 관리자용 : 전체 사용자 캐릭터 리스트 전체 조회
   async getCharacterLists(email: string) {
     console.log(email);
-    const user = await this.user.findOne({ email });
+    const user = await userModel.findOne({ email });
     if (!user) throw new Error('type:Forbidden,content:사용자가 존재하지 않거나 요청이 정상적이지 않습니다');
     if (user.auth === 'user') new Error('type:Forbidden,message:해당 관리 권한으로는 서비스 요청을 할 수 없습니다');
 
@@ -43,21 +40,21 @@ class CharacterListService {
   }
 
   // // 대표캐릭터 조회
-  // async getOnePick(email:string) {
-  //   const filter = {email: email, onePick: true}
-  //   const result =  await this.characterList.findOne(filter);
-  //   return result;
-  // }
-  //
-  // // 대표캐릭터 변경
-  // async changeOnePick(email: string, _id:string) {
-  //   // 기존꺼 false
-  //   const filter = {email: email, onePick: true}
-  //   await this.characterList.findOneAndUpdate(filter, {onePick: false});
-  //   // 현재꺼 true
-  //   const result =  await this.characterList.findOneAndUpdate({_id: _id}, {onePick: true});
-  //   return result;
-  // }
+  async getOnePick(email:string) {
+    const filter = {email: email, onePick: true}
+    const result =  await this.characterList.findOne(filter);
+    return result;
+  }
+
+  // 대표캐릭터 변경
+  async changeOnePick(email: string, characterId:string) {
+    // 기존꺼 false
+    const filter = {email: email}
+    await this.characterList.updateMany(filter, {onePick: false});
+    // 현재꺼 true
+    const result =  await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
+    return result;
+  }
 
   // 해당 사용자 캐릭터 리스트 초기화
   async deleteCharacterList(email: string) {
@@ -65,6 +62,6 @@ class CharacterListService {
     return result;
   }
 }
-const characterListService = new CharacterListService(characterListModel, userModel);
+const characterListService = new CharacterListService(characterListModel);
 
 export { characterListService };
