@@ -3,6 +3,7 @@ import * as Common from 'assets/styles';
 
 type Props = {
   small?: boolean;
+  del?: boolean;
 };
 
 export const Wrapper = styled.div`
@@ -42,6 +43,14 @@ export const Button = styled.input<Props>`
   :hover {
     background-color: ${Common.hoverDark};
   }
+  ${(props) =>
+    props.del &&
+    css`
+      background-color: ${Common.errorMsg};
+      :hover {
+        background-color: #d32f2f;
+      }
+    `}
 `;
 
 export const Input = styled.input`
