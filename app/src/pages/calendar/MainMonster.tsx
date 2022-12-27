@@ -19,18 +19,14 @@ const MainMonster = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
-      if (num <= 1) {
+      if (num <= 3) {
         setMove(monster.image.versions.blackwhite.animated.front_default);
-      } else if (2 <= num && num < 4) {
-        setMove(monster.image.front_default);
-      } else if (4 <= num && num < 6) {
-        setMove(monster.image.back_default);
-      } else if (6 <= num && num < 8) {
+      }  else if (4 <= num && num < 7) {
         setMove(monster.image.versions.blackwhite.animated.front_shiny);
-      } else if (8 <= num && num < 10) {
+      } else if (7 <= num && num < 10) {
         setMove(monster.image.versions.blackwhite.animated.back_default);
       }
-      console.log(move);
+      
     }, number);
 
     return () => clearInterval(interval);
