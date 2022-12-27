@@ -35,6 +35,7 @@ export default function MyItems() {
                   <BannerItem
                   categories={itemCategoryList}
                   setCategory={setCategory}
+                  purpose={'상점'}
                   ></BannerItem>
 
                   <Search setState={setInputState}></Search>

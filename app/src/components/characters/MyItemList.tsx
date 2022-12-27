@@ -99,11 +99,11 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                         `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
                         ); 
 
-                      if (isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      if (isUse && currentCoin != 0 && affection <200 && mainImage !== '/pokeball.png') {
                       dispatch(applyItem(myitems.exp));
                       alert('애정도가 가득 채워졌습니다😊');
                       }
-                      else if (isUse && affection >= 100) {
+                      else if (isUse && affection >= 200) {
                       alert('애정도가 이미 가득 채워졌습니다');
                     }
                   }

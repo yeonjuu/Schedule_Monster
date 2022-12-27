@@ -10,7 +10,7 @@ import { RootState } from '../../store/store';
 
 function Item({ setItem, item, purpose }: any) {
   const dispatch = useDispatch<any>();
-  const currentCoin = useSelector((state: any) => state.statusReducer.coin);
+  // const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
 
   const user = useSelector((state: RootState) => state.persistedReducer);
