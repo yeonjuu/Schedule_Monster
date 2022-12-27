@@ -80,6 +80,12 @@ export const MonsterImageContainer = styled.div`
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+
+    &:hover{
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    }
 `
 
 export const MonsterImage = styled.img`
@@ -107,6 +113,12 @@ export const MonsterStatus = styled.div`
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+
+    &:hover{
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    }
 `
 export const MonsterLine = styled.li`
     list-style: none;
@@ -222,6 +234,11 @@ export const Searchbar = styled.input`
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
 
+    &:hover {
+        box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.66);
+    }
 
     &::placeholder {
         font-size: 200;
@@ -303,7 +320,6 @@ export const ItemBox = styled.div`
     width: 130px;
     height: 150px;
     margin: 1rem;
-    position: relative;
     
     border-radius: 1rem;
 

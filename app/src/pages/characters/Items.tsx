@@ -29,8 +29,6 @@ export default function Items() {
   const dispatch = useDispatch<any>();
   const [category, setCategory] = useState('all');
   const [inputState, setInputState] = useState('');
-  const { id } = useParams();
-//   console.log(id);
   const itemCategoryList = useSelector(
     (state: any): any => state.itemCategories,
   );
@@ -46,6 +44,7 @@ export default function Items() {
             <BannerItem
               categories={itemCategoryList}
               setCategory={setCategory}
+              purpose={'상점'}
             ></BannerItem>
 
             <Search setState={setInputState}></Search>
