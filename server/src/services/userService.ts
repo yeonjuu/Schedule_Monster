@@ -101,11 +101,20 @@ class UserService {
     };
 
     const refreshPayload = {};
-    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1h' });
+    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
     const refreshToken = jwt.sign(refreshPayload, secretKey, {
-      expiresIn: '14d',
+      expiresIn: '30d',
     });
+    const { exp: accessExpMS } = jwt.decode(accessToken) as {
+      exp: number;
+    };
+    const { exp: refreshExpMS } = jwt.decode(refreshToken) as {
+      exp: number;
+    };
 
+    const accessExp = accessExpMS * 1000;
+    const refreshExp = refreshExpMS * 1000;
+    console.log(new Date(accessExp).toLocaleString(), new Date(refreshExp).toLocaleString());
     //DB에 refresh token 저장
     const loginUser = await this.User.findOneAndUpdate(
       { email: user.email },
@@ -115,7 +124,7 @@ class UserService {
 
       { returnOriginal: false },
     );
-    return { loginUser, accessToken, refreshToken };
+    return { loginUser, accessToken, accessExp, refreshExp };
   }
 
   // 계정 로그아웃
@@ -271,6 +280,61 @@ class UserService {
 
     if (!isPasswordCorrect) return false;
     else return true;
+  }
+  async expandAccToken(token: string, email: string) {
+    console.log('expandAccToken 함수 진입');
+    try {
+      const secretKey = process.env.JWT_SECRET_KEY;
+      if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
+      jwt.verify(token, secretKey);
+      const { exp: tokenExp } = jwt.decode(token) as {
+        exp: number;
+      };
+      return { token, tokenExp };
+    } catch (error) {
+      // error type일 경우에만 에러처리
+      if (error instanceof Error) {
+        if (error.message === 'jwt expired') {
+          const user = await this.User.findOne({ email });
+          if (!user)
+            throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
+          if (!user.refreshToken) throw new Error('type:Forbidden,content:리프레시 토큰이 존재하지 않습니다');
+          else {
+            const { exp: refreshExpMS } = jwt.decode(user.refreshToken) as {
+              exp: number;
+            };
+
+            const dateDiff = refreshExpMS * 1000 - Date.now();
+            console.log('리프레시 토큰 만료날짜가 ', new Date(refreshExpMS * 1000).toLocaleString());
+            console.log(refreshExpMS, dateDiff);
+            if (dateDiff >= 0) {
+              const secretKey = process.env.JWT_SECRET_KEY;
+              const accessPayload = {
+                email: user.email,
+                auth: user.auth,
+              };
+              if (!secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
+
+              const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
+              const { exp: accessExpMS } = jwt.decode(accessToken) as {
+                exp: number;
+              };
+              const accessExp = accessExpMS * 1000;
+
+              return { accessToken, accessExp };
+            } else {
+              throw new Error('type:Forbidden,content:refresh토큰이 만료되었습니다');
+            }
+          }
+        } else if (error.message === 'invalid token') {
+          throw new Error('type:Forbidden,content:유효하지 않은 토큰입니다');
+        } else {
+          throw new Error('type:Forbidden,content:유효하지 않은 토큰입니다');
+        }
+      } else {
+        throw new Error('type:BadRequest,content:토큰을 확인 하는 중에 비정상적인 오류가 발생했습니다.');
+      }
+    }
   }
 }
 const userService = new UserService(userModel);
