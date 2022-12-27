@@ -40,7 +40,7 @@ export const Contents = styled.div`
   justify-content: center;
   align-items: center;
   width: 95%;
-  height: 100%;
+  height: 90%;
 `
 
 //몬스터 프로필
@@ -111,6 +111,7 @@ export const MonsterStatus = styled.div`
 export const MonsterLine = styled.li`
     list-style: none;
     font-size: large;
+    margin-bottom: 0.5rem;
 `
 
 export const ItemList = styled.div`

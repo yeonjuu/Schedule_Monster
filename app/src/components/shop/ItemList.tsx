@@ -31,7 +31,7 @@ function Item({ setItem, item, purpose }: any) {
         {/* <span style={{fontSize:'15px'}}>+ ❤️{item.exp}</span> */}
       </div>
 
-      <div>{item.itemName}</div>
+      <div style={{alignSelf:'center'}}>{item.itemName}</div>
 
       <div
         style={{
@@ -89,7 +89,7 @@ function Item({ setItem, item, purpose }: any) {
   );
 }
 
-function ItemList({ category, inputValue, url, purpose, setItem }: any) {
+function ItemList({ category, inputValue, purpose, setItem }: any) {
   const reducerData = useSelector((state: any) => state.itemListReducer);
   const data = reducerData.itemList;
   const itemList =

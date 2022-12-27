@@ -10,10 +10,12 @@ import {
 } from '../../components/characters/StoreStyle';
 import MonsterProfile from 'components/characters/MonsterProfile';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { mainImage, mainName } from 'pages/characters/statusReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainImage, secondImage, thirdImage, mainName } from 'pages/characters/statusReducer';
 import * as API from '../../api';
 import Navbar from 'components/characters/Navbar';
+import { RootState } from '../../store/store';
+
 
 export default function CharactersList() {
   const dispatch = useDispatch();
@@ -21,14 +23,20 @@ export default function CharactersList() {
   const [isLoading, setIsLoading] = useState(true);
   const [pokemons, setPokemons] = useState<any[]>([]);
 
+  const user = useSelector((state: RootState) => state.persistedReducer);
+  const { email } = user;
+
   useEffect(() => {
     async function fetchData() {
-        const data = await API.get('/characters/all');
+        //api주소 변경 필요     `/characterlist/detail/${email}`
+        const data = await API.get('/characterlist/detail/chaeyujin@email.com');
         setPokemons(data);
         setIsLoading(!isLoading);
     }
     fetchData();
   }, []);
+
+  // console.log(pokemons);
 
   return (
     <StoreContainer>
@@ -65,7 +73,9 @@ export default function CharactersList() {
                         `'${clicked.nameKo}'을/를 대표 캐릭터로 지정하시겠습니까?`,
                       );
                       if (isMain) {
-                        dispatch(mainImage(clicked.image.front_default));
+                        dispatch(mainImage(clicked.image.back_default));
+                        dispatch(secondImage(clicked.image.front_default));
+                        dispatch(thirdImage(clicked.image.front_shiny));
                         dispatch(mainName(clicked.nameKo));
                       }
                       // console.log(isMain);
