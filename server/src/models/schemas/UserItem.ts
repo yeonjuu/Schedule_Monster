@@ -1,7 +1,8 @@
 import { Schema, model, Model } from 'mongoose';
 
 // 인터페이스
-export interface ItemInterface {
+export interface UserItemInterface {
+    email: String;
     itemName: String;
     itemImage: String;
     itemInfo: String;
@@ -9,19 +10,14 @@ export interface ItemInterface {
     exp: Number;
     categoryName: String;
 }
-export interface UpdateItemInterface {
-    _id: String;
-    itemName?: String;
-    itemImage?: String;
-    itemInfo?: String;
-    price?: Number;
-    exp?: Number;
-    categoryName?: String;
-}
 
 // 스키마
-export const itemSchema = new Schema<ItemInterface>(
+export const userItemSchema = new Schema<UserItemInterface>(
     {
+        email: {
+            type: String,
+            required: true,
+        },
         itemName: {
             type: String,
             required: true,
@@ -49,10 +45,10 @@ export const itemSchema = new Schema<ItemInterface>(
     },
     {
         timestamps: true,
-        collection: 'item',
+        collection: 'userItem',
     },
 );
 
 // 모델
-export interface itemModelType extends Model<ItemInterface> {}
-export const itemModel = model<ItemInterface, itemModelType>('Item', itemSchema);
+export interface userItemModelType extends Model<UserItemInterface> {}
+export const userItemModel = model<UserItemInterface, userItemModelType>('UserItem', userItemSchema);

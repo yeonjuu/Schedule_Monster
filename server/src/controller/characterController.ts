@@ -15,8 +15,8 @@ export const characterController: characterControllerInterface = {
         res.json(characters);
     },
     async getCharacter(req, res) {
-        const { _id } = req.body;
-        const character = await characterService.getCharacter(_id);
+        const { characterId } = req.body;
+        const character = await characterService.getCharacter(characterId);
         res.json(character);
     },
     async createCharacter(req, res) {
@@ -28,8 +28,8 @@ export const characterController: characterControllerInterface = {
         res.json(response);
     },
     async deleteCharacter(req, res) {
-        const { id } = req.params;
-        const response = await characterService.deleteCharacter(id);
+        const { characterId } = req.params;
+        const response = await characterService.deleteCharacter(characterId);
         res.json(response);
     },
 };

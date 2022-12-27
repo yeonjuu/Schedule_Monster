@@ -9,14 +9,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 const logger = morgan;
 
-import {
-  indexRouter,
-  userRouter,
-  characterRouter,
-  characterListRouter,
-  itemRouter,
-  categoryRouter,
-} from './routes/index';
+import { app as apiRouter } from './routes/apiRouter';
 
 const app = express();
 
@@ -36,18 +29,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.use('/users', userRouter);
-app.use('/characters', characterRouter);
-app.use('/characterlist', characterListRouter);
-app.use('/items', itemRouter);
-app.use('/category', categoryRouter);
-app.use('/', indexRouter);
+app.use('/api', apiRouter);
 
-app.use(function (req, res, next) {
-  next(createError(404));
+app.use('*', function (req, res, next) {
+  next('type:NotFound,message:요청하신 페이지는 존재하지 않습니다');
 });
 
-// // error handler
+// error handler
 app.use(errorHandler);
 
 app.listen(port, () => {

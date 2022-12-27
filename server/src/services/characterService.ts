@@ -17,8 +17,8 @@ class CharacterService {
         return result
     }
     // 캐릭터 상세 조회
-    async getCharacter(_id: string) {
-        const result =  await this.Character.findOne({_id: _id });
+    async getCharacter(characterId: string) {
+        const result =  await this.Character.findOne({characterId: characterId });
         return result
     }
 
@@ -29,19 +29,20 @@ class CharacterService {
 
     // 캐릭터 수정
     async updateCharacter(updateInfo: UpdateCharacterInterface) {
-        const { _id, characterName, levelupPoint, images } = updateInfo
+        const { characterId, nameKo, nameEn, levelupPoint, image } = updateInfo
         const toUpdate = {
-            ...(characterName && { characterName }),
+            ...(nameKo && { nameKo }),
+            ...(nameEn && { nameEn }),
             ...(levelupPoint && { levelupPoint }),
-            ...(images && { images }),
+            ...(image && { image }),
         }
-        const result =  await this.Character.findOneAndUpdate({_id: _id}, toUpdate, { returnOriginal: false },);
+        const result =  await this.Character.findOneAndUpdate({characterId: characterId}, toUpdate, { returnOriginal: false },);
         return result
     }
 
     // 캐릭터 삭제
-    async deleteCharacter(id: string) {
-        const result = await this.Character.remove({ _id: id });
+    async deleteCharacter(characterId: string) {
+        const result = await this.Character.remove({ characterId: characterId });
         return result
     }
 }
