@@ -1,6 +1,7 @@
 import produce from 'immer';
 import React, { useState } from 'react';
 import { UserInfoBox } from './adminCss';
+import * as API from '../../api';
 
 function UserInfo({ user }: any) {
   return (
@@ -28,11 +29,29 @@ function UserInfo({ user }: any) {
       <div>
         <div>
           <div>상태</div>
-          <div>{user.auth}</div>
+          <select name="상태" id="" defaultValue={user.auth}>
+            <option value="user">user</option>
+            <option value="manager">manager</option>
+          </select>
         </div>
       </div>
       <div>
-        <button>수정</button>
+        <button
+          onClick={(e) => {
+            console.log({
+              password: user.password,
+              email: user.email,
+              nickname: user.nickname,
+            });
+            API.post('/users/master', {
+              password: user.password,
+              email: user.email,
+              nickname: user.nickname,
+            });
+          }}
+        >
+          수정
+        </button>
       </div>
     </UserInfoBox>
   );

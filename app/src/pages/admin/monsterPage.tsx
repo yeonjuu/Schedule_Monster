@@ -7,7 +7,9 @@ import {
   ItemContainer,
   CategoryBox,
   ItemList,
+  Contents,
 } from '../../components/characters/StoreStyle';
+
 function MonsterPage() {
   const [inputState, setInputState] = useState('');
   const [monster, setMonster] = useState({
@@ -27,38 +29,43 @@ function MonsterPage() {
 
   return (
     <ContentsBox>
-      <ItemList>
-        <ItemContainer>
-          <Search setState={setInputState}></Search>
-          <button
-            onClick={() => {
-              setMonster({
-                _id: '',
-                characterName: '',
-                images: {
-                  img1: '',
-                  img2: '',
-                  img3: '',
-                },
-                levelupPoint: {
-                  point1: 0,
-                  point2: 0,
-                  point3: 0,
-                },
-              });
-            }}
-          >
-            에딧 창 리셋
-          </button>
-          <CategoryBox>
-            <MonsterList
-              inputValue={inputState}
-              setMonster={setMonster}
-            ></MonsterList>
-          </CategoryBox>
-        </ItemContainer>
-      </ItemList>
-      <EditMonster monsterData={monster} setMonster={setMonster}></EditMonster>
+      <Contents>
+        <ItemList>
+          <ItemContainer>
+            <Search setState={setInputState}></Search>
+            <button
+              onClick={() => {
+                setMonster({
+                  _id: '',
+                  characterName: '',
+                  images: {
+                    img1: '',
+                    img2: '',
+                    img3: '',
+                  },
+                  levelupPoint: {
+                    point1: 0,
+                    point2: 0,
+                    point3: 0,
+                  },
+                });
+              }}
+            >
+              에딧 창 리셋
+            </button>
+            <CategoryBox>
+              <MonsterList
+                inputValue={inputState}
+                setMonster={setMonster}
+              ></MonsterList>
+            </CategoryBox>
+          </ItemContainer>
+        </ItemList>
+        <EditMonster
+          monsterData={monster}
+          setMonster={setMonster}
+        ></EditMonster>
+      </Contents>
     </ContentsBox>
   );
 }
