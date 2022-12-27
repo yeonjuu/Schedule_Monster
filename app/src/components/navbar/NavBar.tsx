@@ -22,7 +22,7 @@ export const NavBar = () => {
     const isLogout = window.confirm('로그아웃하시겠습니까?');
     if (isLogout) {
       dispatch(logout());
-      localStorage.removeItem('accessToken');
+      window.localStorage.clear();
     }
     return;
   };
