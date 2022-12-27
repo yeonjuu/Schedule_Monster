@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   ContentsBox,
   CharacterContainer,
@@ -11,7 +10,7 @@ import {
 import MonsterProfile from 'components/characters/MonsterProfile';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { mainImage, secondImage, thirdImage, mainName } from 'pages/characters/statusReducer';
+import { mainProfile, secondProfile, thirdProfile, mainName } from 'pages/characters/statusReducer';
 import * as API from '../../api';
 import Navbar from 'components/characters/Navbar';
 import { RootState } from '../../store/store';
@@ -73,9 +72,9 @@ export default function CharactersList() {
                         `'${clicked.nameKo}'을/를 대표 캐릭터로 지정하시겠습니까?`,
                       );
                       if (isMain) {
-                        dispatch(mainImage(clicked.image.back_default));
-                        dispatch(secondImage(clicked.image.front_default));
-                        dispatch(thirdImage(clicked.image.front_shiny));
+                        dispatch(mainProfile(clicked.image.back_default));
+                        dispatch(secondProfile(clicked.image.front_default));
+                        dispatch(thirdProfile(clicked.image.front_shiny));
                         dispatch(mainName(clicked.nameKo));
                       }
                       // console.log(isMain);

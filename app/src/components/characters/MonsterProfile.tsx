@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react';
 import { MonsterContainer, MonsterImage, MonsterImageContainer, MonsterLine, MonsterStatus } from './StoreStyle';
-import { mainImage, secondImage, thirdImage, mainName } from 'pages/characters/statusReducer';
+import { mainProfile, secondProfile, thirdProfile, mainName, mainAffection } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import * as API from '../../api';
@@ -11,8 +11,7 @@ export default function MonsterProfile() {
   const { point, email } = user;
 
   const dispatch = useDispatch();
-  // const name = useSelector((state:any) => state.statusReducer.name);
-  const mainName = useSelector((state:any) => state.statusReducer.mainName);
+  const name = useSelector((state:any) => state.statusReducer.name);
   // const coin = useSelector((state:any) => state.statusReducer.coin);
   const affection = useSelector((state:any) => state.statusReducer.affection);
   const mainImage = useSelector((state:any) => state.statusReducer.mainImage);
@@ -24,12 +23,13 @@ export default function MonsterProfile() {
     async function fetchData() {
         //api주소 변경 필요     `/characterlist/pick/${email}`
         const data = await API.get('/characterlist/pick/chaeyujin@email.com');
-        // dispatch(mainImage(data.image.back_default));
-        // dispatch(secondImage(data.image.front_default));
-        // dispatch(thirdImage(data.image.front_shiny));
+
         dispatch(mainName(data.nameKo));
-        console.log(data);
-        console.log(data.nameKo);
+        dispatch(mainAffection(data.myExp));
+
+        dispatch(mainProfile(data.image.back_default));
+        dispatch(secondProfile(data.image.front_default));
+        dispatch(thirdProfile(data.image.front_shiny));
     }
     fetchData();
   }, []);
@@ -40,14 +40,14 @@ export default function MonsterProfile() {
           <MonsterContainer>
                 <MonsterImageContainer>
                   <MonsterImage src={
-                    affection === 100 ? secondImage : affection === 200 ? thirdImage : mainImage
+                    affection === 50 ? secondImage : affection === 100 ? thirdImage : mainImage
                   }
                   />
                 </MonsterImageContainer>
 
                 <MonsterStatus>
                   <ul>
-                    <MonsterLine>이름 : {mainName}</MonsterLine>
+                    <MonsterLine>이름 : {name}</MonsterLine>
                     <MonsterLine>애정도 : ❤️ {affection}</MonsterLine>
                     <MonsterLine>보유 코인 : 💰 {point}</MonsterLine>
                   </ul>
