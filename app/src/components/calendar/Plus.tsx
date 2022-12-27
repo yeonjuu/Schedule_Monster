@@ -1,23 +1,40 @@
 import React, { useState } from 'react';
 import * as API from '../../api';
 import * as Style from '../modal/modal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/store';
+import { postCalendarList } from 'pages/login/userSlice';
 
 //캘린더추가만 하면 됨, 추가했을때 캘린더리스트 값이 바뀌는지 확인
+type res = {
+  calendarId: string;
+  calendarName: string;
+  createdAt: Date;
+  email: string;
+  share: boolean;
+  updatedAt: Date;
+  url: null;
+  __v: number;
+  _id: string;
+};
 
-export const Plus = () => {
+export const Plus = ({setList}:{setList: React.Dispatch<React.SetStateAction<res[]>>}) => {
   const [isOpen, setIsOpen] = useState(false);
   const email = useSelector((state: RootState) => state.persistedReducer.email);
-
+const dispatch=useDispatch();
   const clickHandler = () => {
     setIsOpen(!isOpen);
   };
 
   const addHandler = async (name: string) => {
+
     //캘린더추가 api로 캘린더 추가하기
-    const data = await API.post('/calendar', { email, calendarName: name });
+    const data = await API.post('/calendar', { email, calendarName: name })
+   const list= await API.get(`/calendar/${email}`)
     window.alert(`${data.calendarName} 추가완료📣`);
+    setList(list); //부모의 list state에 추가
+    dispatch(postCalendarList(list));
+    //전역 state에도 추가
   };
   const changeHandler = (isOpen: boolean) => {
     setIsOpen(isOpen);

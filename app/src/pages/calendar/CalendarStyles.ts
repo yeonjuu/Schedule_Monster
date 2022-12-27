@@ -135,15 +135,14 @@ export const Container = styled.div`
 `;
 
 export const CalendarController = styled.div`
-
   display: flex;
-  justify-content: center;
+  justify-content: baseline;
   align-items: center;
   height: 40px;
   width: 100%;
   font-size: 18px;
   margin: 20px 0 50px 0;
-  & > svg {
+  & > div > svg {
     cursor: pointer;
     border: none;
     width: 25px;
@@ -233,27 +232,23 @@ export const PickCalBox = styled.div`
 
 const png = keyframes`
 
-5%{
-  transform: scaleX(-1);
+from{
+ top: 0;
 }
-    10%{
-        top: 10px;
-        transform: scaleX(1);
-    }
-    to{
-
-    }
+to{
+ top: 30px;
+}
   
 `;
 
 export const Monster = styled.img<{ src: string }>`
-z-index: 10;
+  z-index: 10;
   position: relative;
   left: 50%;
-  top: 40%;
+  top: 20%;
   ${(props) =>
-    props.src.lastIndexOf('.png') > 0 &&
+    props.src.indexOf('MonsterGoing') > 0 &&
     css`
-      animation: ${png} 4500ms infinite alternate ease-in-out;
+      animation: ${png} 1s infinite alternate ease-in-out;
     `}
 `;

@@ -46,10 +46,10 @@ const ScheduleContent = ({
   const endDay = Number(content.endDate?.slice(6, 8));
 
   const [startDate, setStartDate] = useState<Date>(
-    new Date(startYear, startMonth, startDay),
+    new Date(),
   );
   const [endDate, setEndDate] = useState<Date>(
-    new Date(endYear, endMonth, endDay),
+    new Date(),
   );
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
@@ -64,6 +64,16 @@ const ScheduleContent = ({
   } = useForm({ mode: 'onChange' });
 
   const inputTitle = watch('title');
+
+  useEffect(()=>{
+    if(!startYear||!startMonth||!startDay||!endYear||!endMonth||!endDay){
+      dispatch(closeTodo());
+      navigate('/calendar');
+    }else{
+      setStartDate(new Date(startYear, startMonth, startDay));
+      setEndDate(new Date(endYear, endMonth, endDay));
+    }
+  },[]);
 
   const checkTitle = () => {
     if (inputTitle === content?.title) {

@@ -8,11 +8,11 @@ const MainMonster = () => {
     (state: RootState) => state.mainCharacterSlice.main,
   );
   const [move, setMove] = useState<string>('/MonsterGoing.gif');
-  const [number, setNum] = useState<number>(1600);
+  const [number, setNum] = useState<number>(1000);
 
 //최초 number State만큼 로딩 이미지 보여준 후에 setInterval 시간 재설정
   setTimeout(() => {
-    setNum(4500);
+    setNum(5000);
   }, number);
 
     //useEffect로 랜덤 숫자의 범위에 따라 다른 이미지 링크를 img태그에 넣음
