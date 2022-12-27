@@ -49,11 +49,11 @@ class CharacterListService {
   // 대표캐릭터 변경
   async changeOnePick(email: string, characterId:string) {
     // 기존꺼 false
-    // const filter = {email: email}
-    // const result =  await this.characterList.updateMany(filter, {onePick: false});
+    const filter = {email: email}
+    const result =  await this.characterList.updateMany(filter, {onePick: false});
     // 현재꺼 true
-    // const result =  await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
-    return;
+    await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
+    return result;
   }
 
   // 해당 사용자 캐릭터 리스트 초기화
