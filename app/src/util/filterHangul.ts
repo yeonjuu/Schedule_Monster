@@ -1,3 +1,6 @@
+const escapeRegExp = (str: string) =>
+  str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 export function ch2pattern(ch: any) {
   // 사용자가 초성만 입력한 경우
   if (/[ㄱ-ㅎ]/.test(ch)) {
@@ -43,12 +46,12 @@ export function ch2pattern(ch: any) {
   }
 
   // 한글이 입력되지 않은 경우
-  else return ch;
+  else return escapeRegExp(ch);
 }
 
 export function createFuzzyMatcher(input: string, name: string) {
   try {
-    const pattern = input.split('').map(ch2pattern).join('.*?');
+    const pattenr = input.split('').map(ch2pattern).join('.*?');
   } catch {
     return;
   }

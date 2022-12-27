@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import {
   format,
   add,
@@ -16,35 +16,43 @@ import {
   WeekContainer,
   HeaderCalendar,
   Container,
-  CalendarController,
   MonsterBox,
   Layout,
-} from './styles';
+} from './CalendarStyles';
 import Dates from './Dates';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCaretLeft,
-  faCaretRight,
-  faRotateRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { DateData, Holiday } from '../../types/calendarTypes';
-import { get } from '../../api';
+import {  DateData, Holiday, onClickObj } from '../../types/calendarTypes';
+import useDebounce from '../../hooks/useDebounce';
+import DateController from './DateController';
+import { Modal } from 'pages/calendar/modal/Modal';
+import { NavBar } from 'components/navbar/NavBar';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { TodoModal } from './modal/TodosModal';
+import { Logo } from 'components/logo/Logo';
+import { Header } from 'components/header/Header';
+import MainMonster from './MainMonster';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
-  const [dateData, setDateData] = useState<DateData[]>([]);
+  const [holidayData, setHolidayData] = useState<DateData[]>([]);
+
   const startMonth = startOfMonth(date);
   const endMonth = endOfMonth(date);
   const day = startOfWeek(startMonth);
   const endDay = endOfWeek(endMonth);
+  const prevYear = format(sub(date, { years: 1 }), 'yyyy');
+  const nextYear = format(add(date, { years: 1 }), 'yyyy');
+  const thisYear = format(date, 'yyyy');
+  const prevMonth = format(sub(date, { months: 1 }), 'MM');
+  const nextMonth = format(add(date, { months: 1 }), 'MM');
+  const thisMonth = format(date, 'MM');
+  const debounce = useDebounce(format(date, 'MM'));
+  const door = useSelector((state: RootState) => state.modalSlice.door);
+  const doorTodo = useSelector((state: RootState) => state.modalSlice.doorTodo);
 
-  const session = (date: Date) => {
-    const prevYear = format(sub(date, { years: 1 }), 'yyyy');
-    const nextYear = format(add(date, { years: 1 }), 'yyyy');
-    const thisYear = format(date, 'yyyy');
-    const prevMonth = format(sub(date, { months: 1 }), 'MM');
-    const nextMonth = format(add(date, { months: 1 }), 'MM');
-    const thisMonth = format(date, 'MM');
+
+  const session = () => {
     if (thisMonth === '12') {
       return {
         //지금이 12월이면 11월 25일~내년 1월 06일까지가 범위
@@ -70,86 +78,98 @@ const CalendarPage = () => {
     const getHoliday = async () => {
       const calendarId =
         'ko.south_korea%23holiday%40group.v.calendar.google.com';
-      const res = await get(
+      const res = await axios.get(
         `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${
           process.env.REACT_APP_API_KEY
         }&orderBy=startTime&singleEvents=true&timeMin=${
-          session(date).start
-        }T00:00:00Z&timeMax=${session(date).next}T00:00:00Z`,
+          session().start
+        }T00:00:00Z&timeMax=${session().next}T00:00:00Z`,
       );
 
-      const data = res.items.map((item: Holiday) => {
+      const data = res.data.items.map((item: Holiday) => {
         return {
           name: item.summary,
           description: item.description.slice(0, 3),
           date: item.start.date,
         };
       });
-      setDateData(data);
+      setHolidayData(data);
     };
     getHoliday();
-  }, [format(date, 'MM')]);
+  }, [debounce]);
 
-  const prev = () => {
-    setDate((curr) => sub(curr, { months: 1 }));
-  };
+  const onClick: onClickObj = {
+    prev: () => {
+      setDate((curr) => sub(curr, { months: 1 }));
+    },
+    next: () => {
+      setDate((curr) => add(curr, { months: 1 }));
+    },
+    up: () => {
+      setDate((curr) => add(curr, { years: 1 }));
+    },
+    down: () => {
+      setDate((curr) => sub(curr, { years: 1 }));
+    },
 
-  const next = () => {
-    setDate((curr) => add(curr, { months: 1 }));
-  };
-
-  const now = () => {
-    setDate(new Date());
+    now: () => {
+      setDate(new Date());
+    },
   };
 
   const renderDay = (day: Date, endDay: Date) => {
+    
     let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
     const brr = []; //일주일 들을 모아 한달을 담는 배열
+    let i=0;
     while (day <= endDay) {
       arr.push(
+        
         <Dates
+
           key={`${day}`}
           prevMonth={isSameMonth(startMonth, day)}
           nextMonth={isSameMonth(endMonth, day)}
           today={isSameDay(new Date(), day)}
           week={format(day, 'EE')}
           date={day}
-          dateData={dateData}
+          holidayData={holidayData}
         />,
+        
       );
       if (format(day, 'EE') == 'Sat') {
+        //토요일이되면 arr을 WeekContainer 컴포넌트에 담아서 brr에 넣는다(2중배열)
         brr.push(<WeekContainer key={`${day}-${endDay}`}>{arr}</WeekContainer>);
         arr = [];
       }
-      day = addDays(day, 1);
+      day = addDays(day, 1); //day는 하루씩 증가
+    i++;
     }
-    return brr;
+    return brr; //한달이 끝나면 brr 반환
   };
 
-  return (
+  return (<>
+   
     <Layout>
+      
       <Container>
-        <MonsterBox>스킨</MonsterBox>
-        <CalendarController>
-          <button onClick={prev}>
-            <FontAwesomeIcon icon={faCaretLeft} />
-          </button>
-          {format(date, 'yyyy')}년 {format(date, 'MM')} 월
-          <button onClick={next}>
-            <FontAwesomeIcon icon={faCaretRight} />
-          </button>
-          <button onClick={now}>
-            <FontAwesomeIcon icon={faRotateRight} />
-          </button>
-        </CalendarController>
+      <Header></Header>
+        <MainMonster/>
+        
+          <DateController date={date} onClick={onClick} />
+        
         <HeaderCalendar>
           {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
             return <p key={`${names}-${index}`}>{names}</p>;
           })}
         </HeaderCalendar>
         <Calendar>{renderDay(day, endDay)}</Calendar>
+        {door && <Modal />}
+        {doorTodo && <TodoModal/>}
+        
       </Container>
     </Layout>
+    </>
   );
 };
 

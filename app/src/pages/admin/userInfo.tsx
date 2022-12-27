@@ -1,23 +1,9 @@
 import produce from 'immer';
 import React, { useState } from 'react';
-import { UserInfoBox, UserPageContainer } from './adminCss';
+import { UserInfoBox } from './adminCss';
 import * as API from '../../api';
 
 function UserInfo({ user }: any) {
-  const [userInfo, setUserInfo] = useState({
-    email: user.email,
-    password: user.password,
-    nickname: user.nickname,
-    point: user.point,
-  });
-  console.log(user);
-  const onChangePoint = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserInfo(
-      produce((draft: any) => {
-        draft.point = parseInt(e.target.value);
-      }),
-    );
-  };
   return (
     <UserInfoBox>
       <div>
@@ -37,26 +23,31 @@ function UserInfo({ user }: any) {
       <div>
         <div>
           <div>포인트</div>
-          <input
-            type="number"
-            value={userInfo.point}
-            onChange={onChangePoint}
-          />
+          <div>{user.point}</div>
         </div>
       </div>
       <div>
         <div>
           <div>상태</div>
-          <div>{user.auth}</div>
+          <select name="상태" id="" defaultValue={user.auth}>
+            <option value="user">user</option>
+            <option value="manager">manager</option>
+          </select>
         </div>
       </div>
       <div>
         <button
           onClick={(e) => {
-            API.put(
-              'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/users/user',
-              userInfo,
-            );
+            console.log({
+              password: user.password,
+              email: user.email,
+              nickname: user.nickname,
+            });
+            API.post('/users/master', {
+              password: user.password,
+              email: user.email,
+              nickname: user.nickname,
+            });
           }}
         >
           수정

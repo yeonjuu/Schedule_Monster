@@ -1,29 +1,34 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { Container } from '../../pages/admin/adminCss';
 
-function CategoryList({ categories, setCategory }: any) {
+function CategoryList({ setCategory }: any) {
+  const itemCategoryList = useSelector((state: any) => {
+    return state.categoryListReducer.categoryList;
+  });
   return (
     <>
       <Container>
-        <li
+        <Category
           key={'all'}
           onClick={(): void => {
             setCategory('all');
           }}
         >
           전체
-        </li>
-        {categories.map((category: any, idx: number): JSX.Element => {
+        </Category>
+        {itemCategoryList.map((category: any, idx: number): JSX.Element => {
           return (
-            <li
+            <Category
               key={idx}
               onClick={(): void => {
-                setCategory(categories[idx].categoryName);
+                setCategory(itemCategoryList[idx].categoryName);
               }}
             >
               {category.categoryName}
-            </li>
+            </Category>
           );
         })}
       </Container>
@@ -31,3 +36,14 @@ function CategoryList({ categories, setCategory }: any) {
   );
 }
 export default CategoryList;
+
+
+const Category = styled.li`
+  color: #404040;
+  opacity: 80%;
+  
+  &:hover {
+    opacity: 60%;
+    cursor: pointer;
+  }
+`

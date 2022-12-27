@@ -2,31 +2,30 @@ import React from 'react';
 import { Container } from './adminCss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { asyncCategoryListFetch } from './categoryListSlice';
-import { asyncitemListFetch } from './itemListSlice';
-import { asyncUserListFetch } from './userListSlice';
-function Banner({ setCategory }: any) {
+import { asyncCategoryListFetch } from './slice/categoryListSlice';
+import { asyncitemListFetch } from './slice/itemListSlice';
+import { asyncUserListFetch } from './slice/userListSlice';
+import { asyncMonsterListFetch } from './slice/monsterListSlice';
+function Banner() {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-
   return (
-    <div>
-      <div>나중에 들어갈 타이틀컴포넌트</div>
+    <>
       <Container>
         <li
           onClick={(): void => {
-            navigate(`/admin/item/normal`);
-            setCategory('all');
-            dispatch(asyncCategoryListFetch());
+            navigate(`/admin/item`);
             dispatch(asyncitemListFetch());
+            dispatch(asyncCategoryListFetch());
           }}
         >
           상점
         </li>
         <li
           onClick={(): void => {
-            navigate(`/admin/monster/normal`);
-            setCategory('all');
+            navigate(`/admin/monster`);
+
+            dispatch(asyncMonsterListFetch());
           }}
         >
           도감
@@ -34,14 +33,20 @@ function Banner({ setCategory }: any) {
         <li
           onClick={(): void => {
             navigate(`/admin/user/`);
-            setCategory('all');
-            dispatch(asyncUserListFetch());
+            dispatch(asyncCategoryListFetch());
           }}
         >
           유저 관리
         </li>
+        <li
+          onClick={(): void => {
+            navigate(`/admin/category/`);
+          }}
+        >
+          카테고리 관리
+        </li>
       </Container>
-    </div>
+    </>
   );
 }
 

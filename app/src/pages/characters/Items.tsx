@@ -1,63 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  MonsterProfile,
-  MonsterImage,
   ContentsBox,
-  MonsterStatus,
-  ItemBox,
   ItemList,
   ItemContainer,
   CategoryBox,
+  Contents
 } from '../../components/characters/StoreStyle';
 import ItemList2 from 'components/shop/ItemList';
 import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import MonsterProfile from '../../components/characters/MonsterProfile';
+import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
+import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
+import styled from 'styled-components';
+import Navbar from 'components/characters/Navbar';
+
 export default function Items() {
-  const [affection, setAffection] = useState(10);
+
+  useEffect( () => {
+    dispatch(asyncitemListFetch());
+    dispatch(asyncCategoryListFetch());
+  },
+  []);
+
+
+  const dispatch = useDispatch<any>();
   const [category, setCategory] = useState('all');
   const [inputState, setInputState] = useState('');
   const { id } = useParams();
-  console.log(id);
+//   console.log(id);
   const itemCategoryList = useSelector(
     (state: any): any => state.itemCategories,
   );
+
   return (
-    <ContentsBox>
-      <ItemList>
-        상점 아이템
-        <BannerItem
-          categories={itemCategoryList}
-          setCategory={setCategory}
-        ></BannerItem>
-        <Search setState={setInputState}></Search>
-        <ItemContainer>
-          <CategoryBox>
-            <ItemList2
-              category={category === 'all' ? 'all' : category}
-              inputValue={inputState}
-              url={'/store/item/'}
-            ></ItemList2>
-          </CategoryBox>
-        </ItemContainer>
-      </ItemList>
+    <StoreContainer>
+      <ContentsBox>
+        <Navbar/>
 
-      <MonsterProfile>
-        <MonsterImage>
-          <img
-            style={{ width: '15rem', height: '15rem' }}
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/132.png"
-          />
-        </MonsterImage>
+        <Contents>
+          <ItemList>
 
-        <MonsterStatus>
-          <ul>
-            <li>이름 : 메타몽</li>
-            <li>{`애정도 : ❤️ ${affection}`} </li>
-          </ul>
-        </MonsterStatus>
-      </MonsterProfile>
-    </ContentsBox>
+            <BannerItem
+              categories={itemCategoryList}
+              setCategory={setCategory}
+            ></BannerItem>
+
+            <Search setState={setInputState}></Search>
+
+            <ItemContainer>
+              <CategoryBox>
+            
+                <ItemList2
+                  category={category === 'all' ? 'all' : category}
+                  inputValue={inputState}
+                  url={'/store/item/'}
+                  purpose={'구매'}
+
+                ></ItemList2>
+
+              </CategoryBox>
+            </ItemContainer>
+
+          </ItemList>
+          <MonsterProfile/>
+        </Contents>
+
+        
+
+      </ContentsBox>
+    </StoreContainer>
+
   );
 }
+
+
+const StoreContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
+

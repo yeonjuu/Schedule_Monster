@@ -1,42 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-import { Main } from './StoreStyle';
+import styled from 'styled-components';
+import { ContentsBox, Main } from './StoreStyle';
+import { useDispatch } from 'react-redux';
+import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
+
+
+export default function Navbar() {
+  const dispatch = useDispatch<any>();
+  return (
+    <>
+      <NavMenuContainer>
+          <Link style={{ textDecoration: 'none' }} to="/store">
+            <NavMenu
+              onClick={() => {
+                dispatch(asyncitemListFetch());
+              }}
+            >
+              상점
+            </NavMenu>
+          </Link>
+
+          <Link style={{ textDecoration: 'none' }} to="/store/myitems">
+            <NavMenu>내아이템</NavMenu>
+          </Link>
+
+          <Link style={{ textDecoration: 'none' }} to="/store/characters">
+            <NavMenu>수집도감</NavMenu>
+          </Link>
+
+      </NavMenuContainer>
+    </>
+  );
+}
+
+
+const NavMenuContainer = styled.div`
+  display: flex;
+  align-self: flex-start;
+  margin: 1rem 0 1rem 1rem;
+`
 
 const NavMenu = styled.li`
-  color: dodgerblue;
-  margin-left: 1.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  color: black;
+  font-weight: 500;
+  font-size: large;
+  margin-left: 1.7rem;
 
   text-decoration: none;
   text-decoration-line: none;
   list-style: none;
+
+  &:hover {
+    opacity: 50%;
+  }
 `;
-
-export default function Navbar() {
-  return (
-    <div>
-      <Main>
-        <Link to="/">
-          <img
-            style={{ width: '300px', height: '120px' }}
-            src="https://media.discordapp.net/attachments/1051684236299608071/1053532852366626867/logo.png"
-          />
-        </Link>
-
-        <Link style={{ textDecoration: 'none' }} to="/store/item/normal">
-          <NavMenu>상점</NavMenu>
-        </Link>
-
-        <Link style={{ textDecoration: 'none' }} to="/store/myitems">
-          <NavMenu>내아이템</NavMenu>
-        </Link>
-
-        <Link style={{ textDecoration: 'none' }} to="/store/characters">
-          <NavMenu>수집도감</NavMenu>
-        </Link>
-      </Main>
-    </div>
-  );
-}

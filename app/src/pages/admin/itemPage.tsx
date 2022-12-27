@@ -3,35 +3,50 @@ import Search from '../../components/shop/search';
 import ItemListComponents from '../../components/shop/ItemList';
 import BannerItem from '../../components/shop/categories';
 import EditItem from './editItem';
+import { ItemType } from 'types/shopTypes';
 import {
+  StoreContainer,
   ContentsBox,
   ItemContainer,
   CategoryBox,
   ItemList,
+  Contents,
 } from '../../components/characters/StoreStyle';
-function ItemPage({ categories, setCategory, category }: any) {
+import { resetItem } from './util/util';
+function ItemPage() {
+  const [item, setItem] = useState<ItemType>(resetItem);
   const [inputState, setInputState] = useState('');
+  const [category, setCategory] = useState('all');
   return (
-    <ContentsBox>
-      <ItemList>
-        <ItemContainer>
-          <BannerItem
-            categories={categories}
-            setCategory={setCategory}
-          ></BannerItem>
-          <Search setState={setInputState}></Search>
-          <CategoryBox>
-            <ItemListComponents
-              category={category === 'all' ? 'all' : category}
-              inputValue={inputState}
-              url={'/admin/item/'}
-            ></ItemListComponents>
-          </CategoryBox>
-        </ItemContainer>
-      </ItemList>
+    <StoreContainer>
+      <ContentsBox>
+        <Contents>
+          <ItemList>
+            <BannerItem setCategory={setCategory}></BannerItem>
 
-      <EditItem></EditItem>
-    </ContentsBox>
+            <Search setState={setInputState}></Search>
+            <button
+              onClick={() => {
+                setItem(resetItem);
+              }}
+            >
+              에딧 창 리셋
+            </button>
+            <ItemContainer>
+              <CategoryBox>
+                <ItemListComponents
+                  category={category === 'all' ? 'all' : category}
+                  inputValue={inputState}
+                  setItem={setItem}
+                ></ItemListComponents>
+              </CategoryBox>
+            </ItemContainer>
+          </ItemList>
+
+          <EditItem itemData={item}></EditItem>
+        </Contents>
+      </ContentsBox>
+    </StoreContainer>
   );
 }
 
