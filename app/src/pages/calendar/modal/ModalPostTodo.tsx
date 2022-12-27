@@ -35,7 +35,7 @@ const Todo = ({ dates }: { dates: string | any }) => {
   const onValid = async (input: checkTodo) => {
     const data = {
       calendarId: input.calendar,
-      startDate: dates,
+      startDate: Number(dates),
       title: input.title,
       labelColor: color,
       isTodo: true,
@@ -93,7 +93,7 @@ const Todo = ({ dates }: { dates: string | any }) => {
           <option defaultValue="no" value="no">
             캘린더를 선택해 주세요
           </option>
-          {list.map(item=>{return <option value={item.calendarId}>{item.calendarName}</option>})}
+          {list.map(item=>{return <option key={`${item.calendarId}`} value={item.calendarId}>{item.calendarName}</option>})}
         </SelectCal>
 
         <PickColor

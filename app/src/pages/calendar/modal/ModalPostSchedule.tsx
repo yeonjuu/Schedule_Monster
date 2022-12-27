@@ -77,7 +77,8 @@ const Schedule = ({ dates }: { dates: string | any }) => {
       
       const data = {
         calendarId: input.calendar,
-        startDate: startDate,
+        startDate: Number(format(startDate, 'YYMMdd')),
+        startTime: Number(format(startDate, 'hhmm')),
         endDate: endDate,
         title: input.title,
         labelColor: color,
@@ -101,6 +102,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
   const onInvalid = (errors: FieldErrors) => {
     console.log('실패');
     console.log(errors);
+    console.log(Number(format(startDate, 'hhmm')));
   };
 
   return (
@@ -166,7 +168,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
           <option defaultValue="no" value="no">
             캘린더를 선택해 주세요
           </option>
-          {list.map(item=>{return <option value={item.calendarId}>{item.calendarName}</option>})}
+          {list.map(item=>{return <option key={`${item.calendarId}`} value={item.calendarId}>{item.calendarName}</option>})}
         </SelectCal>
         <PickColor
           type="button"

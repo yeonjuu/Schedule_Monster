@@ -2,8 +2,6 @@ import {
   faCaretLeft,
   faRotateRight,
   faCaretRight,
-  faCaretUp,
-  faCaretDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { format } from 'date-fns';
@@ -11,7 +9,6 @@ import { Controller } from 'types/calendarTypes';
 import { CalendarController } from './CalendarStyles';
 import React from 'react';
 import { CalendarList } from 'components/calendar/CalendarList';
-import { Plus } from 'components/calendar/Plus';
 
 const DateController = ({ date, onClick }: Controller) => {
   return (

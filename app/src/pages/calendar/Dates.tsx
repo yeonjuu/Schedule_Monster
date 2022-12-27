@@ -120,7 +120,7 @@ const Dates = ({
 
         dispatch(openModal());
 
-        navigate(`/calendar/todos/${format(date, 'yyyy-MM-dd')}`);
+        navigate(`/calendar/todos/${format(date, 'yyyyMMdd')}`);
       }}
     >
       <Day
