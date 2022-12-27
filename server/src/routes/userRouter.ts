@@ -11,4 +11,3 @@ userRouter.get('/user/:email', asyncHandler(userController.getUser));
 userRouter.put('/user', asyncHandler(userController.updateUser));
 userRouter.delete('/user/:email', asyncHandler(userController.deleteUser));
 userRouter.post('/logout', asyncHandler(userController.logoutUser));
-userRouter.post('/character', asyncHandler(userController.addCharater));

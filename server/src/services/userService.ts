@@ -129,31 +129,6 @@ class UserService {
     return await this.User.findOneAndUpdate(filter, { $unset: { refreshToken: '' } }, option);
   }
 
-  async addCharater(characterData: CharaterListInterface) {
-    const { email, id, level, exp } = characterData;
-
-    if (!(email && id && level && exp))
-      throw new Error('type:BadRequest,content:요청이 정상적으로 수신되지 않아 추가할 수 없습니다.');
-
-    const user = await this.User.findOne({ email });
-    if (!user) throw new Error('type:BadRequest,content:요청이 정상적으로 수신되지 않아 추가할 수 없습니다.');
-
-    const filter = { email };
-
-    let charaterList: Array<object> = [];
-    const charaterSet = {
-      id,
-      level,
-      exp,
-    };
-    charaterList.push(charaterSet);
-    await this.User.findOneAndUpdate(filter, {
-      $push: { characterlist: charaterList },
-    });
-    const result = await this.User.findOne({ email });
-    return result;
-  }
-
   async postManager(userInfo: RegisterInterface) {
     const { email, password, nickname } = userInfo;
     const auth = 'admin';
