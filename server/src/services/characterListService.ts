@@ -23,6 +23,15 @@ class CharacterListService {
     return result;
   }
 
+  // 수집된 캐릭터 수를 기준으로 사용자 정렬
+  async getUserOrder() {
+    const result = await this.characterList.aggregate( [{$project: { _id:1, email: 1}}, {$group: {
+        _id: "$email",
+        count: { $sum: 1 }
+      }} ]).sort({count: "desc"} );
+    return result;
+  }
+
   // 사용자 캐릭터 리스트 추가
   async createCharacterList(characterListInfo: CharacterListInterface) {
     return await this.characterList.create(characterListInfo);

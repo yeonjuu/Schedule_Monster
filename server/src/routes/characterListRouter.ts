@@ -10,6 +10,8 @@ export const characterListRouter = Router();
 characterListRouter.get('/all/:email', asyncHandler(characterListController.getCharacterLists));
 // 캐릭터 상세정보 확인
 characterListRouter.get('/detail/:email', asyncHandler(characterListController.getCharacterList));
+// 수집 캐릭터 순위
+characterListRouter.get('/order', asyncHandler(characterListController.getUserOrder));
 // 캐릭터 등록
 characterListRouter.post('/register', asyncHandler(characterListController.createCharacterList));
 // 캐릭터 수정
