@@ -1,14 +1,16 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { MonsterContainer, MonsterImage, MonsterImageContainer, MonsterLine, MonsterStatus } from './StoreStyle';
-import { useSelector } from 'react-redux';
+import { mainProfile, secondProfile, thirdProfile, mainName, mainAffection } from 'pages/characters/statusReducer';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import * as API from '../../api';
 
 export default function MonsterProfile() {
 
   const user = useSelector((state: RootState) => state.persistedReducer);
   const { point, email } = user;
 
-
+  const dispatch = useDispatch();
   const name = useSelector((state:any) => state.statusReducer.name);
   // const coin = useSelector((state:any) => state.statusReducer.coin);
   const affection = useSelector((state:any) => state.statusReducer.affection);
@@ -16,12 +18,29 @@ export default function MonsterProfile() {
   const secondImage = useSelector((state:any) => state.statusReducer.secondImage);
   const thirdImage = useSelector((state:any) => state.statusReducer.thirdImage);
 
+
+  useEffect(() => {
+    async function fetchData() {
+        //api주소 변경 필요     `/characterlist/pick/${email}`
+        const data = await API.get('/characterlist/pick/chaeyujin@email.com');
+
+        dispatch(mainName(data.nameKo));
+        dispatch(mainAffection(data.myExp));
+
+        dispatch(mainProfile(data.image.back_default));
+        dispatch(secondProfile(data.image.front_default));
+        dispatch(thirdProfile(data.image.front_shiny));
+    }
+    fetchData();
+  }, []);
+
+
     return (
         <>
           <MonsterContainer>
                 <MonsterImageContainer>
                   <MonsterImage src={
-                    affection === 100 ? secondImage : affection === 200 ? thirdImage : mainImage
+                    affection === 50 ? secondImage : affection === 100 ? thirdImage : mainImage
                   }
                   />
                 </MonsterImageContainer>
