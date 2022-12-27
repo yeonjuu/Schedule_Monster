@@ -3,6 +3,7 @@ export interface IUser {
   email: string;
   point: number;
   auth: string;
+  calendarId: string;
 }
 
 export interface ILogin {
