@@ -1,3 +1,4 @@
+import { mainColor } from 'assets/styles';
 import styled from 'styled-components';
 
 export const InfoWrapper = styled.div`
@@ -138,4 +139,28 @@ export const InfoInput = styled.input<{ type: 'text' }>`
   margin-left: 10px;
   border-radius: 8px;
   border: none;
+`;
+
+export const Modal = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(126, 126, 126, 0.9);
+  z-index: 1;
+`;
+
+export const Content = styled.div`
+  opacity: 1;
+  background-color: #ffffff;
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid ${mainColor};
 `;
