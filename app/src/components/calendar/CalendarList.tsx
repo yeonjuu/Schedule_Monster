@@ -21,17 +21,18 @@ type res = {
 };
 
 export const CalendarList = () => {
-  const [list, setList] = useState<res[]>([]);
-  //캘린더아이디
-  const [selected, setSelected] = useState('');
   const dispatch = useDispatch();
   const email = useSelector((state: RootState) => state.persistedReducer.email);
+  const calendarId = useSelector(
+    (state: RootState) => state.persistedReducer.calendarId,
+  );
+  const [list, setList] = useState<res[]>([]);
+  //캘린더아이디
+  const [selected, setSelected] = useState(calendarId);
 
   const fetchData = async () => {
     const data = await API.get(`/calendar/${email}`);
     setList(data);
-    setSelected(data[0].calendarId);
-    dispatch(changeCalendarId(selected));
   };
 
   useEffect(() => {
