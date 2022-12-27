@@ -119,7 +119,9 @@ class UserService {
 
       { returnOriginal: false },
     );
-    return { loginUser, accessToken, accessExp, refreshExp };
+
+    const calendar = await calendarService.getCalendar(email);
+    return { loginUser, accessToken, accessExp, refreshExp, calendar: calendar[0] };
   }
 
   // 계정 로그아웃
