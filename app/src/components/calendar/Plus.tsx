@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as API from '../../api';
-import * as Style from './modal';
+import * as Style from '../modal/modal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 

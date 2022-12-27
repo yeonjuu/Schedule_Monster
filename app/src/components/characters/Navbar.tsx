@@ -29,6 +29,10 @@ export default function Navbar() {
             <NavMenu>수집도감</NavMenu>
           </Link>
 
+          <Link style={{ textDecoration: 'none' }} to="/store/allcharacters">
+            <NavMenu>전체도감</NavMenu>
+          </Link>
+
       </NavMenuContainer>
     </>
   );

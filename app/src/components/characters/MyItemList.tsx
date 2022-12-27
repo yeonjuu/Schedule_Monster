@@ -1,7 +1,7 @@
 import React,{ useEffect,useState } from 'react';
 import { ItemBox, ItemButton } from './StoreStyle';
 import * as API from '../../api';
-import { applyItem } from 'pages/characters/statusReducer';
+import { applyItem, mainAffection } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import filterCategory from '../../util/filterCategory';
@@ -17,17 +17,20 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
 
     const dispatch = useDispatch<any>();
     const currentCoin = useSelector((state: any) => state.statusReducer.coin);
+    
     const [isLoading, setIsLoading] = useState(true);
 
     const affection = useSelector((state:any) => state.statusReducer.affection);
     const mainImage = useSelector((state:any) => state.statusReducer.mainImage);
+    const mainId = useSelector((state: any) => state.statusReducer.mainId);
+
     const user = useSelector((state: RootState) => state.persistedReducer);
-    const { email } = user;
+    const { email, point } = user;
 
     useEffect( () => {
         async function fetchData () {
             //테스트 데이터
-            const data = await API.get(`/useritem/detail/chaeyujin@email.com`);
+            const data = await API.get(`/useritem/detail/${email}`);
             setMyItems(data);
             setIsLoading(!isLoading);
         };
@@ -99,9 +102,18 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                         `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
                         ); 
 
-                      if (isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      const isEgg = myitems.categoryName == '알';
+
+                      if (isEgg && isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
                       dispatch(applyItem(myitems.exp));
-                      alert('애정도가 가득 채워졌습니다😊');
+                      alert(`${myitems.exp}만큼 애정도가 채워졌습니다😊`);
+
+                      API.post('/useritem/use', {
+                        email,
+                        itemId: myitems._id,        //사용하려는 아이템의 id
+                        characterId: mainId,    // 아이템효과를 적용하려는 캐릭터의 id
+                    });
+
                       }
                       else if (isUse && affection >= 100) {
                       alert('애정도가 이미 가득 채워졌습니다');
