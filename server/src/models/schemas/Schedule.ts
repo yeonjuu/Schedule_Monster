@@ -4,11 +4,28 @@ import { Schema } from 'mongoose';
 export interface ScheduleInterface {
   calendarId?: string;
   scheduleId?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startYYYYMM: Number;
+  startYYYYMMDD: Number;
+  endYYYYMM: Number;
+  endYYYYMMDD: Number;
+  startTime?: Number;
+  endTime?: Number;
   title?: string;
   labelColor?: string;
   isTodo?: boolean;
+  isCompleted?: boolean;
+}
+
+export interface SchedulePostInterface {
+  scheduleId?: string;
+  startDate: string;
+  endDate: string;
+  startTime?: string;
+  endTime?: string;
+  title: string;
+  labelColor?: string;
+  isTodo?: boolean;
+  isCompleted?: boolean;
 }
 
 // 스키마
@@ -22,12 +39,28 @@ export const ScheduleSchema = new Schema<ScheduleInterface>(
       type: String,
       required: true,
     },
-    startDate: {
-      type: Date,
+    startYYYYMM: {
+      type: Number,
       required: true,
     },
-    endDate: {
-      type: Date,
+    startYYYYMMDD: {
+      type: Number,
+      required: true,
+    },
+    startTime: {
+      type: Number,
+      required: false,
+    },
+    endYYYYMM: {
+      type: Number,
+      required: false,
+    },
+    endYYYYMMDD: {
+      type: Number,
+      required: false,
+    },
+    endTime: {
+      type: Number,
       required: false,
     },
     title: {
@@ -39,6 +72,10 @@ export const ScheduleSchema = new Schema<ScheduleInterface>(
       required: false,
     },
     isTodo: {
+      type: Schema.Types.Boolean,
+      default: false,
+    },
+    isCompleted: {
       type: Schema.Types.Boolean,
       default: false,
     },
