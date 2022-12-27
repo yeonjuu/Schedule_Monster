@@ -4,7 +4,11 @@ import { basicFont, hoverDark } from 'assets/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/store';
 import * as API from '../../api';
-import { changeCalendarId } from '../../pages/login/userSlice';
+import {
+  changeCalendarId,
+  postCalendarList,
+} from '../../pages/login/userSlice';
+import { Plus } from './Plus';
 
 //캘린더 리스트를 받아올려면,
 //사용자별 캘린더 조회 api 응답값..
@@ -33,6 +37,8 @@ export const CalendarList = () => {
   const fetchData = async () => {
     const data = await API.get(`/calendar/${email}`);
     setList(data);
+    dispatch(postCalendarList(data));
+    dispatch(changeCalendarId(selected));
   };
 
   useEffect(() => {
@@ -43,7 +49,7 @@ export const CalendarList = () => {
     const id = event.target.value;
     const changed = list.find((calendar) => calendar.calendarId === id);
     if (changed) {
-      console.log('changed', changed.calendarName);
+      console.log('changed', changed.calendarId);
       setSelected(changed.calendarName);
       dispatch(changeCalendarId(changed.calendarId));
     }
@@ -51,18 +57,20 @@ export const CalendarList = () => {
 
   return (
     //옵션이 변경될 때마다 캘린더 id 변경, 그거 store에 넣어서 보관하는게 좋을라나,
-    <CalendarWrapper>
-      {selected}
-      <Select onChange={changeHandler} defaultValue={selected}>
-        {list.map((each, idx) => {
-          return (
-            <option key={idx} value={each.calendarId}>
-              {each.calendarName}
-            </option>
-          );
-        })}
-      </Select>
-    </CalendarWrapper>
+    <>
+      <CalendarWrapper>
+        <Select onChange={changeHandler} defaultValue={selected}>
+          {list.map((each, idx) => {
+            return (
+              <option key={idx} value={each.calendarId}>
+                {each.calendarName}
+              </option>
+            );
+          })}
+        </Select>
+      </CalendarWrapper>
+      <Plus setList={setList} />
+    </>
   );
 };
 

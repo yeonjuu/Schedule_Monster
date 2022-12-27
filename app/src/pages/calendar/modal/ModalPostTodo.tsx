@@ -2,11 +2,12 @@ import { post } from 'api';
 import { mainColor } from 'assets/styles';
 import { ModalBtn } from 'components/button/buttons';
 import { ErrorWord, Input, InputBox, SelectCal } from 'components/input/inputs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TwitterPicker from 'react-color/lib/components/twitter/Twitter';
 import { FieldErrors, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from 'store/store';
 import { checkTodo } from 'types/calendarTypes';
 import { closeModal } from '../slice/modalSlice';
 import { BtnBox, PickColor } from './ModalStyle';
@@ -18,15 +19,16 @@ const Todo = ({ dates }: { dates: string | any }) => {
   // const month: number = Number(dates.slice(5, 7));
   // const day: number = Number(dates.slice(8, 10));
 
+ 
+
   const {
     handleSubmit,
     register,
-
     formState: { errors },
   } = useForm({ mode: 'onChange' });
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string>(`${mainColor}`);
-
+  const list = useSelector((state: RootState) => state.persistedReducer.calendarList);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -91,8 +93,7 @@ const Todo = ({ dates }: { dates: string | any }) => {
           <option defaultValue="no" value="no">
             캘린더를 선택해 주세요
           </option>
-          <option value="test1">테스트 1</option>
-          <option value="test2">테스트 2</option>
+          {list.map(item=>{return <option value={item.calendarId}>{item.calendarName}</option>})}
         </SelectCal>
 
         <PickColor
