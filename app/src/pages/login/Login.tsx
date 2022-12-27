@@ -23,20 +23,24 @@ export const Login = () => {
     try {
       const data = await API.post('/register/login', userInfo);
       console.log(data);
+      const { calendarId } = data.calendar;
       const { auth, point, nickname } = data.loginUser;
-      const { accessToken, refreshToken } = data;
+      const { accessToken, accessExp } = data;
       if (accessToken) {
         const user: IUser = {
           email,
           nickname,
           point,
           auth,
+          calendarId,
         };
         //store에 로그인 유저 정보 저장
+        alert(calendarId);
         dispatch(login(user));
         //토근 로컬 스토리지 저장
+        debugger;
         localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('accessExp', accessExp);
         alert(`안녕하세요😁 ${nickname}님`);
 
         //경로확인하기
