@@ -1,14 +1,12 @@
 import React,{ useEffect,useState } from 'react';
-import { ContentsBox, ItemBox, ItemButton, StoreContainer } from './StoreStyle';
+import { ItemBox, ItemButton } from './StoreStyle';
 import * as API from '../../api';
 import { applyItem } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-import { NavBar } from 'components/navbar/NavBar';
-import { Logo } from 'components/logo/Logo';
-
+import { RootState } from '../../store/store';
 
 export default function MyitemList ({ myItems, setMyItems, category, inputValue } :
     {   myItems: any;
@@ -21,10 +19,15 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
     const currentCoin = useSelector((state: any) => state.statusReducer.coin);
     const [isLoading, setIsLoading] = useState(true);
 
+    const affection = useSelector((state:any) => state.statusReducer.affection);
+    const mainImage = useSelector((state:any) => state.statusReducer.mainImage);
+    const user = useSelector((state: RootState) => state.persistedReducer);
+    const { email } = user;
 
     useEffect( () => {
         async function fetchData () {
-            const data = await API.get('/items/all');
+            //테스트 데이터
+            const data = await API.get(`/useritem/detail/chaeyujin@email.com`);
             setMyItems(data);
             setIsLoading(!isLoading);
         };
@@ -76,7 +79,7 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                     
                     </div>
 
-                    <div>{myitems.itemName}</div>
+                    <div style={{alignSelf:'center'}}>{myitems.itemName}</div>
 
                     <div
                         style={{
@@ -90,12 +93,26 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
             <>
                 <ItemButton
                 onClick={() => {
-                    const isUse = window.confirm(
-                    `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
-                    );
-                    if (isUse && currentCoin != 0) {
-                    dispatch(applyItem(myitems.exp));
+
+                  if (mainImage !== '/pokeball.png') {
+                      const isUse = window.confirm(
+                        `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
+                        ); 
+
+                      if (isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      dispatch(applyItem(myitems.exp));
+                      alert('애정도가 가득 채워졌습니다😊');
+                      }
+                      else if (isUse && affection >= 100) {
+                      alert('애정도가 이미 가득 채워졌습니다');
                     }
+                  }
+
+
+                else if (mainImage === '/pokeball.png') {
+                    alert('대표캐릭터를 먼저 지정해주세요!');
+                    }
+
                 }}
                 >
                 사용하기
