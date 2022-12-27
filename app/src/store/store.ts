@@ -19,6 +19,7 @@ import categoryListSlice from 'pages/admin/slice/categoryListSlice';
 import monsterListSlice from 'pages/admin/slice/monsterListSlice';
 import modalSlice from '../pages/calendar/slice/modalSlice';
 import todoSlice from 'pages/calendar/slice/todoSlice';
+import mainCharacterSlice from './../pages/calendar/slice/mainCharacter';
 const persistConfig = {
   key: 'root',
   storage,
@@ -39,7 +40,8 @@ const store = configureStore({
     categoryListReducer: categoryListSlice.reducer,
     monsterListReducer: monsterListSlice.reducer,
     modalSlice,
-    todoSlice
+    todoSlice,
+    mainCharacterSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

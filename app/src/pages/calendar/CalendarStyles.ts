@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 export const Calendar = styled.div`
   display: flex;
@@ -13,6 +13,10 @@ export const WeekContainer = styled.div`
   align-items: center;
   background-color: white;
   height: 100%;
+  & > div {
+    overflow: hidden; //container밖 빠져나오는 요소 숨김
+    white-space: nowrap;
+  }
 `;
 
 //Dates=> DateContainer
@@ -88,9 +92,7 @@ export const Day = styled.p<{
       ${(props) =>
     props.today &&
     css`
-      font-weight: bold;
-      font-size: large;
-      text-decoration: underline;
+      background-color: yellow;
     `}
     ${(props) =>
     props.week === 'Sun'
@@ -116,10 +118,16 @@ export const HeaderCalendar = styled.div`
   }
 `;
 
+export const Layout = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
 export const Container = styled.div`
   width: 84vw;
-  max-width: 1024px;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,37 +135,36 @@ export const Container = styled.div`
 `;
 
 export const CalendarController = styled.div`
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90px;
+  height: 40px;
   width: 100%;
   font-size: 18px;
-  margin: 15px 0;
-  & > button {
+  margin: 20px 0 50px 0;
+  & > svg {
     cursor: pointer;
     border: none;
+    width: 25px;
+    height: 25px;
     background-color: transparent;
     color: #414656;
-    font-size: 20px;
-    padding: 0 15px;
+    font-size: 22px;
+    padding: 0 5px;
+  }
+  & > div {
+    display: flex;
   }
 `;
 
 export const MonsterBox = styled.div`
-  display: flex;
-  background-color: #ffeeca;
-  height: 150px;
-  width: 100%;
-  margin-top: 20px;
-  border-radius: 10px;
-`;
-
-export const Layout = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  position: absolute;
+  top: 0px;
+  background-color: transparent;
+  height: 160px;
+  width: 84vw;
+  z-index: -1;
 `;
 
 export const HolidayLabel = styled.div<{ description: string }>`
@@ -167,12 +174,15 @@ export const HolidayLabel = styled.div<{ description: string }>`
   margin-top: 2px;
 
   color: white;
-  text-align: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 550;
-  line-height: 19px;
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 19px;
+  }
+
   ${(props) =>
     props.description === '공휴일'
       ? css`
@@ -183,33 +193,67 @@ export const HolidayLabel = styled.div<{ description: string }>`
         `}
 `;
 
-export const ScheduleLabel = styled.div<{ labelColor: string, isCompleted: boolean }>`
+export const ScheduleLabel = styled.div<{
+  labelColor: string;
+  isCompleted: boolean;
+}>`
+  display: flex;
+  cursor: pointer;
   height: 15%;
   width: 100%;
-  
   margin-top: 2px;
   background-color: ${(props) => props.labelColor};
   color: white;
-  text-align: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 550;
-  line-height: 19px;
-  ${props=>props.isCompleted&& css`
-  text-decoration:line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: '#D6A319';
-  `}
+  ${(props) =>
+    props.isCompleted &&
+    css`
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: '#D6A319';
+    `}
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 19px;
+  }
 `;
 
-export const TodoLabel=styled(ScheduleLabel)`
-border-radius: 6px;
-`
+export const TodoLabel = styled(ScheduleLabel)`
+  border-radius: 6px;
+`;
 
 export const PickCalBox = styled.div`
   white-space: nowrap;
   overflow: auto;
   width: 500px;
   height: 30px;
+`;
+
+const png = keyframes`
+
+5%{
+  transform: scaleX(-1);
+}
+    10%{
+        top: 10px;
+        transform: scaleX(1);
+    }
+    to{
+
+    }
+  
+`;
+
+export const Monster = styled.img<{ src: string }>`
+z-index: 10;
+  position: relative;
+  left: 50%;
+  top: 40%;
+  ${(props) =>
+    props.src.lastIndexOf('.png') > 0 &&
+    css`
+      animation: ${png} 4500ms infinite alternate ease-in-out;
+    `}
 `;

@@ -55,6 +55,8 @@ export interface Controller {
 export type onClickObj = {
   prev: () => void;
   next: () => void;
+  up: () => void;
+  down: () => void;
   now: () => void;
 };
 

@@ -18,7 +18,6 @@ import { useState } from 'react';
 import { checkTodo, todoData } from 'types/calendarTypes';
 import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
 import * as API from 'api';
-import { mainColor } from 'assets/styles';
 
 const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const dispatch = useDispatch();
@@ -47,11 +46,12 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
 
       try {
         console.log(data);
-        // await API.put(`/schedule/day`, data);
+        await API.put(`/schedule/day`, data);
         dispatch(changeCalendar({scheduleId: scheduleId, content:data}))
         alert('할 일을 수정하였습니다');
         dispatch(toggleTodo());
         navigate('/calendar');
+        dispatch(toggleTodo());
       } catch (err) {
         alert(err);
       }
@@ -63,7 +63,8 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
     };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.checked) {
+      //api 통신 달아줄 것  
+    if (e.target.checked) {
         content.isCompleted = true;
         console.log(content);
         alert('할 일을 완료하였습니다! 포인트가 지급됩니다.')
@@ -76,9 +77,11 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       }
       
       const onDelete=async()=>{
+        // 캘린더 id 들어갈 것
         await API.delete(`/schedule/day/test1/${scheduleId}`);
         dispatch(deleteCalendar(scheduleId));
-        alert('할 일이 삭제되었습니다!')
+        alert('할 일이 삭제되었습니다!');
+        dispatch(toggleTodo());
       }
 
 
@@ -110,6 +113,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
             errors={errors.title}
           />
           <PickColor
+          disabled={content.isCompleted}
             type="button"
             onClick={() => setOpen((curr) => !curr)}
             labelColor={color}
