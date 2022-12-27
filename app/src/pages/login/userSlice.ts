@@ -7,6 +7,7 @@ const initialState = {
   point: 0,
   isLogin: false,
   auth: '',
+  calendarId: '',
 };
 
 const userSlice = createSlice({
@@ -36,9 +37,18 @@ const userSlice = createSlice({
     changeNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload;
     },
+    changeCalendarId: (state, action: PayloadAction<string>) => {
+      state.calendarId = action.payload;
+    },
   },
 });
 
-export const { login, logout, addPoint, minusPoint, changeNickname } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  addPoint,
+  minusPoint,
+  changeNickname,
+  changeCalendarId,
+} = userSlice.actions;
 export default userSlice.reducer;
