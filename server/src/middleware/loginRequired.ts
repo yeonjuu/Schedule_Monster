@@ -24,6 +24,23 @@ export async function loginRequired(req: Request, res: Response, next: NextFunct
     const auth = (<{ auth: string }>jwtDecoded).auth;
     req.body.email = email;
     req.body.auth = auth;
+    const user = await userService.getUser(email);
+    if (!user) return errorResponse(res, 'Forbidden', '이메일과 일치하는 정보가 존재하지 않습니다');
+    const { refreshToken } = user;
+    if (!refreshToken) return errorResponse(res, 'Forbidden', '리프레시 토큰이 존재하지 않습니다');
+    const { exp: tokenExpMS } = jwt.decode(refreshToken) as {
+      exp: number;
+    };
+    const tokenExp = tokenExpMS * 1000;
+    const now = Date.now();
+    const diff = tokenExp - now;
+    const marginTime = 3 * 24 * 60 * 60 * 1000; // 3days 만료기간 3일 전에는 파악해서 갱신을 진행
+    if (diff < marginTime) {
+      // 리프레시 토큰이 만료된 경우
+      const result = await userService.expandRefToken(email);
+      res.status(414).json(result); // 상태코드를 통해서 리프레시 토큰이 갱신되었음을 확인
+      return;
+    }
     next();
   } catch (error) {
     // error type일 경우에만 에러처리

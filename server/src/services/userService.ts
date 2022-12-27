@@ -284,7 +284,7 @@ class UserService {
   async expandAccToken(token: string, email: string) {
     console.log('expandAccToken 함수 진입');
     try {
-      const secretKey = process.env.JWT_SECRET_KEY;
+      const secretKey = JWT_SECRET_KEY;
       if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
       jwt.verify(token, secretKey);
       const { exp: tokenExp } = jwt.decode(token) as {
@@ -335,6 +335,29 @@ class UserService {
         throw new Error('type:BadRequest,content:토큰을 확인 하는 중에 비정상적인 오류가 발생했습니다.');
       }
     }
+  }
+  async expandRefToken(email: string) {
+    const secretKey = JWT_SECRET_KEY;
+    const refreshPayload = {};
+    const refreshToken = jwt.sign(refreshPayload, secretKey, {
+      expiresIn: '30d',
+    });
+
+    const { exp: refreshExpMS } = jwt.decode(refreshToken) as {
+      exp: number;
+    };
+
+    const refreshExp = refreshExpMS * 1000;
+    const updateUser = await this.User.findOneAndUpdate(
+      { email },
+      {
+        refreshToken: refreshToken,
+      },
+
+      { returnOriginal: false },
+    );
+
+    return { updateUser, refreshExp };
   }
 }
 const userService = new UserService(userModel);
