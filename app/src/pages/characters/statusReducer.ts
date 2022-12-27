@@ -21,21 +21,24 @@ const statusSlice = createSlice({
     applyItem: (state: any, action: PayloadAction<number>) => {
       state.affection += action.payload;
     },
-    mainImage: (state: any, action: PayloadAction<MainImage>) => {
+    mainProfile: (state: any, action: PayloadAction<MainImage>) => {
       state.mainImage = action.payload;
     },
-    secondImage: (state: any, action: PayloadAction<SecondImage>) => {
+    secondProfile: (state: any, action: PayloadAction<SecondImage>) => {
       state.secondImage = action.payload;
     },
-    thirdImage: (state: any, action: PayloadAction<ThirdImage>) => {
+    thirdProfile: (state: any, action: PayloadAction<ThirdImage>) => {
       state.thirdImage = action.payload;
     },
     mainName: (state: any, action: PayloadAction<MainName>) => {
       state.name = action.payload;
+    },
+    mainAffection: (state: any, action: PayloadAction<MainName>) => {
+      state.affection = action.payload;
     }
   },
 });
 
-export const { buyItem, applyItem, mainImage, mainName, secondImage, thirdImage } =
+export const { buyItem, applyItem, mainProfile, mainName, secondProfile, thirdProfile, mainAffection } =
   statusSlice.actions;
 export default statusSlice.reducer;
