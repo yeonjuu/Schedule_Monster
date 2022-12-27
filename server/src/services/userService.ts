@@ -53,14 +53,9 @@ class UserService {
   }
 
   async updateUser(updateInfo: UpdateInterface) {
-    const { email, password, nickname, point } = updateInfo;
+    const { email, nickname, point } = updateInfo;
     const user = await this.User.findOne({ email });
     if (!user) throw new Error('type:Forbidden,content:비정상적인 요청으로 확인되어 해당 요청을 차단합니다.');
-
-    const correctPasswordHash = user.password;
-    const isPasswordCorrect = await bcrypt.compare(password, correctPasswordHash);
-    if (!isPasswordCorrect)
-      throw new Error('type:Forbidden,content:비정상적인 요청으로 확인되어 해당 요청을 차단합니다.');
 
     const updateData = {
       ...(nickname && { nickname }),
