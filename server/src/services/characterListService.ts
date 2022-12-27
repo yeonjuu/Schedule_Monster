@@ -50,9 +50,9 @@ class CharacterListService {
   async changeOnePick(email: string, characterId:string) {
     // 기존꺼 false
     const filter = {email: email}
-    const result =  await this.characterList.updateMany(filter, {onePick: false});
+    await this.characterList.updateMany(filter, {onePick: false});
     // 현재꺼 true
-    await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
+    const result =  await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
     return result;
   }
 
