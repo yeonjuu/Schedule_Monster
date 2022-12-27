@@ -10,7 +10,7 @@ import {
 import MonsterProfile from 'components/characters/MonsterProfile';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { mainProfile, secondProfile, thirdProfile, mainName } from 'pages/characters/statusReducer';
+import { mainProfile, secondProfile, thirdProfile, mainName, mainAffection, characterId} from 'pages/characters/statusReducer';
 import * as API from '../../api';
 import Navbar from 'components/characters/Navbar';
 import { RootState } from '../../store/store';
@@ -28,7 +28,7 @@ export default function CharactersList() {
   useEffect(() => {
     async function fetchData() {
         //api주소 변경 필요     `/characterlist/detail/${email}`
-        const data = await API.get('/characterlist/detail/chaeyujin@email.com');
+        const data = await API.get(`/characterlist/detail/${email}`);
         setPokemons(data);
         setIsLoading(!isLoading);
     }
@@ -76,6 +76,14 @@ export default function CharactersList() {
                         dispatch(secondProfile(clicked.image.front_default));
                         dispatch(thirdProfile(clicked.image.front_shiny));
                         dispatch(mainName(clicked.nameKo));
+                        dispatch(mainAffection(clicked.myExp));
+                        dispatch(characterId(clicked._id));
+
+                        API.put('/characterlist/pick',{ 
+                          email,
+                          characterId : clicked._id,
+                        });
+
                       }
                       // console.log(isMain);
                     }}

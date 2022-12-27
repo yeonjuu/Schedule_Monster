@@ -16,6 +16,7 @@ import Admin from './pages/admin/admin';
 import { MyPage } from 'pages/mypage/UserMyPage';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NotFound } from 'pages/NotFound';
+import AllCharacters from 'pages/characters/AllCharacters';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       },
       { path: '/store/myitems', element: <MyItems></MyItems> },
       { path: '/store/myitems/:id', element: <MyItems></MyItems> },
+      { path: '/store/allcharacters', element: <AllCharacters></AllCharacters> },
     ],
   },
   {
