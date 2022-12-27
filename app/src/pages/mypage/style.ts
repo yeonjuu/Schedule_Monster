@@ -38,7 +38,7 @@ export const StaticWrapper = styled.div`
     'b c';
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 50px 1fr 1fr;
-  background-color: ##c4d3f8;
+  background-color: #c4d3f8;
 `;
 
 export const TodoBlock = styled.div`
