@@ -21,7 +21,7 @@ import { checkTodo, todoData } from 'types/calendarTypes';
 import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
 import * as API from 'api';
 import { ko } from 'date-fns/esm/locale';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 
 const ScheduleContent = ({
   scheduleId,
@@ -36,14 +36,18 @@ const ScheduleContent = ({
 
   const content = { ...tmp };
 
-  const tmpYear = Number(content.startDate!.slice(0, 4));
-  const tmpMonth = Number(content.startDate!.slice(4, 6));
-  const tmpDay = Number(content.startDate!.slice(6, 8));
+  const startYear = Number(content.startDate?.slice(0, 4));
+  const startMonth = Number(content.startDate?.slice(4, 6))-1; //Date객체에서는 month-1
+  const startDay = Number(content.startDate?.slice(6, 8));
+  const endYear = Number(content.endDate?.slice(0, 4));
+  const endMonth = Number(content.endDate?.slice(4, 6))-1;
+  const endDay = Number(content.endDate?.slice(6, 8));
+
   const [startDate, setStartDate] = useState<Date>(
-    new Date(tmpYear, tmpMonth - 1, tmpDay),
+    new Date(startYear, startMonth, startDay),
   );
   const [endDate, setEndDate] = useState<Date>(
-    new Date(tmpYear, tmpMonth - 1, tmpDay),
+    new Date(endYear, endMonth, endDay),
   );
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
@@ -59,7 +63,7 @@ const ScheduleContent = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       content.isCompleted = true;
-      console.log(content);
+
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
       dispatch(changeCalendar({ scheduleId: scheduleId, content: content }));
     } else {
@@ -72,6 +76,7 @@ const ScheduleContent = ({
     await API.delete(`/schedule/day/test1/${scheduleId}`);
     dispatch(deleteCalendar(scheduleId));
     alert('일정이 삭제되었습니다!');
+    dispatch(toggleTodo());
   };
 
   useEffect(() => {
@@ -107,7 +112,7 @@ const ScheduleContent = ({
       try {
         console.log(data);
         dispatch(changeCalendar({ scheduleId: scheduleId, content: data }));
-        // await API.put(`/schedule/day`, data);
+        await API.put(`/schedule/day`, data);
         alert('일정을 등록하였습니다');
         dispatch(toggleTodo());
         navigate('/calendar');
@@ -150,6 +155,7 @@ const ScheduleContent = ({
             errors={errors.title}
           />
           <PickColor
+          disabled={content.isCompleted}
             type="button"
             onClick={() => setOpen((curr) => !curr)}
             labelColor={color}

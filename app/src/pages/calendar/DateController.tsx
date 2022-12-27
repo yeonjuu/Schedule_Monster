@@ -2,6 +2,8 @@ import {
   faCaretLeft,
   faRotateRight,
   faCaretRight,
+  faCaretUp,
+  faCaretDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { format } from 'date-fns';
@@ -12,16 +14,12 @@ import React from 'react';
 const DateController = ({ date, onClick }: Controller) => {
   return (
     <CalendarController>
-      <button onClick={onClick.prev}>
-        <FontAwesomeIcon icon={faCaretLeft} />
-      </button>
-      {format(date, 'yyyy')}년 {format(date, 'M')}월
-      <button onClick={onClick.next}>
-        <FontAwesomeIcon icon={faCaretRight} />
-      </button>
-      <button onClick={onClick.now}>
-        <FontAwesomeIcon icon={faRotateRight} />
-      </button>
+      <FontAwesomeIcon onClick={onClick.prev} icon={faCaretLeft} />
+      <FontAwesomeIcon onClick={onClick.up} icon={faCaretUp} />
+      <h3>{format(date, 'yyyy')}</h3><p>&nbsp;년&nbsp;&nbsp;</p><h3>{format(date, 'M')}</h3><p>&nbsp;월</p>
+      <FontAwesomeIcon onClick={onClick.down} icon={faCaretDown} />
+      <FontAwesomeIcon onClick={onClick.next} icon={faCaretRight} />
+      <FontAwesomeIcon onClick={onClick.now} icon={faRotateRight} />
     </CalendarController>
   );
 };

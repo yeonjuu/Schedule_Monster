@@ -29,6 +29,9 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { TodoModal } from './modal/TodosModal';
+import { Logo } from 'components/logo/Logo';
+import { Header } from 'components/header/Header';
+import MainMonster from './MainMonster';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -102,6 +105,13 @@ const CalendarPage = () => {
     next: () => {
       setDate((curr) => add(curr, { months: 1 }));
     },
+    up: () => {
+      setDate((curr) => add(curr, { years: 1 }));
+    },
+    down: () => {
+      setDate((curr) => sub(curr, { years: 1 }));
+    },
+
     now: () => {
       setDate(new Date());
     },
@@ -138,14 +148,16 @@ const CalendarPage = () => {
     return brr; //한달이 끝나면 brr 반환
   };
 
-  return (
+  return (<>
+   
     <Layout>
+      
       <Container>
-        <NavBar />
-        <MonsterBox>스킨</MonsterBox>
-        <div>
+      <Header></Header>
+        <MainMonster/>
+        
           <DateController date={date} onClick={onClick} />
-        </div>
+        
         <HeaderCalendar>
           {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
             return <p key={`${names}-${index}`}>{names}</p>;
@@ -157,6 +169,7 @@ const CalendarPage = () => {
         
       </Container>
     </Layout>
+    </>
   );
 };
 

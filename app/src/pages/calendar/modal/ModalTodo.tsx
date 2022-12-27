@@ -14,9 +14,9 @@ import { BtnBox, PickColor } from './ModalStyle';
 const Todo = ({ dates }: { dates: string | any }) => {
   //여기서 dates로 받아오는 것은 params 값. params는 해당 날짜에 해당(ex: 2022-12-25)
   //slice를 각각 해준 이유는 모달 창에서 선택된 날짜가 가시적으로 보이게 하기 위해
-  const year: number = Number(dates.slice(0, 4));
-  const month: number = Number(dates.slice(5, 7));
-  const day: number = Number(dates.slice(8, 10));
+  // const year: number = Number(dates.slice(0, 4));
+  // const month: number = Number(dates.slice(5, 7));
+  // const day: number = Number(dates.slice(8, 10));
 
   const {
     handleSubmit,
@@ -58,7 +58,7 @@ const Todo = ({ dates }: { dates: string | any }) => {
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <span>
-        {year}년 {month}월 {day}일
+        {/* {year}년 {month}월 {day}일 */}
       </span>
       <InputBox>
         <Input
