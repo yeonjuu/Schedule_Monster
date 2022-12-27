@@ -75,7 +75,7 @@ export const Register = () => {
     }
 
     //사용자 등록
-    const data = await API.post('/users', {
+    const data = await API.post('/register', {
       nickname,
       email,
       password: pw,
@@ -83,7 +83,7 @@ export const Register = () => {
     alert(`${data.nickname}님 환영합니다🙂`);
 
     //로그인 연결
-    const resData = await API.post('/users/login', { email, password: pw });
+    const resData = await API.post('/register/login', { email, password: pw });
     console.log(resData);
     const { auth, point, nickname: resNickname } = resData.loginUser;
     const { accessToken } = resData;
@@ -115,7 +115,7 @@ export const Register = () => {
   };
 
   const checkNicknameHandler = async () => {
-    const isRight = await API.get(`/users/nickname/${nickname}`);
+    const isRight = await API.get(`/register/nickname/${nickname}`);
     if (isRight) {
       setMsg({
         content: '사용가능한 닉네임입니다.',
@@ -137,7 +137,7 @@ export const Register = () => {
     }
     //이메일 인증 api
     try {
-      const { authNum } = await API.get(`/users/auth/${email}`);
+      const { authNum } = await API.get(`/register/auth/${email}`);
       console.log('response : ', authNum);
       setOnAuth(true);
       setResAuthNum(authNum);
