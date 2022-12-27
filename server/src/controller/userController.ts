@@ -1,5 +1,6 @@
 import { userService } from '../services';
 import { AsyncRequestHandler } from '../types';
+import { errorResponse } from '../utils';
 interface userControllerInterface {
   getUsers: AsyncRequestHandler;
   getUser: AsyncRequestHandler;
@@ -14,6 +15,7 @@ interface userControllerInterface {
   resetPassword: AsyncRequestHandler;
   checkNickname: AsyncRequestHandler;
   checkPassword: AsyncRequestHandler;
+  expandAccToken: AsyncRequestHandler;
 }
 
 export const userController: userControllerInterface = {
@@ -89,5 +91,15 @@ export const userController: userControllerInterface = {
     const { email, password } = req.body;
     const result = await userService.checkPassword(email, password);
     res.json(result);
+  },
+  async expandAccToken(req, res) {
+    const Token = req.headers.authorization?.split(' ')[1];
+    const { email } = req.body;
+    if (!Token) {
+      errorResponse(res, 'BadRequest', '토큰이 전달되지 않았습니다');
+    } else {
+      const accToken = await userService.expandAccToken(Token, email);
+      res.json(accToken);
+    }
   },
 };
