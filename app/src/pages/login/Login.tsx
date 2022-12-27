@@ -35,10 +35,8 @@ export const Login = () => {
           calendarId,
         };
         //store에 로그인 유저 정보 저장
-        alert(calendarId);
         dispatch(login(user));
         //토근 로컬 스토리지 저장
-        debugger;
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('accessExp', accessExp);
         alert(`안녕하세요😁 ${nickname}님`);
