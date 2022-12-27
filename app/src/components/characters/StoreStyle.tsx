@@ -19,8 +19,10 @@ export const ContentsBox = styled.div`
     background-color: #85A6FC;
     border-radius: 1rem;
     width: 84vw;
+    height: 80vh;
 
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
 
@@ -30,14 +32,22 @@ export const ContentsBox = styled.div`
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+`
 
+//아이템 + 포켓몬 프로필 컨테이너
+export const Contents = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 90%;
 `
 
 //몬스터 프로필
 export const MonsterContainer = styled.div`
     background-color: white;
     width: 30%;
-    height: 80%;
+    height: 90%;
     border-radius: 1rem;
     padding: 1rem;
     margin-left: 1rem;
@@ -101,6 +111,7 @@ export const MonsterStatus = styled.div`
 export const MonsterLine = styled.li`
     list-style: none;
     font-size: large;
+    margin-bottom: 0.5rem;
 `
 
 export const ItemList = styled.div`
@@ -113,8 +124,8 @@ export const ItemList = styled.div`
     align-items: center;
     justify-content: center;
 
-    width: 60%;
-    height: 80%;
+    width: 70%;
+    height: 90%;
 
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
@@ -160,8 +171,8 @@ export const CategoryBox = styled.div`
 export const CharacterContainer = styled.div`
     background-color: white;
     border-radius: 1rem;
-    width: 60%;
-    height: 80%;
+    width: 70%;
+    height: 90%;
 
     display: flex;
     flex-wrap: wrap;

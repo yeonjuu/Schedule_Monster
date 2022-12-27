@@ -6,11 +6,15 @@ import { ItemBox, ItemButton, QuanButton, Tooltip } from './../characters/StoreS
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
+import { RootState } from '../../store/store';
 
 function Item({ setItem, item, purpose }: any) {
   const dispatch = useDispatch<any>();
   const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
+
+  const user = useSelector((state: RootState) => state.persistedReducer);
+  const { point } = user;
 
   return (
     <ItemBox
@@ -31,7 +35,7 @@ function Item({ setItem, item, purpose }: any) {
         {/* <span style={{fontSize:'15px'}}>+ ❤️{item.exp}</span> */}
       </div>
 
-      <div>{item.itemName}</div>
+      <div style={{alignSelf:'center'}}>{item.itemName}</div>
 
       <div
         style={{
@@ -67,14 +71,26 @@ function Item({ setItem, item, purpose }: any) {
 
             <ItemButton
               onClick={() => {
-                const isPurchase = window.confirm(
-                  `'${item.itemName}' 아이템을 구매하시겠습니까?`,
-                );
-                if (isPurchase && currentCoin >= item.price * count) {
-                  dispatch(buyItem(item.price * count));
-                } else if (isPurchase && currentCoin < item.price * count) {
-                  alert('보유 코인이 부족해요😭');
+
+                if(point > item.price) {
+                  const isPurchase = window.confirm(
+                    `'${item.itemName}' 아이템을 구매하시겠습니까?`,
+                  );
+
+                  if (isPurchase && point >= item.price * count) {
+                    dispatch(buyItem(item.price * count));
+                  } 
+
+                  else if (isPurchase && point < item.price * count) {
+                    alert('보유 코인이 부족합니다😭');
+                  }
                 }
+
+                else if(point < item.price) {
+                  alert('보유 코인이 부족합니다😭');
+                }
+
+
               }}
             >
               {`${purpose}`}
@@ -89,7 +105,7 @@ function Item({ setItem, item, purpose }: any) {
   );
 }
 
-function ItemList({ category, inputValue, url, purpose, setItem }: any) {
+function ItemList({ category, inputValue, purpose, setItem }: any) {
   const reducerData = useSelector((state: any) => state.itemListReducer);
   const data = reducerData.itemList;
   const itemList =

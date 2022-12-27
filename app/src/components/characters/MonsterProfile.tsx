@@ -6,19 +6,23 @@ import { RootState } from '../../store/store';
 export default function MonsterProfile() {
 
   const user = useSelector((state: RootState) => state.persistedReducer);
-  const { nickname, point, isLogin, email } = user;
+  const { point, email } = user;
 
 
   const name = useSelector((state:any) => state.statusReducer.name);
-  const coin = useSelector((state:any) => state.statusReducer.coin);
+  // const coin = useSelector((state:any) => state.statusReducer.coin);
   const affection = useSelector((state:any) => state.statusReducer.affection);
   const mainImage = useSelector((state:any) => state.statusReducer.mainImage);
+  const secondImage = useSelector((state:any) => state.statusReducer.secondImage);
+  const thirdImage = useSelector((state:any) => state.statusReducer.thirdImage);
 
     return (
         <>
           <MonsterContainer>
                 <MonsterImageContainer>
-                  <MonsterImage src={mainImage}
+                  <MonsterImage src={
+                    affection === 100 ? secondImage : affection === 200 ? thirdImage : mainImage
+                  }
                   />
                 </MonsterImageContainer>
 

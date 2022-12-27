@@ -1,18 +1,25 @@
 import styled, { css } from 'styled-components';
+import { basicFont, smallFont, mainColor, hoverDark } from 'assets/styles';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1440px;
-  width: 500px;
+  width: 100%;
   min-height: 100vh;
   margin: 0 auto;
+  justify-content: center;
+  background-color: #f2f2f2;
 `;
 
 export const LogoWrapper = styled.div`
   width: 100%;
+  max-width: 500px;
   height: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   > img {
     width: 100%;
     height: auto;
@@ -44,17 +51,18 @@ export const Tab = styled.p<{ active: boolean }>`
 `;
 
 export const Label = styled.label`
-  font-size: 13px;
+  font-size: ${basicFont};
   display: inline-block;
+  margin-top: 12px;
+  margin-bottom: 5px;
 `;
 
 export const Input = styled.input`
-  width: 330px;
+  width: 100%;
   height: 28px;
   text-indent: 15px;
   border: 1px solid #a2bcfe;
   border-radius: 8px;
-  margin: 12px 0;
   box-sizing: border-box;
 `;
 
@@ -74,17 +82,33 @@ export const Title = styled.h5`
   font-size: 20px;
 `;
 
-export const Hint = styled.p<{ error: boolean }>`
-  color: #8e8e8e;
-  width: 330px;
-  font-size: 13px;
-  padding-left: 15px;
-  margin-bottom: 12px;
+export const Message = styled.p<{ error?: boolean; color?: string }>`
+  color: ${(props) => props.color};
+  font-size: ${smallFont};
+  margin: 3px 0;
 
   ${(props) =>
     props.error &&
     css`
       color: #d23e3e;
-      font-size: 13px;
+      font-size: ${basicFont};
     `}
+`;
+
+export const InputWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const Button = styled.input`
+  margin-left: 5px;
+  font-size: ${smallFont};
+  background-color: ${mainColor};
+  border: none;
+  border-radius: 3px;
+  width: 25%;
+  padding: 0 3px;
+  :hover {
+    background-color: ${hoverDark};
+  }
 `;
