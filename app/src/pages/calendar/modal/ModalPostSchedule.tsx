@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BtnBox, PickColor } from './ModalStyle';
 
 import { useState, useEffect } from 'react';
@@ -21,13 +21,20 @@ import { FieldErrors, useForm } from 'react-hook-form';
 import { checkTodo } from 'types/calendarTypes';
 import { post } from 'api';
 import { add, format } from 'date-fns';
+import { RootState } from 'store/store';
 
 const Schedule = ({ dates }: { dates: string | any }) => {
   const year: number = Number(dates.slice(0, 4));
-  const month: number = Number(dates.slice(5, 7))-1;
+  const month: number = Number(dates.slice(5, 7));
   const day: number = Number(dates.slice(8, 10));
   const todayData = new Date(dates);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>();
+  const [open, setOpen] = useState<boolean>(false);
+  const [color, setColor] = useState(`${mainColor}`);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     register,
@@ -35,13 +42,17 @@ const Schedule = ({ dates }: { dates: string | any }) => {
     clearErrors,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
-  const [startDate, setStartDate] = useState<Date>(new Date(year, month, day));
-  const [endDate, setEndDate] = useState<Date>(add(startDate, {minutes: 30}));
-  const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState(`${mainColor}`);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const list = useSelector((state: RootState) => state.persistedReducer.calendarList);
+  
+  useEffect(()=>{
+    if(!year||!month||!day){
+      dispatch(closeModal());
+      navigate('/calendar');
+    }else{
+      setStartDate(new Date(year, month-1, day));
+      setEndDate(add(new Date(year, month-1, day), {minutes: 30}));
+    }
+  },[]);
 
   useEffect(() => {
     if (!startDate || !endDate) {
@@ -155,8 +166,7 @@ const Schedule = ({ dates }: { dates: string | any }) => {
           <option defaultValue="no" value="no">
             캘린더를 선택해 주세요
           </option>
-          <option value="test1">테스트 1</option>
-          <option value="test2">테스트 2</option>
+          {list.map(item=>{return <option value={item.calendarId}>{item.calendarName}</option>})}
         </SelectCal>
         <PickColor
           type="button"

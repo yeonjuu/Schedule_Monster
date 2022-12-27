@@ -8,15 +8,22 @@ import {
 } from './ModalStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { toggleTodo } from '../slice/modalSlice';
-import TodosContent from './TodosContent';
-import ScheduleContent from './ScheduleContent';
+import { closeTodo } from '../slice/modalSlice';
+import TodosContent from './ModalPutTodo';
+import ScheduleContent from './ModlaPutSchedule';
 
-const TodoModal = () => {
+const TodosModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { scheduleId, isTodo } = useParams();
+
+  type QuizParams = {
+    isTodo: string;
+    scheduleId: string
+  };
+  
+
+  const { scheduleId, isTodo }  = useParams<QuizParams>();
 
 
   return (
@@ -24,9 +31,10 @@ const TodoModal = () => {
       <Background
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();
-          setTimeout(() => {
-            dispatch(toggleTodo());
-          }, 20);
+       setTimeout(()=>{
+        dispatch(closeTodo());
+       },200)
+        
         }}
       ></Background>
       <ModalContainer ref={modalRef}>
@@ -42,4 +50,4 @@ const TodoModal = () => {
   );
 };
 
-export { TodoModal };
+export { TodosModal };
