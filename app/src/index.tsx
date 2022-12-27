@@ -16,6 +16,8 @@ import Admin from './pages/admin/admin';
 import { MyPage } from 'pages/mypage/UserMyPage';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NotFound } from 'pages/NotFound';
+import AllCharacters from 'pages/characters/AllCharacters';
+
 
 const router = createBrowserRouter([
   {
@@ -41,7 +43,7 @@ const router = createBrowserRouter([
   {
     path: '/store',
     element: <Root />,
-    errorElement: <p>페이지를 찾을 수 없습니다😭</p>,
+    errorElement: <NotFound />,
     children: [
       { index: true, element: <Items></Items> },
       { path: '/store/item/:id', element: <Items></Items> },
@@ -52,6 +54,7 @@ const router = createBrowserRouter([
       },
       { path: '/store/myitems', element: <MyItems></MyItems> },
       { path: '/store/myitems/:id', element: <MyItems></MyItems> },
+      { path: '/store/allcharacters', element: <AllCharacters></AllCharacters> },
     ],
   },
   {

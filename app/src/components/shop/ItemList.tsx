@@ -4,9 +4,10 @@ import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 import { ItemBox, ItemButton, QuanButton, Tooltip } from './../characters/StoreStyle';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+import * as API from '../../api';
+import { minusPoint } from 'pages/login/userSlice';
 
 function Item({ setItem, item, purpose }: any) {
   const dispatch = useDispatch<any>();
@@ -14,7 +15,7 @@ function Item({ setItem, item, purpose }: any) {
   const [count, setCount] = useState(1);
 
   const user = useSelector((state: RootState) => state.persistedReducer);
-  const { point } = user;
+  const { point, email } = user;
 
   return (
     <ItemBox
@@ -78,7 +79,19 @@ function Item({ setItem, item, purpose }: any) {
                   );
 
                   if (isPurchase && point >= item.price * count) {
-                    dispatch(buyItem(item.price * count));
+
+                    dispatch(minusPoint(item.price * count));
+
+                    API.post('/useritem/buy', {
+                      email,
+                      itemName: item.itemName,
+                      itemImage: item.itemImage,
+                      itemInfo: item.itemInfo,
+                      price: item.price,
+                      exp: item.exp,
+                      categoryName: item.categoryName,
+                  });
+
                   } 
 
                   else if (isPurchase && point < item.price * count) {
