@@ -38,7 +38,7 @@ export async function loginRequired(req: Request, res: Response, next: NextFunct
     if (diff < marginTime) {
       // 리프레시 토큰이 만료된 경우
       const result = await userService.expandRefToken(email);
-      res.status(414).json(result); // 상태코드를 통해서 리프레시 토큰이 갱신되었음을 확인
+      res.status(206).json(result); // 상태코드를 통해서 리프레시 토큰이 갱신되었음을 확인
       return;
     }
     next();
