@@ -93,20 +93,26 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
             <>
                 <ItemButton
                 onClick={() => {
-                    const isUse = window.confirm(
-                    `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
-                    );
-                    if (isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
-                    dispatch(applyItem(myitems.exp));
-                    alert('애정도가 가득 채워졌습니다😊');
+
+                  if (mainImage !== '/pokeball.png') {
+                      const isUse = window.confirm(
+                        `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
+                        ); 
+
+                      if (isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      dispatch(applyItem(myitems.exp));
+                      alert('애정도가 가득 채워졌습니다😊');
+                      }
+                      else if (isUse && affection >= 100) {
+                      alert('애정도가 이미 가득 채워졌습니다');
+                    }
+                  }
+
+
+                else if (mainImage === '/pokeball.png') {
+                    alert('대표캐릭터를 먼저 지정해주세요!');
                     }
 
-                    else if (mainImage === '/pokeball.png') {
-                      alert('대표캐릭터가 지정되지 않았습니다!');
-                    }
-                    else if (affection >= 100) {
-                    alert('애정도가 이미 가득 채워졌습니다');
-                    }
                 }}
                 >
                 사용하기
