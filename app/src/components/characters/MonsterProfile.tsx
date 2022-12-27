@@ -42,7 +42,7 @@ export default function MonsterProfile() {
           <MonsterContainer>
                 <MonsterImageContainer>
                   <MonsterImage src={
-                    affection >= 50 ? secondImage : affection >= 100 ? thirdImage : mainImage
+                    affection >= 50 && affection < 100 ? secondImage : affection >= 100 ? thirdImage : mainImage
                   }
                   />
                 </MonsterImageContainer>
@@ -50,9 +50,8 @@ export default function MonsterProfile() {
                 <MonsterStatus>
                   <ul>
                     <MonsterLine>이름 : {name}</MonsterLine>
-                    <MonsterLine>애정도 : ❤️ {affection}</MonsterLine>
+                    <MonsterLine>애정도 : ❤️ {affection > 100 ? 100 : affection}</MonsterLine>
                     <MonsterLine>보유 코인 : 💰 {point}</MonsterLine>
-                    <MonsterLine>{mainId}</MonsterLine>
                   </ul>
                 </MonsterStatus>
           </MonsterContainer>

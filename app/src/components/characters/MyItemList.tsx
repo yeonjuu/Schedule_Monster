@@ -1,7 +1,7 @@
 import React,{ useEffect,useState } from 'react';
 import { ItemBox, ItemButton } from './StoreStyle';
 import * as API from '../../api';
-import { applyItem } from 'pages/characters/statusReducer';
+import { applyItem, mainAffection } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import filterCategory from '../../util/filterCategory';
@@ -102,9 +102,11 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                         `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
                         ); 
 
-                      if (isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      const isEgg = myitems.categoryName == '알';
+
+                      if (isEgg && isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
                       dispatch(applyItem(myitems.exp));
-                      alert('애정도가 채워졌습니다😊');
+                      alert(`${myitems.exp}만큼 애정도가 채워졌습니다😊`);
 
                       API.post('/useritem/use', {
                         email,
