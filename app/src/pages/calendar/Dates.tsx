@@ -39,6 +39,7 @@ const checkTodo = (
   for (let i = 0; i < todo.length; i++) {
     arr.push(
       <TodoLabel
+      
       isCompleted={todo[i].isCompleted}
         key={`${todo[i].startDate}-${i}`}
         labelColor={todo[i].labelColor}

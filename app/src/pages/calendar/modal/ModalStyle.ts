@@ -72,6 +72,7 @@ export const PickColor = styled.button<{ labelColor: string | undefined }>`
   border-radius: 8px;
   border: none;
   font-weight: bold;
+  color: white;
   ${(props) =>
     props.labelColor
       ? css`
@@ -86,8 +87,8 @@ export const Background = styled.div`
   position: absolute;
   top:0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: black;
   opacity: 0.5;
   z-index: 20;

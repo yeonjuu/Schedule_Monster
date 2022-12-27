@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components';
-
+import styled, { css, keyframes } from 'styled-components';
 
 export const Calendar = styled.div`
   display: flex;
@@ -14,6 +13,10 @@ export const WeekContainer = styled.div`
   align-items: center;
   background-color: white;
   height: 100%;
+  & > div {
+    overflow: hidden; //container밖 빠져나오는 요소 숨김
+    white-space: nowrap;
+  }
 `;
 
 //Dates=> DateContainer
@@ -89,9 +92,7 @@ export const Day = styled.p<{
       ${(props) =>
     props.today &&
     css`
-      font-weight: bold;
-      font-size: large;
-      text-decoration: underline;
+      background-color: yellow;
     `}
     ${(props) =>
     props.week === 'Sun'
@@ -134,6 +135,7 @@ export const Container = styled.div`
 `;
 
 export const CalendarController = styled.div`
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -154,7 +156,6 @@ export const CalendarController = styled.div`
   & > div {
     display: flex;
   }
-
 `;
 
 export const MonsterBox = styled.div`
@@ -163,7 +164,7 @@ export const MonsterBox = styled.div`
   background-color: transparent;
   height: 160px;
   width: 84vw;
-  z-index: -10;
+  z-index: -1;
 `;
 
 export const HolidayLabel = styled.div<{ description: string }>`
@@ -176,7 +177,6 @@ export const HolidayLabel = styled.div<{ description: string }>`
   & > p {
     overflow: hidden;
     text-overflow: ellipsis;
-
     text-align: center;
     font-size: 13px;
     font-weight: 550;
@@ -197,18 +197,13 @@ export const ScheduleLabel = styled.div<{
   labelColor: string;
   isCompleted: boolean;
 }>`
+  display: flex;
+  cursor: pointer;
   height: 15%;
   width: 100%;
-  cursor: pointer;
   margin-top: 2px;
   background-color: ${(props) => props.labelColor};
   color: white;
-  text-align: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 550;
-  line-height: 19px;
   ${(props) =>
     props.isCompleted &&
     css`
@@ -216,6 +211,13 @@ export const ScheduleLabel = styled.div<{
       text-decoration-thickness: 2px;
       text-decoration-color: '#D6A319';
     `}
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 19px;
+  }
 `;
 
 export const TodoLabel = styled(ScheduleLabel)`
@@ -229,8 +231,29 @@ export const PickCalBox = styled.div`
   height: 30px;
 `;
 
-export const Monster=styled.img`
-position: relative;
-left: 50%;
-top: 20%;
-`
+const png = keyframes`
+
+5%{
+  transform: scaleX(-1);
+}
+    10%{
+        top: 10px;
+        transform: scaleX(1);
+    }
+    to{
+
+    }
+  
+`;
+
+export const Monster = styled.img<{ src: string }>`
+z-index: 10;
+  position: relative;
+  left: 50%;
+  top: 40%;
+  ${(props) =>
+    props.src.lastIndexOf('.png') > 0 &&
+    css`
+      animation: ${png} 4500ms infinite alternate ease-in-out;
+    `}
+`;
