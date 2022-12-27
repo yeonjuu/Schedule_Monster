@@ -1,9 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as API from '../../../api';
-const asyncUserListFetch = createAsyncThunk('GET_USERLIST', async () => {
-  const userList = await API.get('/users');
-  return userList;
-});
+
+const asyncUserListFetch = createAsyncThunk(
+  'GET_USERLIST',
+  async (email: string) => {
+    console.log(email);
+    const userList = await API.get(`/users/${email}`);
+    console.log(userList);
+    return userList;
+  },
+);
 
 const userListSlice = createSlice({
   name: 'userListSlice',

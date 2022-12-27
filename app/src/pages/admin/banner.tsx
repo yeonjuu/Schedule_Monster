@@ -6,12 +6,11 @@ import { asyncCategoryListFetch } from './slice/categoryListSlice';
 import { asyncitemListFetch } from './slice/itemListSlice';
 import { asyncUserListFetch } from './slice/userListSlice';
 import { asyncMonsterListFetch } from './slice/monsterListSlice';
-function Banner({ setCategory }: any) {
+function Banner() {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
   return (
-    <div>
-      <div>나중에 들어갈 타이틀컴포넌트</div>
+    <>
       <Container>
         <li
           onClick={(): void => {
@@ -34,7 +33,6 @@ function Banner({ setCategory }: any) {
         <li
           onClick={(): void => {
             navigate(`/admin/user/`);
-            dispatch(asyncUserListFetch());
             dispatch(asyncCategoryListFetch());
           }}
         >
@@ -48,7 +46,7 @@ function Banner({ setCategory }: any) {
           카테고리 관리
         </li>
       </Container>
-    </div>
+    </>
   );
 }
 

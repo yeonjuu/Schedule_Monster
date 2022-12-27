@@ -21,7 +21,7 @@ export const Login = () => {
     console.log('userInfo :', userInfo);
 
     try {
-      const data = await API.post('/users/login', userInfo);
+      const data = await API.post('/register/login', userInfo);
       console.log(data);
       const { auth, point, nickname } = data.loginUser;
       const { accessToken, refreshToken } = data;
