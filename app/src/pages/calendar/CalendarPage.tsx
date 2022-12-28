@@ -23,12 +23,12 @@ import Dates from './Dates';
 import {  DateData, Holiday, onClickObj } from '../../types/calendarTypes';
 import useDebounce from '../../hooks/useDebounce';
 import DateController from './DateController';
-import { Modal } from 'pages/calendar/modal/Modal';
+import { Modal } from 'pages/calendar/modal/ModalPost';
 import { NavBar } from 'components/navbar/NavBar';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
-import { TodoModal } from './modal/TodosModal';
+import { TodosModal } from './modal/ModalPut';
 import { Logo } from 'components/logo/Logo';
 import { Header } from 'components/header/Header';
 import MainMonster from './MainMonster';
@@ -165,7 +165,7 @@ const CalendarPage = () => {
         </HeaderCalendar>
         <Calendar>{renderDay(day, endDay)}</Calendar>
         {door && <Modal />}
-        {doorTodo && <TodoModal/>}
+        {doorTodo && <TodosModal/>}
         
       </Container>
     </Layout>

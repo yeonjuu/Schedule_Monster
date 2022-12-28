@@ -1,10 +1,10 @@
-import { mainColor } from 'assets/styles';
-import styled from 'styled-components';
+import { mainColor, basicFont } from 'assets/styles';
+import styled, { css } from 'styled-components';
 
 export const InfoWrapper = styled.div`
   display: grid;
   margin: 0 auto;
-  grid-template-rows: 50px 200px;
+  grid-template-rows: 50px 150px;
   width: 84vw;
   position: relative;
   background-color: #a2bcfe;
@@ -26,6 +26,7 @@ export const StaticHead = styled.h3`
 
 export const Infos = styled.div`
   border: 1px solid #f2f2f2;
+  padding: 5px 0 0 20px;
 `;
 
 export const StaticWrapper = styled.div`
@@ -76,17 +77,14 @@ export const Navigate = styled.div`
 
 export const Info = styled.div`
   font-size: 15px;
-  padding: 20px;
+  padding: 10px;
   position: relative;
 `;
 
-export const UpdateButton = styled.input<{ type: 'button' }>`
-  position: absolute;
-  right: 20px;
-  top: 5px;
-  width: 100px;
+export const UpdateButton = styled.input<{ type: 'button'; del?: boolean }>`
+  width: 80px;
   height: 40px;
-  font-size: 15px;
+  font-size: ${basicFont};
   margin-left: 10px;
   border: none;
   border-radius: 8px;
@@ -94,9 +92,20 @@ export const UpdateButton = styled.input<{ type: 'button' }>`
 
   :hover {
     background-color: #c4d3f8;
+    ${(props) =>
+      props.del &&
+      css`
+        background-color: #d47171;
+      `}
   }
 `;
-
+export const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  display: flex;
+  width: auto;
+`;
 export const Wrapper = styled.div`
   width: 80%;
   display: flex;
@@ -125,8 +134,8 @@ export const Button = styled.input<{ type: 'button' }>`
 
 export const Message = styled.div`
   position: absolute;
-  bottom: 0px;
-  left: 83px;
+  bottom: -5px;
+  left: 70px;
   font-size: 13px;
   color: #d23e3e;
 `;

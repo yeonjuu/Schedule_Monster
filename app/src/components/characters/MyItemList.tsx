@@ -104,7 +104,7 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
 
                       const isEgg = myitems.categoryName == '알';
 
-                      if (isEgg && isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      if (!isEgg && isUse && affection < 100 && mainImage !== '/pokeball.png') {
                       dispatch(applyItem(myitems.exp));
                       alert(`${myitems.exp}만큼 애정도가 채워졌습니다😊`);
 
@@ -115,8 +115,15 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                     });
 
                       }
-                      else if (isUse && affection >= 100) {
+                      else if (!isEgg && isUse && affection >= 100) {
                       alert('애정도가 이미 가득 채워졌습니다');
+                    }
+
+                    else if (isEgg && isUse) {
+                      API.post('/useritem/egg', {
+                        email,
+                        itemId: myitems._id
+                    })
                     }
                   }
 

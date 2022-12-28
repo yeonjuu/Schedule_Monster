@@ -62,7 +62,7 @@ async function put(endpoint, data) {
         'Content-type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
-    });
+    })
     return response.data;
   } catch (error) {
     if (error.response) {

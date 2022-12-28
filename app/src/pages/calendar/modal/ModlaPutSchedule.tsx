@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/store';
 import { BtnBox, PickColor } from './ModalStyle';
 import { useNavigate } from 'react-router-dom';
-import { toggleTodo } from '../slice/modalSlice';
+import { closeTodo } from '../slice/modalSlice';
 import { FieldErrors, useForm } from 'react-hook-form';
 import {
   CheckBox,
@@ -16,7 +16,7 @@ import {
   SchedulePicker,
 } from 'components/input/inputs';
 import { TwitterPicker } from 'react-color';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { checkTodo, todoData } from 'types/calendarTypes';
 import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
 import * as API from 'api';
@@ -30,6 +30,8 @@ const ScheduleContent = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //전역 State에서 특정 날짜 값을 가져온다
   const tmp: todoData | undefined = useSelector(
     (state: RootState) => state.todoSlice.todoList,
   ).find((item) => item.scheduleId === scheduleId);
@@ -37,22 +39,23 @@ const ScheduleContent = ({
   const content = { ...tmp };
 
   const startYear = Number(content.startDate?.slice(0, 4));
-  const startMonth = Number(content.startDate?.slice(4, 6))-1; //Date객체에서는 month-1
+  const startMonth = Number(content.startDate?.slice(4, 6)) - 1;
   const startDay = Number(content.startDate?.slice(6, 8));
   const endYear = Number(content.endDate?.slice(0, 4));
-  const endMonth = Number(content.endDate?.slice(4, 6))-1;
+  const endMonth = Number(content.endDate?.slice(4, 6)) - 1;
   const endDay = Number(content.endDate?.slice(6, 8));
 
   const [startDate, setStartDate] = useState<Date>(
-    new Date(startYear, startMonth, startDay),
+    new Date(),
   );
   const [endDate, setEndDate] = useState<Date>(
-    new Date(endYear, endMonth, endDay),
+    new Date(),
   );
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
 
   const {
+    watch,
     setError,
     clearErrors,
     handleSubmit,
@@ -60,10 +63,30 @@ const ScheduleContent = ({
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
+  const inputTitle = watch('title');
+
+  useEffect(()=>{
+    if(!startYear||!startMonth||!startDay||!endYear||!endMonth||!endDay){
+      dispatch(closeTodo());
+      navigate('/calendar');
+    }else{
+      setStartDate(new Date(startYear, startMonth, startDay));
+      setEndDate(new Date(endYear, endMonth, endDay));
+    }
+  },[]);
+
+  const checkTitle = () => {
+    if (inputTitle === content?.title) {
+      return false;
+    } else if (inputTitle === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       content.isCompleted = true;
-
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
       dispatch(changeCalendar({ scheduleId: scheduleId, content: content }));
     } else {
@@ -76,7 +99,7 @@ const ScheduleContent = ({
     await API.delete(`/schedule/day/test1/${scheduleId}`);
     dispatch(deleteCalendar(scheduleId));
     alert('일정이 삭제되었습니다!');
-    dispatch(toggleTodo());
+    dispatch(closeTodo());
   };
 
   useEffect(() => {
@@ -107,14 +130,13 @@ const ScheduleContent = ({
         labelColor: color,
         isTodo: false,
       };
-      console.log(data);
 
       try {
         console.log(data);
         dispatch(changeCalendar({ scheduleId: scheduleId, content: data }));
         await API.put(`/schedule/day`, data);
         alert('일정을 등록하였습니다');
-        dispatch(toggleTodo());
+        dispatch(closeTodo());
         navigate('/calendar');
       } catch (err) {
         alert(err);
@@ -135,6 +157,7 @@ const ScheduleContent = ({
             type="checkbox"
             defaultChecked={content?.isCompleted}
             onChange={(e) => onChange(e)}
+            disabled={checkTitle()}
           />
 
           <CheckInput
@@ -155,7 +178,7 @@ const ScheduleContent = ({
             errors={errors.title}
           />
           <PickColor
-          disabled={content.isCompleted}
+            disabled={content.isCompleted}
             type="button"
             onClick={() => setOpen((curr) => !curr)}
             labelColor={color}
@@ -212,7 +235,7 @@ const ScheduleContent = ({
           <ModalBtn
             type="button"
             onClick={() => {
-              dispatch(toggleTodo());
+              dispatch(closeTodo());
               navigate('/calendar');
             }}
           >

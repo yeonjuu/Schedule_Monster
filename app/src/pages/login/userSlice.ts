@@ -7,6 +7,18 @@ const initialState = {
   point: 0,
   isLogin: false,
   auth: '',
+  calendarList: [{
+    calendarId: "",
+    calendarName: "",
+    createdAt: new Date(),
+    email: "",
+    share: true,
+    updatedAt: new Date(),
+    url: null,
+    __v: 1,
+    _id: "",
+  }
+  ],
   calendarId: '',
 };
 
@@ -19,6 +31,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.point = action.payload.point;
       state.auth = action.payload.auth;
+      state.calendarId = action.payload.calendarId;
       state.isLogin = true;
     },
     logout: (state) => {
@@ -40,6 +53,9 @@ const userSlice = createSlice({
     changeCalendarId: (state, action: PayloadAction<string>) => {
       state.calendarId = action.payload;
     },
+    postCalendarList: (state, action)=>{
+      state.calendarList=action.payload;
+    }
   },
 });
 
@@ -50,5 +66,6 @@ export const {
   minusPoint,
   changeNickname,
   changeCalendarId,
+  postCalendarList,
 } = userSlice.actions;
 export default userSlice.reducer;

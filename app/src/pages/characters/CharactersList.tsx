@@ -3,7 +3,6 @@ import {
   ContentsBox,
   CharacterContainer,
   CharacterBox,
-  MonsterStatus,
   StoreContainer,
   Contents,
 } from '../../components/characters/StoreStyle';
@@ -14,7 +13,7 @@ import { mainProfile, secondProfile, thirdProfile, mainName, mainAffection, char
 import * as API from '../../api';
 import Navbar from 'components/characters/Navbar';
 import { RootState } from '../../store/store';
-
+import Loading from 'components/characters/Loading';
 
 export default function CharactersList() {
   const dispatch = useDispatch();
@@ -27,15 +26,12 @@ export default function CharactersList() {
 
   useEffect(() => {
     async function fetchData() {
-        //api주소 변경 필요     `/characterlist/detail/${email}`
         const data = await API.get(`/characterlist/detail/${email}`);
         setPokemons(data);
         setIsLoading(!isLoading);
     }
     fetchData();
   }, []);
-
-  // console.log(pokemons);
 
   return (
     <StoreContainer>
@@ -44,22 +40,7 @@ export default function CharactersList() {
         
         <Contents>
           <CharacterContainer>
-            {isLoading ? (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  alignSelf: 'center',
-                  margin: '0 auto',
-                }}
-              >
-                <h3>Loading...</h3>
-                <img
-                  style={{ width: '6rem', height: '3rem' }}
-                  src="https://weichiachang.github.io/pokemon-master/img/loading.45600eb9.gif"
-                />
-              </div>
-            ) : (
+            {isLoading ? <Loading /> : (
               <>
                 {pokemons.map((pokemon: any) => (
                   <CharacterBox
@@ -83,13 +64,13 @@ export default function CharactersList() {
                           email,
                           characterId : clicked._id,
                         });
-
                       }
-                      // console.log(isMain);
+
                     }}
                     key={pokemon._id}
+                    // id={pokemon._id}
                   >
-                    <img src={pokemon.image.front_default} />
+                    <img src={pokemon.myExp >= 50 && pokemon.myExp < 100 ? pokemon.image.front_default : pokemon.myExp >= 100 ? pokemon.image.front_shiny : pokemon.image.back_default} />
                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
                   </CharacterBox>
                 ))}
