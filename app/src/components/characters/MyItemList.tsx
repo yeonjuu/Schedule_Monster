@@ -38,6 +38,15 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
         dispatch(asyncCategoryListFetch());
     },[]);
 
+  //   useEffect( () => {
+  //     async function fetchData () {
+  //         //테스트 데이터
+  //         const data = await API.get(`/useritem/detail/${email}`);
+  //         setMyItems(data);
+  //     };
+  //     fetchData();
+  // },[myItems]);
+
 
     //검색기능
     const myitemList =
@@ -125,10 +134,11 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
 
                     else if (isEgg && isUse) {
                       alert('새로운 포켓몬이 나왔습니다! 도감에서 확인해보세요.');
-                      API.post('/useritem/egg', {
+                      const newI = API.post('/useritem/egg', {
                         email,
                         itemId: myitems._id
-                    })
+                    });
+                      console.log(newI);
                     }
                   }
 

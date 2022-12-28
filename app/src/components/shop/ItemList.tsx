@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
@@ -16,6 +16,11 @@ function Item({ setItem, item, purpose }: any) {
 
   const user = useSelector((state: RootState) => state.persistedReducer);
   const { point, email } = user;
+
+  // function dataRefetch () {
+  //   const leftItem = API.get(`/useritem/detail/${email}`);
+  //   setItem(leftItem);
+  // };
 
   return (
     <ItemBox
@@ -81,6 +86,7 @@ function Item({ setItem, item, purpose }: any) {
                   if (isPurchase && point >= item.price * count) {
 
                     dispatch(minusPoint(item.price * count));
+                    //카운트 1로 디스패치 추가해주기
 
                     API.post('/useritem/buy', {
                       email,
@@ -92,6 +98,8 @@ function Item({ setItem, item, purpose }: any) {
                       categoryName: item.categoryName,
                       quantity: count,
                   });
+
+                  // dataRefetch();
 
                   } 
 
