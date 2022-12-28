@@ -1,8 +1,8 @@
 import { calendarModel, calendarModelType } from '../models';
-import { CalendarInterface } from '../models/schemas/Calendar';
-import { splitedArr } from '../utils/splitedArr';
 import { generateRandomString } from '../utils/generateRandomString';
 import { userService } from './userService';
+import { scheduleService } from './scheduleService';
+import { calendarShareService } from './calendarShareService';
 class CalendarService {
   private calendar: calendarModelType;
 
@@ -10,7 +10,6 @@ class CalendarService {
     this.calendar = calendarModel;
   }
   async getCalendars(email: string) {
-    console.log('Calendars접근함');
     const status = await userService.checkAuth(email);
     console.log(status);
     if (!status) {
@@ -21,7 +20,9 @@ class CalendarService {
     return result;
   }
   async getCalendar(email: string) {
-    const result = await this.calendar.find({ email });
+    const myCalendar = await this.calendar.find({ email });
+    const sharedCalendar = await calendarShareService.getCalendarShareByFriend(email);
+    const result = [...myCalendar, ...sharedCalendar];
     return result;
   }
 
@@ -50,9 +51,15 @@ class CalendarService {
 
   async deleteCalendar(calendarId: string) {
     const result = await this.calendar.remove({ calendarId });
+    try {
+      await scheduleService.deleteAllByCalendarId(calendarId);
+    } catch (error) {
+      throw new Error('type:Forbidden,content:캘린더 삭제시 스케줄들이 삭제되지 않았습니다. 관리자에게 문의하세요');
+    }
     return result;
   }
 
+  // URL 공유기능 사용시
   async calendarShareOrNot(calendarId: string) {
     const calendar = await this.calendar.findOne({ calendarId });
     if (!calendar)

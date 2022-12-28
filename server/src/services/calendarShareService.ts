@@ -11,6 +11,12 @@ class CalendarShareService {
     const result = await this.calendarshare.find({ calendarId });
     return result;
   }
+
+  async getCalendarShareByFriend(email: string) {
+    // 친구가 추가해버린 내 이메일로 찾아서 반환
+    const result = await this.calendarshare.find({ friendEmail: email });
+    return result;
+  }
   async postCalendarShare(postInfo: CalendarShareInterface) {
     const { email, calendarId, friendEmail } = postInfo;
     const result = await this.calendarshare.create({ email, calendarId, friendEmail });
