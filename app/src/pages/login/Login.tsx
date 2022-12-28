@@ -25,7 +25,7 @@ export const Login = () => {
       console.log(data);
       const { calendarId } = data.calendar;
       const { auth, point, nickname } = data.loginUser;
-      const { accessToken, accessExp } = data;
+      const { accessToken, accessExp, refreshExp } = data;
       if (accessToken) {
         const user: IUser = {
           email,
@@ -36,9 +36,11 @@ export const Login = () => {
         };
         //store에 로그인 유저 정보 저장
         dispatch(login(user));
-        //토근 로컬 스토리지 저장
+        //토큰 로컬 스토리지 저장
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('accessExp', accessExp);
+        localStorage.setItem('refreshExp', refreshExp);
+        debugger;
         alert(`안녕하세요😁 ${nickname}님`);
 
         //경로확인하기
@@ -50,8 +52,12 @@ export const Login = () => {
         }
       }
     } catch (error) {
-      const msg = error.data.message.split('.')[0];
-      setErrorContent(msg);
+      if (error.status === 401) {
+        const msg = error.data.message.split('.')[0];
+        setErrorContent(msg);
+      } else {
+        alert('로그인 실패');
+      }
     }
   };
 
