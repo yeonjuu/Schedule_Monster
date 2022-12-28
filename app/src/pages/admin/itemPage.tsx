@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Search from '../../components/shop/search';
-import ItemListComponents from '../../components/shop/ItemList';
+import ItemListComponents from './itemList';
 import BannerItem from '../../components/shop/categories';
 import EditItem from './editItem';
 import { ItemType } from 'types/shopTypes';
@@ -13,6 +13,7 @@ import {
   Contents,
 } from '../../components/characters/StoreStyle';
 import { resetItem } from './util/util';
+import { SearchResetBox } from './adminCss';
 function ItemPage() {
   const [item, setItem] = useState<ItemType>(resetItem);
   const [inputState, setInputState] = useState('');
@@ -23,15 +24,19 @@ function ItemPage() {
         <Contents>
           <ItemList>
             <BannerItem setCategory={setCategory}></BannerItem>
-
-            <Search setState={setInputState}></Search>
-            <button
-              onClick={() => {
-                setItem(resetItem);
-              }}
-            >
-              에딧 창 리셋
-            </button>
+            <SearchResetBox>
+              <Search
+                setState={setInputState}
+                placeholder={'아이템 검색'}
+              ></Search>
+              <button
+                onClick={() => {
+                  setItem(resetItem);
+                }}
+              >
+                추가하기
+              </button>
+            </SearchResetBox>
             <ItemContainer>
               <CategoryBox>
                 <ItemListComponents

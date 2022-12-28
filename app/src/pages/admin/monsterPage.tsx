@@ -8,65 +8,53 @@ import {
   CategoryBox,
   ItemList,
   Contents,
+  StoreContainer,
 } from '../../components/characters/StoreStyle';
+import { SearchResetBox } from './adminCss';
 
 function MonsterPage() {
   const [inputState, setInputState] = useState('');
   const [monster, setMonster] = useState({
     _id: '',
-    characterName: '',
-    images: {
-      img1: '',
-      img2: '',
-      img3: '',
-    },
-    levelupPoint: {
-      point1: 0,
-      point2: 0,
-      point3: 0,
+    characterId: '',
+    nameKo: '',
+    levelupPoint: '',
+    image: {
+      imageSprites: {
+        back_default: '',
+        front_default: '',
+        front_shiny: '',
+      },
     },
   });
 
   return (
-    <ContentsBox>
-      <Contents>
-        <ItemList>
-          <ItemContainer>
-            <Search setState={setInputState}></Search>
-            <button
-              onClick={() => {
-                setMonster({
-                  _id: '',
-                  characterName: '',
-                  images: {
-                    img1: '',
-                    img2: '',
-                    img3: '',
-                  },
-                  levelupPoint: {
-                    point1: 0,
-                    point2: 0,
-                    point3: 0,
-                  },
-                });
-              }}
-            >
-              에딧 창 리셋
-            </button>
-            <CategoryBox>
-              <MonsterList
-                inputValue={inputState}
-                setMonster={setMonster}
-              ></MonsterList>
-            </CategoryBox>
-          </ItemContainer>
-        </ItemList>
-        <EditMonster
-          monsterData={monster}
-          setMonster={setMonster}
-        ></EditMonster>
-      </Contents>
-    </ContentsBox>
+    <StoreContainer>
+      <ContentsBox>
+        <Contents>
+          <ItemList>
+            <ItemContainer>
+              <SearchResetBox>
+                <Search
+                  setState={setInputState}
+                  placeholder={'몬스터 검색'}
+                ></Search>
+              </SearchResetBox>
+              <CategoryBox>
+                <MonsterList
+                  inputValue={inputState}
+                  setMonster={setMonster}
+                ></MonsterList>
+              </CategoryBox>
+            </ItemContainer>
+          </ItemList>
+          <EditMonster
+            monsterData={monster}
+            setMonster={setMonster}
+          ></EditMonster>
+        </Contents>
+      </ContentsBox>
+    </StoreContainer>
   );
 }
 

@@ -17,7 +17,10 @@ import { MyPage } from 'pages/mypage/UserMyPage';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NotFound } from 'pages/NotFound';
 import AllCharacters from 'pages/characters/AllCharacters';
-
+import MonsterPage from 'pages/admin/monsterPage';
+import UserPage from 'pages/admin/userPage';
+import CategoryPage from 'pages/admin/categoryPage';
+import ItemPage from 'pages/admin/itemPage';
 
 const router = createBrowserRouter([
   {
@@ -54,12 +57,23 @@ const router = createBrowserRouter([
       },
       { path: '/store/myitems', element: <MyItems></MyItems> },
       { path: '/store/myitems/:id', element: <MyItems></MyItems> },
-      { path: '/store/allcharacters', element: <AllCharacters></AllCharacters> },
+      {
+        path: '/store/allcharacters',
+        element: <AllCharacters></AllCharacters>,
+      },
     ],
   },
   {
-    path: '/admin/*',
+    path: '/admin',
     element: <Admin />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, element: <ItemPage></ItemPage> },
+      { path: '/admin/item/', element: <ItemPage></ItemPage> },
+      { path: '/admin/monster', element: <MonsterPage></MonsterPage> },
+      { path: '/admin/user', element: <UserPage></UserPage> },
+      { path: '/admin/category', element: <CategoryPage></CategoryPage> },
+    ],
   },
   {
     path: '/mypage',

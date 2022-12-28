@@ -4,9 +4,8 @@ import * as API from '../../../api';
 const asyncUserListFetch = createAsyncThunk(
   'GET_USERLIST',
   async (email: string) => {
-    console.log(email);
     const userList = await API.get(`/users/${email}`);
-    console.log(userList);
+
     return userList;
   },
 );

@@ -1,9 +1,8 @@
-import produce from 'immer';
-import React, { useState } from 'react';
+import React from 'react';
 import { UserInfoBox } from './adminCss';
 import * as API from '../../api';
 
-function UserInfo({ user }: any) {
+function UserInfo({ user, email }: any) {
   return (
     <UserInfoBox>
       <div>
@@ -28,29 +27,19 @@ function UserInfo({ user }: any) {
       </div>
       <div>
         <div>
-          <div>상태</div>
-          <select name="상태" id="" defaultValue={user.auth}>
-            <option value="user">user</option>
-            <option value="manager">manager</option>
-          </select>
+          <div>권한</div>
+          <div>{user.auth}</div>
         </div>
       </div>
       <div>
         <button
           onClick={(e) => {
-            console.log({
-              password: user.password,
-              email: user.email,
-              nickname: user.nickname,
-            });
-            API.post('/users/master', {
-              password: user.password,
-              email: user.email,
-              nickname: user.nickname,
-            });
+            if (window.confirm('삭제하시겠습니까?')) {
+              API.delete(`/users/user/${user.email}`);
+            }
           }}
         >
-          수정
+          삭제
         </button>
       </div>
     </UserInfoBox>

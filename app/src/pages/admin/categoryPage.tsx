@@ -8,15 +8,18 @@ import {
 } from './adminCss';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncCategoryListFetch } from './slice/categoryListSlice';
-
+import { UpdateButton } from 'pages/mypage/style';
 import * as API from '../../api';
 import {
   CategoryBox,
   ContentsBox,
   ItemContainer,
   ItemList,
+  StoreContainer,
 } from 'components/characters/StoreStyle';
+import { AppDispatch } from 'store/store';
 
+import { Plus } from './categoryPlus';
 function CategoryItem({ category, setCheck }: any) {
   const itemList = useSelector((state: any) => state.itemListReducer.itemList);
   const [categoryName, setCategoryName] = useState(category.categoryName);
@@ -33,8 +36,15 @@ function CategoryItem({ category, setCheck }: any) {
   };
   return (
     <CategoryInfo>
-      <input type="text" value={categoryName} onChange={onChangeName} />
-      <button
+      <input
+        padding-left="5px"
+        type="text"
+        value={categoryName}
+        onChange={onChangeName}
+      />
+      <UpdateButton
+        type="button"
+        value={'수정'}
         onClick={() => {
           if (window.confirm('수정하시겠습니까?')) {
             try {
@@ -49,14 +59,14 @@ function CategoryItem({ category, setCheck }: any) {
             }
           }
         }}
-      >
-        수정
-      </button>
-      <button
+      ></UpdateButton>
+      <UpdateButton
+        type="button"
+        value={'삭제'}
+        del
         onClick={() => {
           if (window.confirm('삭제하시겠습니까?')) {
             if (findCategory()) {
-              console.log('??');
               try {
                 API.delete(`/category/delete/${category._id}`);
               } catch {
@@ -69,15 +79,13 @@ function CategoryItem({ category, setCheck }: any) {
             }
           }
         }}
-      >
-        삭제
-      </button>
+      ></UpdateButton>
     </CategoryInfo>
   );
 }
 
 function CategoryPage() {
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   const [check, setCheck] = useState(false);
   const categoryList = useSelector(
     (state: any) => state.categoryListReducer.categoryList,
@@ -103,55 +111,31 @@ function CategoryPage() {
     setCategoryName('');
   }, [check]);
   return (
-    <ContentsBox>
-      <ItemList>
-        <CategoryAddBox>
-          <InputCategory
-            type="text"
-            value={categoryName}
-            onChange={onChangeName}
-            placeholder="카테고리 이름을 입력하세요"
-            required
-          />
-          <CategoryAddBtn
-            onClick={() => {
-              if (window.confirm('추가하시겠습니까?')) {
-                if (findCategory()) {
-                  try {
-                    API.post('/category/register', {
-                      categoryName: categoryName,
-                    });
-                  } catch {
-                    console.log('에러');
-                  } finally {
-                    setCheck(true);
-                  }
-                } else {
-                  window.alert('이미 같은 이름의 카테고리가 존재합니다');
-                }
-              }
-            }}
-          >
-            추가하기
-          </CategoryAddBtn>
-        </CategoryAddBox>
-        <ItemContainer>
-          <CategoryBox>
-            <CategoryListBox>
-              {categoryList.map((category: any) => {
-                return (
-                  <CategoryItem
-                    key={category._id}
-                    category={category}
-                    setCheck={setCheck}
-                  ></CategoryItem>
-                );
-              })}
-            </CategoryListBox>
-          </CategoryBox>
-        </ItemContainer>
-      </ItemList>
-    </ContentsBox>
+    <StoreContainer>
+      <ContentsBox>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div>카테고리 추가하기</div>
+          <Plus setCheck={setCheck}></Plus>
+        </div>
+        <ItemList>
+          <ItemContainer>
+            <CategoryBox>
+              <CategoryListBox>
+                {categoryList.map((category: any) => {
+                  return (
+                    <CategoryItem
+                      key={category._id}
+                      category={category}
+                      setCheck={setCheck}
+                    ></CategoryItem>
+                  );
+                })}
+              </CategoryListBox>
+            </CategoryBox>
+          </ItemContainer>
+        </ItemList>
+      </ContentsBox>
+    </StoreContainer>
   );
 }
 
