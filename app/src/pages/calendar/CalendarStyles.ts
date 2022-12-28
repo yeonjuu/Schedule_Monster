@@ -164,9 +164,9 @@ export const MonsterBox = styled.div`
   position: absolute;
   top: 0px;
   background-color: transparent;
-  height: 160px;
-  width: 84vw;
-  z-index: -1;
+  height: 80px;
+  width: 20%;
+  z-index: 800;
 `;
 
 export const HolidayLabel = styled.div<{ description: string }>`
