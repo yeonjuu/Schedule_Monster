@@ -255,10 +255,9 @@ class UserService {
     if (!isPasswordCorrect) return false;
     else return true;
   }
-  async expandAccToken(token: string, email: string) {
+  async expandAccToken(token: string) {
     const secretKey = JWT_SECRET_KEY;
-    const { email: tokenEmail } = tokenParsing(token);
-    if (tokenEmail !== email) throw new Error('type:BadRequest,content:토큰과 입력하신 이메일은 일치하지 않습니다');
+    const { email } = tokenParsing(token);
 
     if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
     //토큰에 들어있는 이메일 정보와 사용자가 보낼때 보낸 이메일이 다르면 에러처리
