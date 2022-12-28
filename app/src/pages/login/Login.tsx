@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import * as API from '../../api';
 import * as Style from './form';
 import { useDispatch } from 'react-redux';
-import { login } from './userSlice';
-import { IUser, ILogin } from '../../types/userInterface';
+import { login, adminlogin } from './userSlice';
+import { IUser, ILogin, IAdmin } from '../../types/userInterface';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
@@ -24,9 +24,9 @@ export const Login = () => {
       const data = await API.post('/register/login', userInfo);
       console.log(data);
       const { auth, point, nickname } = data.loginUser;
+      const { accessToken, accessExp, refreshExp } = data;
       if (auth === 'user') {
         const { calendarId } = data.calendar;
-        const { accessToken, accessExp, refreshExp } = data;
         if (accessToken) {
           const user: IUser = {
             email,
@@ -41,12 +41,24 @@ export const Login = () => {
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('accessExp', accessExp);
           localStorage.setItem('refreshExp', refreshExp);
-          debugger;
           alert(`안녕하세요😁 ${nickname}님`);
           navigate('/calendar');
         }
       } else {
-        navigate('/admin');
+        if (accessToken) {
+          const admin: IAdmin = {
+            email,
+            password: pw,
+            nickname,
+            auth,
+          };
+          dispatch(adminlogin(admin));
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('accessExp', accessExp);
+          localStorage.setItem('refreshExp', refreshExp);
+          alert(`안녕하세요😁 ${nickname} 관리자님`);
+          navigate('/admin');
+        }
       }
     } catch (error) {
       if (error.status === 401) {
