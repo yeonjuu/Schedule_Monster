@@ -17,16 +17,12 @@ class ItemService {
     return result;
   }
   // 아이템 상세 조회
-  async getItem(_id: string) {
-    const result = await this.Item.findOne({ _id: _id });
+  async getItem(id: string) {
+    const result = await this.Item.findOne({ _id: id });
     return result;
   }
 
-  // 카테고리 별 아이템 조회
-  async getItemByCategory(categoryName: string) {
-    const result = await this.Item.find({ categoryName: categoryName });
-    return result;
-  }
+
 
   // 아이템 생성
   async createItem(itemInfo: ItemInterface) {

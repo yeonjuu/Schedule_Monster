@@ -4,7 +4,6 @@ import { AsyncRequestHandler } from '../types';
 interface itemControllerInterface {
     getItems: AsyncRequestHandler;
     getItem: AsyncRequestHandler;
-    getCategoryItem: AsyncRequestHandler;
     createItem: AsyncRequestHandler;
     updateItem: AsyncRequestHandler;
     deleteItem: AsyncRequestHandler;
@@ -16,13 +15,8 @@ export const itemController: itemControllerInterface = {
         res.json(items);
     },
     async getItem(req, res) {
-        const { _id } = req.body;
-        const item = await itemService.getItem(_id);
-        res.json(item);
-    },
-    async getCategoryItem(req, res) {
-        const { categoryName } = req.body;
-        const item = await itemService.getItemByCategory(categoryName);
+        const { id } = req.params;
+        const item = await itemService.getItem(id);
         res.json(item);
     },
     async createItem(req, res) {
