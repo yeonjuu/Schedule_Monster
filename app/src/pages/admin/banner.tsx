@@ -3,20 +3,17 @@ import { Container } from './adminCss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { asyncCategoryListFetch } from './slice/categoryListSlice';
-import { asyncitemListFetch } from './slice/itemListSlice';
-import { asyncUserListFetch } from './slice/userListSlice';
-import { asyncMonsterListFetch } from './slice/monsterListSlice';
+import { AppDispatch } from 'store/store';
+
 function Banner() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <>
       <Container>
         <li
           onClick={(): void => {
             navigate(`/admin/item`);
-            dispatch(asyncitemListFetch());
-            dispatch(asyncCategoryListFetch());
           }}
         >
           상점
@@ -24,8 +21,6 @@ function Banner() {
         <li
           onClick={(): void => {
             navigate(`/admin/monster`);
-
-            dispatch(asyncMonsterListFetch());
           }}
         >
           도감
@@ -33,7 +28,6 @@ function Banner() {
         <li
           onClick={(): void => {
             navigate(`/admin/user/`);
-            dispatch(asyncCategoryListFetch());
           }}
         >
           유저 관리
