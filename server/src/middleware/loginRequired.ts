@@ -22,13 +22,10 @@ export async function loginRequired(req: Request, res: Response, next: NextFunct
     const jwtDecoded = jwt.verify(Token, secretKey);
     const email = (<{ email: string }>jwtDecoded).email;
     const auth = (<{ auth: string }>jwtDecoded).auth;
-    console.log('토큰의 email : ', email);
-    console.log('토큰의 auth : ', auth);
 
     // if (req.body.email) {
     //   if (req.body.email !== email) return errorResponse(res, 'Forbidden', '토큰과  이메일은 일치하지 않습니다');
     // }
-
     req.body.email = email;
     req.body.auth = auth;
     const user = await userService.getUser(email);
@@ -57,7 +54,7 @@ export async function loginRequired(req: Request, res: Response, next: NextFunct
       } else if (error.message === 'invalid token') {
         return errorResponse(res, 'BadRequest', '유효하지 않은 토큰입니다');
       } else {
-        return errorResponse(res, 'BadRequest', '유효하지 않은 토큰입니다');
+        return errorResponse(res, 'BadRequest', error.message);
       }
     } else {
       return errorResponse(res, 'BadRequest', '토큰을 확인 하는 중에 비정상적인 오류가 발생했습니다.');
