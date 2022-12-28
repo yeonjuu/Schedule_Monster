@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import * as API from '../../api';
 import * as Style from './form';
 import { useDispatch } from 'react-redux';
-import { login } from './userSlice';
-import { IUser, ILogin } from '../../types/userInterface';
+import { login, adminlogin } from './userSlice';
+import { IUser, ILogin, IAdmin } from '../../types/userInterface';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
@@ -23,35 +23,50 @@ export const Login = () => {
     try {
       const data = await API.post('/register/login', userInfo);
       console.log(data);
-      const { calendarId } = data.calendar;
       const { auth, point, nickname } = data.loginUser;
-      const { accessToken, accessExp } = data;
-      if (accessToken) {
-        const user: IUser = {
-          email,
-          nickname,
-          point,
-          auth,
-          calendarId,
-        };
-        //store에 로그인 유저 정보 저장
-        dispatch(login(user));
-        //토근 로컬 스토리지 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('accessExp', accessExp);
-        alert(`안녕하세요😁 ${nickname}님`);
-
-        //경로확인하기
-        //관리자,일반사용자 구분해서 경로 변경
-        if (auth === 'user') {
+      const { accessToken, accessExp, refreshExp } = data;
+      if (auth === 'user') {
+        const { calendarId } = data.calendar;
+        if (accessToken) {
+          const user: IUser = {
+            email,
+            nickname,
+            point,
+            auth,
+            calendarId,
+          };
+          //store에 로그인 유저 정보 저장
+          dispatch(login(user));
+          //토큰 로컬 스토리지 저장
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('accessExp', accessExp);
+          localStorage.setItem('refreshExp', refreshExp);
+          alert(`안녕하세요😁 ${nickname}님`);
           navigate('/calendar');
-        } else if (auth === 'admin') {
+        }
+      } else {
+        if (accessToken) {
+          const admin: IAdmin = {
+            email,
+            password: pw,
+            nickname,
+            auth,
+          };
+          dispatch(adminlogin(admin));
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('accessExp', accessExp);
+          localStorage.setItem('refreshExp', refreshExp);
+          alert(`안녕하세요😁 ${nickname} 관리자님`);
           navigate('/admin');
         }
       }
     } catch (error) {
-      const msg = error.data.message.split('.')[0];
-      setErrorContent(msg);
+      if (error.status === 401) {
+        const msg = error.data.message.split('.')[0];
+        setErrorContent(msg);
+      } else {
+        alert('로그인 실패');
+      }
     }
   };
 
