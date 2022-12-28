@@ -69,9 +69,9 @@ class UserItemService {
             return message
         }
         const newPoint = userPoint - +price*quantity
-        Array(quantity).fill(0).forEach(async() => {
+        for (let i = 0; i < quantity; i++) {
             await this.updateItem(itemInfo)
-        })
+        }
         const result = await this.updateUserPoint(userData, newPoint)
         return result
     }
