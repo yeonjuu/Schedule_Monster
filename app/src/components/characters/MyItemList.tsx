@@ -83,6 +83,7 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                     </div>
 
                     <div style={{alignSelf:'center'}}>{myitems.itemName}</div>
+                    <img style={{alignSelf:'center', width:'2rem', height:'2rem'}} src={myitems.itemImage}/>
 
                     <div
                         style={{
@@ -96,13 +97,12 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
             <>
                 <ItemButton
                 onClick={() => {
+                      const isEgg = myitems.categoryName == '알';
 
-                  if (mainImage !== '/pokeball.png') {
+                  if (mainImage !== '/pokeball.png' || isEgg) {
                       const isUse = window.confirm(
                         `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
                         ); 
-
-                      const isEgg = myitems.categoryName == '알';
 
                       if (!isEgg && isUse && affection < 100 && mainImage !== '/pokeball.png') {
                       dispatch(applyItem(myitems.exp));
@@ -114,12 +114,17 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                         characterId: mainId,    // 아이템효과를 적용하려는 캐릭터의 id
                     });
 
+                    //리페치
+                      // const refetchMyItems = API.get(`/useritem/detail/${email}`);
+                      // setMyItems(refetchMyItems);
+
                       }
                       else if (!isEgg && isUse && affection >= 100) {
                       alert('애정도가 이미 가득 채워졌습니다');
                     }
 
                     else if (isEgg && isUse) {
+                      alert('새로운 포켓몬이 나왔습니다! 도감에서 확인해보세요.');
                       API.post('/useritem/egg', {
                         email,
                         itemId: myitems._id
@@ -128,7 +133,9 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                   }
 
 
-                else if (mainImage === '/pokeball.png') {
+                else if (!isEgg && mainImage === '/pokeball.png') {
+                  const isEgg = myitems.categoryName == '알';
+
                     alert('대표캐릭터를 먼저 지정해주세요!');
                     }
 

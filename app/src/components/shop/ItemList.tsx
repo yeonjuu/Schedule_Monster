@@ -37,6 +37,7 @@ function Item({ setItem, item, purpose }: any) {
       </div>
 
       <div style={{alignSelf:'center'}}>{item.itemName}</div>
+      <img style={{alignSelf:'center', width:'2rem', height:'2rem'}} src={item.itemImage}/>
 
       <div
         style={{
@@ -72,7 +73,6 @@ function Item({ setItem, item, purpose }: any) {
 
             <ItemButton
               onClick={() => {
-
                 if(point > item.price) {
                   const isPurchase = window.confirm(
                     `'${item.itemName}' 아이템을 구매하시겠습니까?`,
@@ -90,6 +90,7 @@ function Item({ setItem, item, purpose }: any) {
                       price: item.price,
                       exp: item.exp,
                       categoryName: item.categoryName,
+                      quantity: count,
                   });
 
                   } 

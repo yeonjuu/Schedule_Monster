@@ -58,4 +58,8 @@ const NavMenu = styled.li`
   &:hover {
     opacity: 50%;
   }
+
+  &:visited {
+    opacity: 50%;
+  }
 `;

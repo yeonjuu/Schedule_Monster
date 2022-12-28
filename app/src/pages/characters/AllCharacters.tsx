@@ -49,7 +49,7 @@ export default function AllCharacters() {
                                 key={pokemon._id}
                                 id={pokemon._id}
                                 show={
-                                    myPokemons.map((p:any) => p._id !== pokemon._id ? "mine" : null)
+                                    myPokemons.filter((p:any) => p.characterId === pokemon.characterId).length !== 0 ? "mine" :null
                                 }>
                                     <img src={pokemon.image.imageSprites.front_default} />
                                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
@@ -73,9 +73,24 @@ const AllChaContainer = styled.div`
     height: 90%;
 
     display: flex;
+    justify-content: flex-start;
     flex-wrap: wrap;
     overflow-y: scroll;
+    scroll-behavior: smooth;
     padding: 1rem;
+
+    &::-webkit-scrollbar {
+    width: 0.7rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #A2BCFF;
+    }
+
+    &::-webkit-scrollbar-track {
+    background-color: aliceblue;
+    }
 
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
@@ -83,7 +98,7 @@ const AllChaContainer = styled.div`
 `
 
 const AllChaBox = styled.div<any>`
-    background-color: aliceblue;
+    background-color: ${(props:any) => props.show === "mine" ? "#A2BCFF" : "aliceblue"};
     opacity: ${(props:any) => props.show === "mine" ? "100%" : "70%"};
     width: 120px;
     height: 150px;

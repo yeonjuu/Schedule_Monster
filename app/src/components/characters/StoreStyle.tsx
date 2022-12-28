@@ -178,6 +178,19 @@ export const CategoryBox = styled.div`
 
     overflow-y: scroll;
 
+        &::-webkit-scrollbar {
+    width: 0.7rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: aliceblue;
+    }
+
+    &::-webkit-scrollbar-track {
+    background-color: #A2BCFF;
+    }
+
 `
 
 //수집도감 리스트
@@ -191,6 +204,19 @@ export const CharacterContainer = styled.div`
     flex-wrap: wrap;
     overflow-y: scroll;
     padding: 1rem;
+
+        &::-webkit-scrollbar {
+    width: 0.7rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #A2BCFF;
+    }
+
+    &::-webkit-scrollbar-track {
+    background-color: aliceblue;
+    }
 
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
@@ -304,15 +330,13 @@ export const Tooltip = styled.div`
     color: #1616c6;
     font-weight: bolder;
     font-size: 13px;
-    opacity: 80%;
+    opacity: 90%;
     display: flex;
     text-align: center;
     align-items: center;
     position: absolute;
     bottom: 3.4rem;
     left: 0.5rem;
-    
-    text-overflow: ellipsis;
     
     visibility: hidden;
 `

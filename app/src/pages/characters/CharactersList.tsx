@@ -14,6 +14,7 @@ import * as API from '../../api';
 import Navbar from 'components/characters/Navbar';
 import { RootState } from '../../store/store';
 import Loading from 'components/characters/Loading';
+import { setMainCharacter } from 'pages/calendar/slice/mainCharacter';
 
 export default function CharactersList() {
   const dispatch = useDispatch();
@@ -53,12 +54,14 @@ export default function CharactersList() {
                         `'${clicked.nameKo}'을/를 대표 캐릭터로 지정하시겠습니까?`,
                       );
                       if (isMain) {
-                        dispatch(mainProfile(clicked.image.back_default));
-                        dispatch(secondProfile(clicked.image.front_default));
-                        dispatch(thirdProfile(clicked.image.front_shiny));
+                        dispatch(mainProfile(clicked.image.imageSprites.back_default));
+                        dispatch(secondProfile(clicked.image.imageSprites.front_default));
+                        dispatch(thirdProfile(clicked.image.imageSprites.front_shiny));
                         dispatch(mainName(clicked.nameKo));
                         dispatch(mainAffection(clicked.myExp));
                         dispatch(characterId(clicked._id));
+                        //캘린더 메인케릭터 지정
+                        // dispatch(setMainCharacter(clicked.));
 
                         API.put('/characterlist/pick',{ 
                           email,
@@ -70,7 +73,7 @@ export default function CharactersList() {
                     key={pokemon._id}
                     // id={pokemon._id}
                   >
-                    <img src={pokemon.myExp >= 50 && pokemon.myExp < 100 ? pokemon.image.front_default : pokemon.myExp >= 100 ? pokemon.image.front_shiny : pokemon.image.back_default} />
+                    <img src={pokemon.myExp >= 50 && pokemon.myExp < 100 ? pokemon.image.imageSprites.front_default : pokemon.myExp >= 100 ? pokemon.image.imageSprites.front_shiny : pokemon.image.imageSprites.back_default} />
                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
                   </CharacterBox>
                 ))}
