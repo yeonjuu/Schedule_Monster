@@ -15,9 +15,9 @@ class UserService {
 
   async getUser(email: string) {
     const user = await this.User.findOne({ email });
-    if (!user)
+    if (!user) {
       throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
-    return user;
+    } else return user;
   }
   // 관리자용 전체 사용자 조회
   async getUsers(email: string) {
