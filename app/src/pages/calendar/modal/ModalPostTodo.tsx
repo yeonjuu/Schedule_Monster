@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from 'store/store';
 import { checkTodo } from 'types/calendarTypes';
 import { closeModal } from '../slice/modalSlice';
+import { updateCalendar } from '../slice/todoSlice';
 import { BtnBox, PickColor } from './ModalStyle';
+import * as API from 'api';
 
 const Todo = ({ dates }: { dates: string | any }) => {
   //여기서 dates로 받아오는 것은 params 값. params는 해당 날짜에 해당(ex: 2022-12-25)
@@ -19,8 +21,6 @@ const Todo = ({ dates }: { dates: string | any }) => {
   // const month: number = Number(dates.slice(5, 7));
   // const day: number = Number(dates.slice(8, 10));
 
- 
-
   const {
     handleSubmit,
     register,
@@ -28,24 +28,40 @@ const Todo = ({ dates }: { dates: string | any }) => {
   } = useForm({ mode: 'onChange' });
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string>(`${mainColor}`);
-  const list = useSelector((state: RootState) => state.persistedReducer.calendarList);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const list = useSelector(
+    (state: RootState) => state.persistedReducer.calendarList,
+  );
+  const calendarId = useSelector(
+    (state: RootState) => state.persistedReducer.calendarId,
+  );
+  const year: number = Number(dates.slice(0, 4));
+  const month: number = Number(dates.slice(4, 6));
+
+  
 
   const onValid = async (input: checkTodo) => {
     const data = {
-      calendarId: input.calendar,
+      calendarId: calendarId,
       startDate: dates,
+      endDate: dates,
       title: input.title,
       labelColor: color,
       isTodo: true,
     };
 
     try {
-      console.log(data);
+     
       await post(`/schedule/day`, data);
       alert('할 일을 등록하였습니다');
       dispatch(closeModal());
+      const monthData={
+        calendarId: `${calendarId}`,
+        startYearMonth: `${year}${month}`,
+      }
+const getThisCalendar = await API.post(`/schedule/month`,monthData);
+dispatch(updateCalendar(getThisCalendar));
       navigate('/calendar');
     } catch (err) {
       alert(err);
@@ -59,12 +75,10 @@ const Todo = ({ dates }: { dates: string | any }) => {
 
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
-      <span>
-        {/* {year}년 {month}월 {day}일 */}
-      </span>
+      <span>{/* {year}년 {month}월 {day}일 */}</span>
       <InputBox>
         <Input
-        type='text'
+          type="text"
           placeholder="내용을 입력해주세요"
           {...register('title', {
             required: '내용을 입력해 주세요',
@@ -79,23 +93,6 @@ const Todo = ({ dates }: { dates: string | any }) => {
           })}
           errors={errors.title}
         />
-        {errors.title && <ErrorWord>{`${errors.title?.message}`}</ErrorWord>}
-        <SelectCal
-          {...register('calendar', {
-            required: '캘린더를 선택해 주세요',
-            validate: {
-              checkValue: (value) =>
-                value != 'no' || '소유 중인 캘린더 중에서 선택해 주세요',
-            },
-          })}
-          errors={errors.calendar}
-        >
-          <option defaultValue="no" value="no">
-            캘린더를 선택해 주세요
-          </option>
-          {list.map(item=>{return <option value={item.calendarId}>{item.calendarName}</option>})}
-        </SelectCal>
-
         <PickColor
           type="button"
           onClick={() => setOpen((curr) => !curr)}
@@ -117,12 +114,15 @@ const Todo = ({ dates }: { dates: string | any }) => {
             width={'380px'}
           />
         )}
+        {errors.title && <ErrorWord>{`${errors.title?.message}`}</ErrorWord>}
+
+
+        
       </InputBox>
       <BtnBox>
         <ModalBtn
           type="button"
           onClick={() => {
-            
             dispatch(closeModal());
             navigate('/calendar');
           }}

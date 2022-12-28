@@ -45,12 +45,12 @@ const checkTodo = (
     arr.push(
       <TodoLabel
         isCompleted={todo[i].isCompleted}
-        key={`${todo[i].startDate}-${i}`}
+        key={`${todo[i].startYYYYMMDD}-${i}`}
         labelColor={todo[i].labelColor}
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();
           dispatch(openTodo());
-          navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
+          navigate(`/calendar/todos/todo/${todo[i].scheduleId}`);
         }}
       >
         <p>{todo[i].title}</p>
@@ -71,14 +71,14 @@ const checkSchedule = (
     arr.push(
       <ScheduleLabel
         isCompleted={todo[i].isCompleted}
-        key={`${todo[i].startDate}-${i}`}
+        key={`${todo[i].startYYYYMMDD}-${i}`}
         labelColor={todo[i].labelColor}
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();
 
           dispatch(openTodo());
 
-          navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
+          navigate(`/calendar/todos/schedule/${todo[i].scheduleId}`);
         }}
       >
         <p>{todo[i].title}</p>
@@ -103,13 +103,13 @@ const Dates = ({
   const todosToday = format(date, 'yyyyMMdd');
   const holidayArr = holidayData.filter((item) => item.date === holidayToday);
   const todosArr = todoData.filter(
-    (item) => item.isTodo && item.startDate.slice(0, 8) === todosToday,
+    (item) => item.isTodo && item.startYYYYMMDD.toString() === todosToday,
   ); //캘린더별 일정 목록에서 할일만 분리한 배열
   const scheduleArr = todoData.filter(
     (item) =>
       !item.isTodo &&
-      item.startDate.slice(0, 8) <= todosToday &&
-      item.endDate.slice(0, 8) >= todosToday,
+      item.startYYYYMMDD.toString() <= todosToday &&
+      item.endYYYYMMDD.toString() >= todosToday,
   ); //캘린더별 일정 목록에서 일정만 분리한 배열
 
   const day = format(date, 'd');
@@ -120,7 +120,7 @@ const Dates = ({
 
         dispatch(openModal());
 
-        navigate(`/calendar/todos/${format(date, 'yyyy-MM-dd')}`);
+        navigate(`/calendar/todos/${todosToday}`);
       }}
     >
       <Day

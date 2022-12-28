@@ -25,7 +25,6 @@ const TodosModal = () => {
 
   const { scheduleId, isTodo }  = useParams<QuizParams>();
 
-
   return (
     <>
       <Background
@@ -39,7 +38,7 @@ const TodosModal = () => {
       ></Background>
       <ModalContainer ref={modalRef}>
         <ContentBox>
-          {isTodo === 'true' ? (
+          {isTodo === 'todo' ? (
             <TodosContent scheduleId={scheduleId} />
           ) : (
             <ScheduleContent scheduleId={scheduleId} />

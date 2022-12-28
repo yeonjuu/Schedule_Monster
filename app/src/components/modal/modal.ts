@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
+
   width: auto;
   height: auto;
   padding: 10px 20px;

@@ -7,18 +7,17 @@ const initialState = {
   point: 0,
   isLogin: false,
   auth: '',
-  calendarList: [
-    {
-      calendarId: '',
-      calendarName: '',
-      createdAt: new Date(),
-      email: '',
-      share: true,
-      updatedAt: new Date(),
-      url: null,
-      __v: 1,
-      _id: '',
-    },
+  calendarList: [{
+    calendarId: "",
+    calendarName: "",
+   
+    email: "",
+    share: true,
+   
+    url: null,
+    __v: 1,
+    _id: "",
+  }
   ],
   calendarId: '',
 };
