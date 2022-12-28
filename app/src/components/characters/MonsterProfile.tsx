@@ -33,9 +33,9 @@ export default function MonsterProfile() {
         dispatch(mainAffection(data.myExp));
         dispatch(characterId(data._id));
 
-        dispatch(mainProfile(data.image.back_default));
-        dispatch(secondProfile(data.image.front_default));
-        dispatch(thirdProfile(data.image.front_shiny));
+        dispatch(mainProfile(data.image.imageSprites.back_default));
+        dispatch(secondProfile(data.image.imageSprites.front_default));
+        dispatch(thirdProfile(data.image.imageSprites.front_shiny));
     }
     fetchData();
   }, []);
@@ -62,15 +62,15 @@ export default function MonsterProfile() {
                     <MonsterLine>이름 : {name}</MonsterLine>
                     <MonsterLine>애정도 : ❤️ {affection > 100 ? 100 : affection}</MonsterLine>
                     {/* <MonsterLine>애정도 : {affection >= 50 && affection < 100 ? ' ❤️ ❤️ ' : affection >= 100 ? ' ❤️ ❤️ ❤️ ❤️ ' : '🖤'}</MonsterLine> */}
-                    <MonsterLine>
+                    {/* <MonsterLine>
                       <div style={{display:'flex', alignItems:'center'}}>
-                        애정도 :  
+                        애정도 ❤️ :  
                         <AffectionStatus />
                         <AffectionStatus />
                         <AffectionStatus />
                         <AffectionStatus /> 
                         {affection > 100 ? 100 : `${affection}`}
-                      </div></MonsterLine>
+                      </div></MonsterLine> */}
                     <MonsterLine>보유 코인 : 💰 {point}</MonsterLine>
                   </ul>
                 </MonsterStatus>
@@ -89,7 +89,7 @@ const AffectionStatus = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  
+
 `
 
 const ImageButton = styled.button`

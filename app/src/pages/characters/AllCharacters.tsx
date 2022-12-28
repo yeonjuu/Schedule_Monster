@@ -20,6 +20,7 @@ export default function AllCharacters() {
         async function fetchData() {
             const alldata = await API.get('/characters/all');
             setAllPokemons(alldata);
+            console.log(allPokemons);
             setIsLoading(!isLoading);
         }
         fetchData();
@@ -49,7 +50,7 @@ export default function AllCharacters() {
                                 key={pokemon._id}
                                 id={pokemon._id}
                                 show={
-                                    myPokemons.map((p:any) => p._id !== pokemon._id ? "mine" : null)
+                                    myPokemons.filter((p:any) => p.characterId === pokemon.characterId).length !== 0 ? "mine" :null
                                 }>
                                     <img src={pokemon.image.imageSprites.front_default} />
                                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
@@ -83,7 +84,7 @@ const AllChaContainer = styled.div`
 `
 
 const AllChaBox = styled.div<any>`
-    background-color: aliceblue;
+    background-color: ${(props:any) => props.show === "mine" ? "#A2BCFF" : "aliceblue"};
     opacity: ${(props:any) => props.show === "mine" ? "100%" : "70%"};
     width: 120px;
     height: 150px;
