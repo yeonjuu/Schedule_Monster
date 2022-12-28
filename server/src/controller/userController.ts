@@ -87,11 +87,10 @@ export const userController: userControllerInterface = {
   },
   async expandAccToken(req, res) {
     const Token = req.headers.authorization?.split(' ')[1];
-    const { email } = req.body;
     if (!Token) {
       errorResponse(res, 'BadRequest', '토큰이 전달되지 않았습니다');
     } else {
-      const accToken = await userService.expandAccToken(Token, email);
+      const accToken = await userService.expandAccToken(Token);
       res.json(accToken);
     }
   },
