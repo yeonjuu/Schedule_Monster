@@ -61,7 +61,7 @@ export default function CharactersList() {
                         dispatch(mainAffection(clicked.myExp));
                         dispatch(characterId(clicked._id));
                         //캘린더 메인케릭터 지정
-                        // dispatch(setMainCharacter(clicked.));
+                        dispatch(setMainCharacter(clicked.image.imageGifs));
 
                         API.put('/characterlist/pick',{ 
                           email,

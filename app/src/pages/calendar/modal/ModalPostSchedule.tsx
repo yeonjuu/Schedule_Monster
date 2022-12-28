@@ -19,14 +19,15 @@ import { mainColor } from 'assets/styles';
 import { closeModal } from '../slice/modalSlice';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { checkTodo } from 'types/calendarTypes';
-import { post } from 'api';
+import * as API from 'api';
 import { add, format } from 'date-fns';
 import { RootState } from 'store/store';
+import { updateCalendar } from '../slice/todoSlice';
 
 const Schedule = ({ dates }: { dates: string | any }) => {
   const year: number = Number(dates.slice(0, 4));
-  const month: number = Number(dates.slice(5, 7));
-  const day: number = Number(dates.slice(8, 10));
+  const month: number = Number(dates.slice(4, 6));
+  const day: number = Number(dates.slice(-2));
   const todayData = new Date(dates);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>();
@@ -42,17 +43,22 @@ const Schedule = ({ dates }: { dates: string | any }) => {
     clearErrors,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
-  const list = useSelector((state: RootState) => state.persistedReducer.calendarList);
-  
-  useEffect(()=>{
-    if(!year||!month||!day){
+  const list = useSelector(
+    (state: RootState) => state.persistedReducer.calendarList,
+  );
+  const calendarId = useSelector(
+    (state: RootState) => state.persistedReducer.calendarId,
+  );
+
+  useEffect(() => {
+    if (!year || !month || !day) {
       dispatch(closeModal());
       navigate('/calendar');
-    }else{
-      setStartDate(new Date(year, month-1, day));
-      setEndDate(add(new Date(year, month-1, day), {minutes: 30}));
+    } else {
+      setStartDate(new Date(year, month - 1, day));
+      setEndDate(add(new Date(year, month - 1, day), { minutes: 30 }));
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (!startDate || !endDate) {
@@ -74,23 +80,29 @@ const Schedule = ({ dates }: { dates: string | any }) => {
         message: '종료 일자는 시작 일자보다 커야 합니다',
       });
     } else {
-      
       const data = {
-        calendarId: input.calendar,
-        startDate: startDate,
-        endDate: endDate,
+        calendarId: calendarId,
+        startDate: format(startDate, 'yyyyMMdd'),
+        startTime: format(startDate, 'HHmm'),
+        endDate: format(endDate, 'yyyyMMdd'),
+        endTime: format(endDate, 'HHmm'),
         title: input.title,
         labelColor: color,
         isTodo: false,
       };
-      console.log(data);
-      console.log(format(startDate,'yyyyMMddhhmm'))
-      console.log(format(endDate,'yyyyMMddhhmm'))
+
       try {
-        console.log(data);
-        await post(`/schedule/day`, data);
+        await API.post(`/schedule/day`, data);
         alert('일정을 등록하였습니다');
         dispatch(closeModal());
+
+       const monthData={
+        calendarId: `${calendarId}`,
+        startYearMonth: `${year}${month}`,
+      }
+const getThisCalendar = await API.post(`/schedule/month`,monthData);
+dispatch(updateCalendar(getThisCalendar));
+
         navigate('/calendar');
       } catch (err) {
         alert(err);
@@ -105,13 +117,11 @@ const Schedule = ({ dates }: { dates: string | any }) => {
 
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
-      <span>
-        {/* {year}년 {month}월 {day}일 */}
-      </span>
+      <span>{/* {year}년 {month}월 {day}일 */}</span>
 
       <InputBox>
         <Input
-        type='text'
+          type="text"
           placeholder="내용을 입력해주세요"
           {...register('title', {
             required: '내용을 입력해 주세요',
@@ -126,8 +136,29 @@ const Schedule = ({ dates }: { dates: string | any }) => {
           })}
           errors={errors.title}
         />
+        
+        <PickColor
+          type="button"
+          onClick={() => setOpen((curr) => !curr)}
+          labelColor={color}
+        >
+          라벨
+        </PickColor>
+        {errors.calendar && (
+          <ErrorWord>{`${errors.calendar?.message}`}</ErrorWord>
+        )}
         {errors.title && <ErrorWord>{`${errors.title?.message}`}</ErrorWord>}
-
+        {open && (
+          <TwitterPicker
+            color={color}
+            onChangeComplete={(color) => {
+              setColor(color.hex);
+              setOpen((curr) => !curr);
+            }}
+            triangle={'top-right'}
+            width={'380px'}
+          />
+        )}
         <ScheduleBox>
           <SchedulePicker
             wrapperClassName="datePicker"
@@ -153,42 +184,8 @@ const Schedule = ({ dates }: { dates: string | any }) => {
           />
         </ScheduleBox>
         {errors.date && <ErrorWord>{`${errors.date?.message}`}</ErrorWord>}
-        <SelectCal
-          {...register('calendar', {
-            required: '캘린더를 선택해 주세요',
-            validate: {
-              checkValue: (value) =>
-                value !== 'no' || '소유 중인 캘린더 중에서 선택해 주세요',
-            },
-          })}
-          errors={errors.calendar}
-        >
-          <option defaultValue="no" value="no">
-            캘린더를 선택해 주세요
-          </option>
-          {list.map(item=>{return <option value={item.calendarId}>{item.calendarName}</option>})}
-        </SelectCal>
-        <PickColor
-          type="button"
-          onClick={() => setOpen((curr) => !curr)}
-          labelColor={color}
-        >
-          라벨
-        </PickColor>
-        {errors.calendar && (
-          <ErrorWord>{`${errors.calendar?.message}`}</ErrorWord>
-        )}
-        {open && (
-          <TwitterPicker
-            color={color}
-            onChangeComplete={(color) => {
-              setColor(color.hex);
-              setOpen((curr) => !curr);
-            }}
-            triangle={'top-right'}
-            width={'380px'}
-          />
-        )}
+        
+       
         <BtnBox>
           <ModalBtn
             type="button"

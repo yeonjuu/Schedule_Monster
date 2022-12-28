@@ -29,7 +29,6 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
 
     useEffect( () => {
         async function fetchData () {
-            //테스트 데이터
             const data = await API.get(`/useritem/detail/${email}`);
             setMyItems(data);
             setIsLoading(!isLoading);
@@ -37,6 +36,15 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
         fetchData();
         dispatch(asyncCategoryListFetch());
     },[]);
+
+    useEffect( () => {
+      async function fetchData () {
+          //테스트 데이터
+          const data = await API.get(`/useritem/detail/${email}`);
+          setMyItems(data);
+      };
+      fetchData();
+  },[myItems]);
 
 
     //검색기능
@@ -114,10 +122,6 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                         characterId: mainId,    // 아이템효과를 적용하려는 캐릭터의 id
                     });
 
-                    //리페치
-                      // const refetchMyItems = API.get(`/useritem/detail/${email}`);
-                      // setMyItems(refetchMyItems);
-
                       }
                       else if (!isEgg && isUse && affection >= 100) {
                       alert('애정도가 이미 가득 채워졌습니다');
@@ -125,18 +129,16 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
 
                     else if (isEgg && isUse) {
                       alert('새로운 포켓몬이 나왔습니다! 도감에서 확인해보세요.');
-                      API.post('/useritem/egg', {
+                      const newI:any = API.post('/useritem/egg', {
                         email,
                         itemId: myitems._id
-                    })
+                    });
+                      console.log(newI.nameKo);
                     }
                   }
 
-
                 else if (!isEgg && mainImage === '/pokeball.png') {
-                  const isEgg = myitems.categoryName == '알';
-
-                    alert('대표캐릭터를 먼저 지정해주세요!');
+                    alert('대표캐릭터를 지정해주세요!');
                     }
 
                 }}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
@@ -9,7 +9,7 @@ import { RootState } from '../../store/store';
 import * as API from '../../api';
 import { minusPoint } from 'pages/login/userSlice';
 
-function Item({ setItem, item, purpose }: any) {
+function Item({ item, purpose }: any) {
   const dispatch = useDispatch<any>();
   // const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
@@ -17,12 +17,12 @@ function Item({ setItem, item, purpose }: any) {
   const user = useSelector((state: RootState) => state.persistedReducer);
   const { point, email } = user;
 
+  useEffect( 
+    () => setCount(1)
+    ,[point])
+
   return (
-    <ItemBox
-      onClick={(): void => {
-        setItem(item);
-      }}
-    >
+    <ItemBox>
       <div
         style={{
           display: 'flex',
@@ -93,6 +93,7 @@ function Item({ setItem, item, purpose }: any) {
                       quantity: count,
                   });
 
+                  alert('구매 완료 하였습니다. 내아이템에서 확인해보세요!')
                   } 
 
                   else if (isPurchase && point < item.price * count) {
@@ -134,7 +135,6 @@ function ItemList({ category, inputValue, purpose, setItem }: any) {
         return (
           <Item
             item={item}
-            setItem={setItem}
             purpose={purpose}
             key={item._id}
           ></Item>

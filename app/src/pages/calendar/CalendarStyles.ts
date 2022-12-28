@@ -128,6 +128,8 @@ export const Layout = styled.div`
 export const Container = styled.div`
   width: 84vw;
   height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -136,12 +138,13 @@ export const Container = styled.div`
 
 export const CalendarController = styled.div`
   display: flex;
-  justify-content: baseline;
+  justify-content: space-between;
   align-items: center;
   height: 40px;
   width: 100%;
+ 
   font-size: 18px;
-  margin: 20px 0 50px 0;
+  margin: 20px auto;
   & > div > svg {
     cursor: pointer;
     border: none;
@@ -161,9 +164,9 @@ export const MonsterBox = styled.div`
   position: absolute;
   top: 0px;
   background-color: transparent;
-  height: 160px;
-  width: 84vw;
-  z-index: -1;
+  height: 80px;
+  width: 20%;
+  z-index: 800;
 `;
 
 export const HolidayLabel = styled.div<{ description: string }>`
