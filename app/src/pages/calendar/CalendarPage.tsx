@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   format,
   add,
@@ -20,18 +20,20 @@ import {
   Layout,
 } from './CalendarStyles';
 import Dates from './Dates';
-import {  DateData, Holiday, onClickObj } from '../../types/calendarTypes';
+import { DateData, Holiday, onClickObj } from '../../types/calendarTypes';
 import useDebounce from '../../hooks/useDebounce';
 import DateController from './DateController';
 import { Modal } from 'pages/calendar/modal/ModalPost';
 import { NavBar } from 'components/navbar/NavBar';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/store';
 import { TodosModal } from './modal/ModalPut';
 import { Logo } from 'components/logo/Logo';
 import { Header } from 'components/header/Header';
 import MainMonster from './MainMonster';
+import * as API from 'api';
+import { updateCalendar } from './slice/todoSlice';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -50,7 +52,14 @@ const CalendarPage = () => {
   const debounce = useDebounce(format(date, 'MM'));
   const door = useSelector((state: RootState) => state.modalSlice.door);
   const doorTodo = useSelector((state: RootState) => state.modalSlice.doorTodo);
+  const calendarId = useSelector(
+    (state: RootState) => state.persistedReducer.calendarId,
+  );
+  const todoList = useSelector(
+    (state: RootState) => state.todoSlice.todoList,
+  );
 
+  const dispatch = useDispatch();
 
   const session = () => {
     if (thisMonth === '12') {
@@ -76,10 +85,10 @@ const CalendarPage = () => {
 
   useEffect(() => {
     const getHoliday = async () => {
-      const calendarId =
+      const GcalendarId =
         'ko.south_korea%23holiday%40group.v.calendar.google.com';
       const res = await axios.get(
-        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${
+        `https://www.googleapis.com/calendar/v3/calendars/${GcalendarId}/events?key=${
           process.env.REACT_APP_API_KEY
         }&orderBy=startTime&singleEvents=true&timeMin=${
           session().start
@@ -93,10 +102,16 @@ const CalendarPage = () => {
           date: item.start.date,
         };
       });
+      const monthData={
+        calendarId: `${calendarId}`,
+        startYearMonth: `${thisYear}${thisMonth}`,
+      }
+      const getThisCalendar = await API.post(`/schedule/month`,monthData);
       setHolidayData(data);
+      dispatch(updateCalendar(getThisCalendar));
     };
     getHoliday();
-  }, [debounce]);
+  }, [debounce,calendarId]);
 
   const onClick: onClickObj = {
     prev: () => {
@@ -118,15 +133,12 @@ const CalendarPage = () => {
   };
 
   const renderDay = (day: Date, endDay: Date) => {
-    
     let arr = []; //일~토 에 해당하는 날짜 컴포넌트를 담는 배열
     const brr = []; //일주일 들을 모아 한달을 담는 배열
-    let i=0;
+    let i = 0;
     while (day <= endDay) {
       arr.push(
-        
         <Dates
-
           key={`${day}`}
           prevMonth={isSameMonth(startMonth, day)}
           nextMonth={isSameMonth(endMonth, day)}
@@ -135,7 +147,6 @@ const CalendarPage = () => {
           date={day}
           holidayData={holidayData}
         />,
-        
       );
       if (format(day, 'EE') == 'Sat') {
         //토요일이되면 arr을 WeekContainer 컴포넌트에 담아서 brr에 넣는다(2중배열)
@@ -143,32 +154,30 @@ const CalendarPage = () => {
         arr = [];
       }
       day = addDays(day, 1); //day는 하루씩 증가
-    i++;
+      i++;
     }
     return brr; //한달이 끝나면 brr 반환
   };
 
-  return (<>
-   
-    <Layout>
-      
-      <Container>
-      <Header></Header>
-        <MainMonster/>
-        
+  return (
+    <>
+      <Layout>
+        <Container>
+          <Header></Header>
+          <MainMonster />
+
           <DateController date={date} onClick={onClick} />
-        
-        <HeaderCalendar>
-          {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
-            return <p key={`${names}-${index}`}>{names}</p>;
-          })}
-        </HeaderCalendar>
-        <Calendar>{renderDay(day, endDay)}</Calendar>
-        {door && <Modal />}
-        {doorTodo && <TodosModal/>}
-        
-      </Container>
-    </Layout>
+
+          <HeaderCalendar>
+            {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
+              return <p key={`${names}-${index}`}>{names}</p>;
+            })}
+          </HeaderCalendar>
+          <Calendar>{renderDay(day, endDay)}</Calendar>
+          {door && <Modal />}
+          {doorTodo && <TodosModal />}
+        </Container>
+      </Layout>
     </>
   );
 };

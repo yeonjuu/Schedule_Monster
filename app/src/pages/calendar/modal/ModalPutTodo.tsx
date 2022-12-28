@@ -14,20 +14,27 @@ import {
   InputBox,
 } from 'components/input/inputs';
 import { TwitterPicker } from 'react-color';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { checkTodo, todoData } from 'types/calendarTypes';
-import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
+import { updateCalendar } from '../slice/todoSlice';
 import * as API from 'api';
 
 const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const tmp: todoData | undefined = useSelector(
     (state: RootState) => state.todoSlice.todoList,
   ).find((item) => item.scheduleId === scheduleId);
   const content = { ...tmp };
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
+  const list = useSelector(
+    (state: RootState) => state.persistedReducer.calendarList,
+  );
+  const calendarId = useSelector(
+    (state: RootState) => state.persistedReducer.calendarId,
+  );
 
   const {
     watch,
@@ -47,44 +54,93 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       return true;
     }
   };
+  useEffect(() => {
+   
+    const postComplited = async () => {
+      const monthData = {
+        calendarId: `${calendarId}`,
+        startYearMonth: `${content.startYYYYMM}`,
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
+      dispatch(updateCalendar(getThisCalendar));
+    };
+    postComplited();
+  }, [content.isCompleted]);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     //api 통신 달아줄 것
     if (e.target.checked) {
       content.isCompleted = true;
-      console.log(content);
+      const data = {
+        ...content,
+        startDate: content.startYYYYMMDD?.toString(),
+      endDate: content.startYYYYMMDD?.toString(),
+        isCompleted: true,
+      };
+      await API.put(`/schedule/day`, data);
+      const monthData = {
+        calendarId: `${calendarId}`,
+        startYearMonth: `${content.startYYYYMM}`,
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
+      dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
-      dispatch(changeCalendar({ scheduleId: scheduleId, content: content }));
+     
     } else {
       content.isCompleted = false;
-      dispatch(changeCalendar({ scheduleId: scheduleId, content: content }));
+      const data = {
+        startDate: content.startYYYYMMDD?.toString(),
+      endDate: content.startYYYYMMDD?.toString(),
+        ...content,
+        isCompleted: false,
+      };
+ 
+      await API.put(`/schedule/day`, data);
+      const monthData = {
+        calendarId: `${calendarId}`,
+        startYearMonth: `${content.startYYYYMM}`,
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
+      dispatch(updateCalendar(getThisCalendar));
+      alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
     }
   };
-
+  
   const onDelete = async () => {
     // 캘린더 id 들어갈 것
-    await API.delete(`/schedule/day/test1/${scheduleId}`);
-    dispatch(deleteCalendar(scheduleId));
+    await API.delete(`/schedule/day/${calendarId}/${scheduleId}`);
     alert('할 일이 삭제되었습니다!');
+    const monthData = {
+      calendarId: `${calendarId}`,
+      startYearMonth: `${content.startYYYYMM}`,
+    };
+    const getThisCalendar = await API.post(`/schedule/month`, monthData);
+    dispatch(updateCalendar(getThisCalendar));
+
     dispatch(closeTodo());
   };
 
   const onValid = async (input: checkTodo) => {
     const data = {
       ...content,
+      startDate: content.startYYYYMMDD?.toString(),
+      endDate: content.startYYYYMMDD?.toString(),
       title: input.title,
       labelColor: color,
       isTodo: true,
     };
-
+   
     try {
-      console.log(data);
       await API.put(`/schedule/day`, data);
-      dispatch(changeCalendar({ scheduleId: scheduleId, content: data }));
-      alert('할 일을 수정하였습니다');
-
-      navigate('/calendar');
+      alert('일정을 수정하였습니다');
+      const monthData = {
+        calendarId: `${calendarId}`,
+        startYearMonth: `${content.startYYYYMM}`,
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
+      dispatch(updateCalendar(getThisCalendar));
       dispatch(closeTodo());
+      navigate('/calendar');
     } catch (err) {
       alert(err);
     }

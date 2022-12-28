@@ -20,8 +20,9 @@ const DateController = ({ date, onClick }: Controller) => {
       <h3>{format(date, 'yyyy')}</h3><p>&nbsp;년&nbsp;&nbsp;</p><h3>{format(date, 'M')}</h3><p>&nbsp;월</p>
       {/* <FontAwesomeIcon onClick={onClick.down} icon={faCaretDown} /> */}
       <FontAwesomeIcon onClick={onClick.next} icon={faCaretRight} />
-      </div>
       <FontAwesomeIcon onClick={onClick.now} icon={faRotateRight} />
+      </div>
+      
     </CalendarController>
   );
 };

@@ -17,8 +17,8 @@ import {
 } from 'components/input/inputs';
 import { TwitterPicker } from 'react-color';
 import { useEffect, useState, useRef } from 'react';
-import { checkTodo, todoData } from 'types/calendarTypes';
-import { changeCalendar, deleteCalendar } from '../slice/todoSlice';
+import { checkTodo, scheduleData, todoData } from 'types/calendarTypes';
+import { updateCalendar } from '../slice/todoSlice';
 import * as API from 'api';
 import { ko } from 'date-fns/esm/locale';
 import { add, format } from 'date-fns';
@@ -30,29 +30,44 @@ const ScheduleContent = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const calendarId = useSelector(
+    (state: RootState) => state.persistedReducer.calendarId,
+  );
   //전역 State에서 특정 날짜 값을 가져온다
-  const tmp: todoData | undefined = useSelector(
+  const tmp: scheduleData | undefined = useSelector(
     (state: RootState) => state.todoSlice.todoList,
   ).find((item) => item.scheduleId === scheduleId);
 
   const content = { ...tmp };
+  console.log('endTime?', content.endTime?.toString());
+  const startYear = Number(content.startYYYYMM?.toString().slice(0, 4));
+  const startMonth = Number(content.startYYYYMM?.toString().slice(-2));
+  const startDay = Number(content.startYYYYMMDD?.toString().slice(-2));
+  const startHour =
+    Number(content.startTime?.toString().length) == 4
+      ? Number(content.startTime?.toString().slice(0, 2))
+      : Number(content.startTime?.toString().length) == 3
+      ? Number(content.startTime?.toString().slice(0, 1))
+      : 0;
 
-  const startYear = Number(content.startDate?.slice(0, 4));
-  const startMonth = Number(content.startDate?.slice(4, 6)) - 1;
-  const startDay = Number(content.startDate?.slice(6, 8));
-  const endYear = Number(content.endDate?.slice(0, 4));
-  const endMonth = Number(content.endDate?.slice(4, 6)) - 1;
-  const endDay = Number(content.endDate?.slice(6, 8));
+  const startMin = Number(content.startTime?.toString().slice(-2));
+  const endYear = Number(content.endYYYYMM?.toString().slice(0, 4));
+  const endMonth = Number(content.endYYYYMM?.toString().slice(-2));
+  const endDay = Number(content.endYYYYMMDD?.toString().slice(-2));
+  const endHour =
+    Number(content.endTime?.toString().length) == 4
+      ? Number(content.endTime?.toString().slice(0, 2))
+      : Number(content.endTime?.toString().length) == 3
+      ? Number(content.endTime?.toString().slice(0, 1))
+      : 0;
 
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(),
-  );
-  const [endDate, setEndDate] = useState<Date>(
-    new Date(),
-  );
+  const endMin = Number(content.endTime?.toString().slice(-2));
+
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
+  const [Content, setContent] = useState(content);
 
   const {
     watch,
@@ -65,18 +80,27 @@ const ScheduleContent = ({
 
   const inputTitle = watch('title');
 
-  useEffect(()=>{
-    if(!startYear||!startMonth||!startDay||!endYear||!endMonth||!endDay){
+  useEffect(() => {
+    if (
+      !startYear ||
+      !startMonth ||
+      !startDay ||
+      !endYear ||
+      !endMonth ||
+      !endDay
+    ) {
       dispatch(closeTodo());
       navigate('/calendar');
-    }else{
-      setStartDate(new Date(startYear, startMonth, startDay));
-      setEndDate(new Date(endYear, endMonth, endDay));
+    } else {
+      setStartDate(
+        new Date(startYear, startMonth - 1, startDay, startHour, startMin),
+      );
+      setEndDate(new Date(endYear, endMonth - 1, endDay, endHour, endMin));
     }
-  },[]);
+  }, []);
 
   const checkTitle = () => {
-    if (inputTitle === content?.title) {
+    if (inputTitle === Content?.title) {
       return false;
     } else if (inputTitle === undefined) {
       return false;
@@ -84,21 +108,69 @@ const ScheduleContent = ({
       return true;
     }
   };
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      content.isCompleted = true;
+      Content.isCompleted = true;
+      const data = {
+        ...Content,
+        startDate: format(startDate, 'yyyyMMdd'),
+        startTime: format(startDate, 'HHmm'),
+        endDate: format(endDate, 'yyyyMMdd'),
+        endTime: format(endDate, 'HHmm'),
+        labelColor: color,
+        isTodo: false,
+        isCompleted: true,
+      };
+
+      await API.put(`/schedule/day`, data);
+
+      const monthData = {
+        calendarId: `${calendarId}`,
+        startYearMonth: `${Content.startYYYYMM}`,
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
+      dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
-      dispatch(changeCalendar({ scheduleId: scheduleId, content: content }));
     } else {
-      content.isCompleted = false;
-      dispatch(changeCalendar({ scheduleId: scheduleId, content: content }));
+      try {
+        Content.isCompleted = false;
+        const data = {
+          ...Content,
+          startDate: format(startDate, 'yyyyMMdd'),
+          startTime: format(startDate, 'hhmm'),
+          endDate: format(endDate, 'yyyyMMdd'),
+          endTime: format(endDate, 'hhmm'),
+          labelColor: color,
+          isTodo: false,
+          isCompleted: false,
+        };
+
+        await API.put(`/schedule/day`, data);
+
+        const monthData = {
+          calendarId: `${calendarId}`,
+          startYearMonth: `${Content.startYYYYMM}`,
+        };
+        const getThisCalendar = await API.post(`/schedule/month`, monthData);
+
+        dispatch(updateCalendar(getThisCalendar));
+        alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
   const onDelete = async () => {
-    await API.delete(`/schedule/day/test1/${scheduleId}`);
-    dispatch(deleteCalendar(scheduleId));
-    alert('일정이 삭제되었습니다!');
+    await API.delete(`/schedule/day/${calendarId}/${scheduleId}`);
+    alert('할 일이 삭제되었습니다!');
+    const monthData = {
+      calendarId: `${calendarId}`,
+      startYearMonth: `${Content.startYYYYMM}`,
+    };
+    const getThisCalendar = await API.post(`/schedule/month`, monthData);
+    dispatch(updateCalendar(getThisCalendar));
+
     dispatch(closeTodo());
   };
 
@@ -123,19 +195,25 @@ const ScheduleContent = ({
       });
     } else {
       const data = {
-        ...content,
-        startDate: format(startDate, 'yyyyMMdd-hh:mm'),
-        endDate: format(endDate, 'yyyyMMdd-hh:mm'),
+        ...Content,
+        startDate: format(startDate, 'yyyyMMdd'),
+        startTime: format(startDate, 'HHmm'),
+        endDate: format(endDate, 'yyyyMMdd'),
+        endTime: format(endDate, 'HHmm'),
         title: input.title,
         labelColor: color,
         isTodo: false,
       };
 
       try {
-        console.log(data);
-        dispatch(changeCalendar({ scheduleId: scheduleId, content: data }));
         await API.put(`/schedule/day`, data);
-        alert('일정을 등록하였습니다');
+        alert('일정을 수정하였습니다');
+        const monthData = {
+          calendarId: `${calendarId}`,
+          startYearMonth: `${Content.startYYYYMM}`,
+        };
+        const getThisCalendar = await API.post(`/schedule/month`, monthData);
+        dispatch(updateCalendar(getThisCalendar));
         dispatch(closeTodo());
         navigate('/calendar');
       } catch (err) {
@@ -155,15 +233,15 @@ const ScheduleContent = ({
         <CheckContainer>
           <CheckBox
             type="checkbox"
-            defaultChecked={content?.isCompleted}
+            defaultChecked={Content?.isCompleted}
             onChange={(e) => onChange(e)}
             disabled={checkTitle()}
           />
 
           <CheckInput
-            disabled={content.isCompleted}
+            disabled={Content.isCompleted}
             type="text"
-            defaultValue={content?.title}
+            defaultValue={Content?.title}
             {...register('title', {
               required: '내용을 입력해 주세요',
               minLength: {
@@ -178,7 +256,7 @@ const ScheduleContent = ({
             errors={errors.title}
           />
           <PickColor
-            disabled={content.isCompleted}
+            disabled={Content.isCompleted}
             type="button"
             onClick={() => setOpen((curr) => !curr)}
             labelColor={color}
@@ -205,7 +283,7 @@ const ScheduleContent = ({
 
         <ScheduleBox>
           <SchedulePicker
-            disabled={content.isCompleted}
+            disabled={Content.isCompleted}
             wrapperClassName="datePicker"
             locale={ko}
             selected={startDate}
@@ -217,7 +295,7 @@ const ScheduleContent = ({
           />
           <p>&nbsp;-&nbsp;</p>
           <SchedulePicker
-            disabled={content.isCompleted}
+            disabled={Content.isCompleted}
             wrapperClassName="datePicker"
             locale={ko}
             selected={endDate}
@@ -241,7 +319,7 @@ const ScheduleContent = ({
           >
             취소
           </ModalBtn>
-          <ModalBtn type="submit" disabled={content.isCompleted}>
+          <ModalBtn type="submit" disabled={Content.isCompleted}>
             수정
           </ModalBtn>
           <ModalBtn type="button" onClick={onDelete}>
