@@ -10,6 +10,7 @@ interface scheduleControllerInterface {
   getTodoByCalendarId: AsyncRequestHandler;
   getAllByCalendarId: AsyncRequestHandler;
   deleteAllByCalendarId: AsyncRequestHandler;
+  updateIsCompletedOrNot: AsyncRequestHandler;
 }
 
 export const scheduleController: scheduleControllerInterface = {
@@ -65,5 +66,10 @@ export const scheduleController: scheduleControllerInterface = {
     const { calendarId } = req.params;
     const data = await scheduleService.deleteAllByCalendarId(calendarId);
     return res.json(data);
+  },
+  async updateIsCompletedOrNot(req, res) {
+    const { scheduleId } = req.body;
+    const result = await scheduleService.updateIsCompletedOrNot(scheduleId);
+    return res.json(result);
   },
 };

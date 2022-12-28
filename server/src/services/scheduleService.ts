@@ -218,6 +218,18 @@ class ScheduleService {
     const result = await this.schedule.remove({ calendarId });
     return result;
   }
+  async updateIsCompletedOrNot(scheduleId: string) {
+    const schedule = await this.schedule.findOne({ scheduleId });
+    if (!schedule)
+      throw new Error('type:Forbidden,content:요청하신 데이터가 존재하지 않습니다. 다시 한 번 확인 바랍니다.');
+    const { isCompleted } = schedule.toObject();
+
+    const updateInfo = {
+      isCompleted: !isCompleted,
+    };
+    const result = await this.schedule.findOneAndUpdate({ scheduleId }, updateInfo, { returnOriginal: false });
+    return result;
+  }
 }
 const scheduleService = new ScheduleService(scheduleModel);
 export { scheduleService };

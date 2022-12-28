@@ -31,3 +31,6 @@ scheduleRouter.get('/:calendarId', asyncHandler(scheduleController.getScheduleBy
 
 // 캘린더 ID의 모든 일정 제거
 scheduleRouter.delete('/all/:calendarId', asyncHandler(scheduleController.deleteAllByCalendarId));
+
+// isCompleted 변경
+scheduleRouter.put('/iscompleted', asyncHandler(scheduleController.updateIsCompletedOrNot));
