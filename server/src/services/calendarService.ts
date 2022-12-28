@@ -2,6 +2,7 @@ import { calendarModel, calendarModelType } from '../models';
 import { generateRandomString } from '../utils/generateRandomString';
 import { userService } from './userService';
 import { scheduleService } from './scheduleService';
+import { calendarShareService } from './calendarShareService';
 class CalendarService {
   private calendar: calendarModelType;
 
@@ -20,7 +21,9 @@ class CalendarService {
     return result;
   }
   async getCalendar(email: string) {
-    const result = await this.calendar.find({ email });
+    const myCalendar = await this.calendar.find({ email });
+    const sharedCalendar = await calendarShareService.getCalendarShareByFriend(email);
+    const result = [...myCalendar, ...sharedCalendar];
     return result;
   }
 
