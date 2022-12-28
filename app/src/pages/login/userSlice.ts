@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from '../../types/userInterface';
+import { IUser, IAdmin } from '../../types/userInterface';
 
 const initialState = {
   nickname: '',
@@ -53,9 +53,16 @@ const userSlice = createSlice({
     changeCalendarId: (state, action: PayloadAction<string>) => {
       state.calendarId = action.payload;
     },
-    postCalendarList: (state, action)=>{
-      state.calendarList=action.payload;
-    }
+    postCalendarList: (state, action) => {
+      state.calendarList = action.payload;
+    },
+    adminlogin: (state, action: PayloadAction<IAdmin>) => {
+      state.nickname = action.payload.nickname;
+      state.email = action.payload.email;
+      state.point = 9999999;
+      state.auth = action.payload.auth;
+      state.isLogin = true;
+    },
   },
 });
 
@@ -67,5 +74,6 @@ export const {
   changeNickname,
   changeCalendarId,
   postCalendarList,
+  adminlogin,
 } = userSlice.actions;
 export default userSlice.reducer;

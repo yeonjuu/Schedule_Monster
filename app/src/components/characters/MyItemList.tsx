@@ -29,7 +29,6 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
 
     useEffect( () => {
         async function fetchData () {
-            //테스트 데이터
             const data = await API.get(`/useritem/detail/${email}`);
             setMyItems(data);
             setIsLoading(!isLoading);
@@ -37,6 +36,15 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
         fetchData();
         dispatch(asyncCategoryListFetch());
     },[]);
+
+    useEffect( () => {
+      async function fetchData () {
+          //테스트 데이터
+          const data = await API.get(`/useritem/detail/${email}`);
+          setMyItems(data);
+      };
+      fetchData();
+  },[myItems]);
 
 
     //검색기능
@@ -83,6 +91,7 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                     </div>
 
                     <div style={{alignSelf:'center'}}>{myitems.itemName}</div>
+                    <img style={{alignSelf:'center', width:'2rem', height:'2rem'}} src={myitems.itemImage}/>
 
                     <div
                         style={{
@@ -96,15 +105,14 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
             <>
                 <ItemButton
                 onClick={() => {
+                      const isEgg = myitems.categoryName == '알';
 
-                  if (mainImage !== '/pokeball.png') {
+                  if (mainImage !== '/pokeball.png' || isEgg) {
                       const isUse = window.confirm(
                         `'${myitems.itemName}' 아이템을 시용하시겠습니까?`,
                         ); 
 
-                      const isEgg = myitems.categoryName == '알';
-
-                      if (isEgg && isUse && currentCoin != 0 && affection <100 && mainImage !== '/pokeball.png') {
+                      if (!isEgg && isUse && affection < 100 && mainImage !== '/pokeball.png') {
                       dispatch(applyItem(myitems.exp));
                       alert(`${myitems.exp}만큼 애정도가 채워졌습니다😊`);
 
@@ -115,14 +123,22 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                     });
 
                       }
-                      else if (isUse && affection >= 100) {
+                      else if (!isEgg && isUse && affection >= 100) {
                       alert('애정도가 이미 가득 채워졌습니다');
+                    }
+
+                    else if (isEgg && isUse) {
+                      alert('새로운 포켓몬이 나왔습니다! 도감에서 확인해보세요.');
+                      const newI:any = API.post('/useritem/egg', {
+                        email,
+                        itemId: myitems._id
+                    });
+                      console.log(newI.nameKo);
                     }
                   }
 
-
-                else if (mainImage === '/pokeball.png') {
-                    alert('대표캐릭터를 먼저 지정해주세요!');
+                else if (!isEgg && mainImage === '/pokeball.png') {
+                    alert('대표캐릭터를 지정해주세요!');
                     }
 
                 }}
