@@ -190,6 +190,10 @@ export const CharacterContainer = styled.div`
     flex-wrap: wrap;
     overflow-y: scroll;
     padding: 1rem;
+
+    box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
 `
 export const CharacterBox = styled.div`
     background-color: aliceblue;
