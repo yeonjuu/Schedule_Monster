@@ -10,7 +10,6 @@ class CalendarService {
     this.calendar = calendarModel;
   }
   async getCalendars(email: string) {
-    console.log('Calendars접근함');
     const status = await userService.checkAuth(email);
     console.log(status);
     if (!status) {

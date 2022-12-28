@@ -97,7 +97,7 @@ class UserService {
     };
 
     const refreshPayload = {};
-    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '2m' });
+    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
     const refreshToken = jwt.sign(refreshPayload, secretKey, {
       expiresIn: '30d',
     });
