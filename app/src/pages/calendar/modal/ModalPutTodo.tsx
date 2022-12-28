@@ -18,6 +18,7 @@ import { useState, useEffect } from 'react';
 import { checkTodo, todoData } from 'types/calendarTypes';
 import { updateCalendar } from '../slice/todoSlice';
 import * as API from 'api';
+import { addPoint, minusPoint } from 'pages/login/userSlice';
 
 const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
+  const [compltedCheck, setCompleted]=useState<boolean|undefined>(content.isCompleted);
 
   const {
     watch,
@@ -55,7 +57,6 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
     }
   };
   useEffect(() => {
-   
     const postComplited = async () => {
       const monthData = {
         calendarId: `${calendarId}`,
@@ -70,14 +71,13 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     //api 통신 달아줄 것
     if (e.target.checked) {
-      content.isCompleted = true;
+     
+      setCompleted(true);
       const data = {
-        ...content,
-        startDate: content.startYYYYMMDD?.toString(),
-      endDate: content.startYYYYMMDD?.toString(),
-        isCompleted: true,
+        scheduleId: content.scheduleId,
       };
-      await API.put(`/schedule/day`, data);
+
+      await API.put(`/schedule/iscompleted`, data);
       const monthData = {
         calendarId: `${calendarId}`,
         startYearMonth: `${content.startYYYYMM}`,
@@ -85,17 +85,15 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
-     
+      dispatch(addPoint(50));
     } else {
-      content.isCompleted = false;
+      
+      setCompleted(false);
       const data = {
-        startDate: content.startYYYYMMDD?.toString(),
-      endDate: content.startYYYYMMDD?.toString(),
-        ...content,
-        isCompleted: false,
+        scheduleId: content.scheduleId,
       };
- 
-      await API.put(`/schedule/day`, data);
+
+      await API.put(`/schedule/iscompleted`, data);
       const monthData = {
         calendarId: `${calendarId}`,
         startYearMonth: `${content.startYYYYMM}`,
@@ -103,9 +101,10 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
+      dispatch(minusPoint(50));
     }
   };
-  
+
   const onDelete = async () => {
     // 캘린더 id 들어갈 것
     await API.delete(`/schedule/day/${calendarId}/${scheduleId}`);
@@ -129,7 +128,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       labelColor: color,
       isTodo: true,
     };
-   
+
     try {
       await API.put(`/schedule/day`, data);
       alert('일정을 수정하였습니다');
@@ -163,7 +162,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
           />
 
           <CheckInput
-            disabled={content.isCompleted}
+            disabled={compltedCheck}
             type="text"
             defaultValue={content?.title}
             {...register('title', {
@@ -180,7 +179,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
             errors={errors.title}
           />
           <PickColor
-            disabled={content.isCompleted}
+            disabled={compltedCheck}
             type="button"
             onClick={() => setOpen((curr) => !curr)}
             labelColor={color}
@@ -215,7 +214,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
         >
           취소
         </ModalBtn>
-        <ModalBtn type="submit" disabled={content.isCompleted}>
+        <ModalBtn type="submit" disabled={content?.isCompleted}>
           수정
         </ModalBtn>
         <ModalBtn type="button" onClick={onDelete}>

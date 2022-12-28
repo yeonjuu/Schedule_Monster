@@ -10,10 +10,10 @@ const initialState = {
   calendarList: [{
     calendarId: "",
     calendarName: "",
-    createdAt: new Date(),
+   
     email: "",
     share: true,
-    updatedAt: new Date(),
+   
     url: null,
     __v: 1,
     _id: "",

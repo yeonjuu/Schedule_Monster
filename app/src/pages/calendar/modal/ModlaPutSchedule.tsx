@@ -22,6 +22,7 @@ import { updateCalendar } from '../slice/todoSlice';
 import * as API from 'api';
 import { ko } from 'date-fns/esm/locale';
 import { add, format } from 'date-fns';
+import { addPoint, minusPoint } from 'pages/login/userSlice';
 
 const ScheduleContent = ({
   scheduleId,
@@ -33,13 +34,13 @@ const ScheduleContent = ({
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
+ 
   //전역 State에서 특정 날짜 값을 가져온다
   const tmp: scheduleData | undefined = useSelector(
     (state: RootState) => state.todoSlice.todoList,
   ).find((item) => item.scheduleId === scheduleId);
 
   const content = { ...tmp };
-  console.log('endTime?', content.endTime?.toString());
   const startYear = Number(content.startYYYYMM?.toString().slice(0, 4));
   const startMonth = Number(content.startYYYYMM?.toString().slice(-2));
   const startDay = Number(content.startYYYYMMDD?.toString().slice(-2));
@@ -68,7 +69,7 @@ const ScheduleContent = ({
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
   const [Content, setContent] = useState(content);
-
+  const [compltedCheck, setCompleted]=useState<boolean|undefined>(content.isCompleted);
   const {
     watch,
     setError,
@@ -110,19 +111,13 @@ const ScheduleContent = ({
   };
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      Content.isCompleted = true;
+      console.log('체크하기 이전꺼',compltedCheck);
+      setCompleted(true);
       const data = {
-        ...Content,
-        startDate: format(startDate, 'yyyyMMdd'),
-        startTime: format(startDate, 'HHmm'),
-        endDate: format(endDate, 'yyyyMMdd'),
-        endTime: format(endDate, 'HHmm'),
-        labelColor: color,
-        isTodo: false,
-        isCompleted: true,
+        scheduleId: content.scheduleId,
       };
 
-      await API.put(`/schedule/day`, data);
+      await API.put(`/schedule/iscompleted`, data);
 
       const monthData = {
         calendarId: `${calendarId}`,
@@ -131,33 +126,25 @@ const ScheduleContent = ({
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
+      dispatch(addPoint(50));
     } else {
-      try {
-        Content.isCompleted = false;
+      console.log('체크하기 이후',compltedCheck);
+        setCompleted(false);
         const data = {
-          ...Content,
-          startDate: format(startDate, 'yyyyMMdd'),
-          startTime: format(startDate, 'hhmm'),
-          endDate: format(endDate, 'yyyyMMdd'),
-          endTime: format(endDate, 'hhmm'),
-          labelColor: color,
-          isTodo: false,
-          isCompleted: false,
+          scheduleId: content.scheduleId,
         };
-
-        await API.put(`/schedule/day`, data);
-
+  
+        await API.put(`/schedule/iscompleted`, data);
+        
         const monthData = {
           calendarId: `${calendarId}`,
           startYearMonth: `${Content.startYYYYMM}`,
         };
         const getThisCalendar = await API.post(`/schedule/month`, monthData);
-
+        
         dispatch(updateCalendar(getThisCalendar));
-        alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
-      } catch (e) {
-        console.log(e);
-      }
+        alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
+        dispatch(minusPoint(50));
     }
   };
 
@@ -203,6 +190,7 @@ const ScheduleContent = ({
         title: input.title,
         labelColor: color,
         isTodo: false,
+        isCompleted: compltedCheck,
       };
 
       try {
@@ -239,7 +227,7 @@ const ScheduleContent = ({
           />
 
           <CheckInput
-            disabled={Content.isCompleted}
+            disabled={compltedCheck}
             type="text"
             defaultValue={Content?.title}
             {...register('title', {
@@ -256,7 +244,7 @@ const ScheduleContent = ({
             errors={errors.title}
           />
           <PickColor
-            disabled={Content.isCompleted}
+            disabled={compltedCheck}
             type="button"
             onClick={() => setOpen((curr) => !curr)}
             labelColor={color}
@@ -283,7 +271,7 @@ const ScheduleContent = ({
 
         <ScheduleBox>
           <SchedulePicker
-            disabled={Content.isCompleted}
+            disabled={compltedCheck}
             wrapperClassName="datePicker"
             locale={ko}
             selected={startDate}
@@ -295,7 +283,7 @@ const ScheduleContent = ({
           />
           <p>&nbsp;-&nbsp;</p>
           <SchedulePicker
-            disabled={Content.isCompleted}
+            disabled={compltedCheck}
             wrapperClassName="datePicker"
             locale={ko}
             selected={endDate}
@@ -319,7 +307,7 @@ const ScheduleContent = ({
           >
             취소
           </ModalBtn>
-          <ModalBtn type="submit" disabled={Content.isCompleted}>
+          <ModalBtn type="submit" disabled={compltedCheck}>
             수정
           </ModalBtn>
           <ModalBtn type="button" onClick={onDelete}>

@@ -138,12 +138,13 @@ export const Container = styled.div`
 
 export const CalendarController = styled.div`
   display: flex;
-  justify-content: baseline;
+  justify-content: space-between;
   align-items: center;
   height: 40px;
   width: 100%;
+ 
   font-size: 18px;
-  margin: 20px 0;
+  margin: 20px auto;
   & > div > svg {
     cursor: pointer;
     border: none;
