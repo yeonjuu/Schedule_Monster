@@ -9,7 +9,7 @@ import { RootState } from '../../store/store';
 import * as API from '../../api';
 import { minusPoint } from 'pages/login/userSlice';
 
-function Item({ setItem, item, purpose }: any) {
+function Item({ item, purpose }: any) {
   const dispatch = useDispatch<any>();
   // const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
@@ -17,17 +17,12 @@ function Item({ setItem, item, purpose }: any) {
   const user = useSelector((state: RootState) => state.persistedReducer);
   const { point, email } = user;
 
-  // function dataRefetch () {
-  //   const leftItem = API.get(`/useritem/detail/${email}`);
-  //   setItem(leftItem);
-  // };
+  useEffect( 
+    () => setCount(1)
+    ,[point])
 
   return (
-    <ItemBox
-      onClick={(): void => {
-        setItem(item);
-      }}
-    >
+    <ItemBox>
       <div
         style={{
           display: 'flex',
@@ -86,7 +81,6 @@ function Item({ setItem, item, purpose }: any) {
                   if (isPurchase && point >= item.price * count) {
 
                     dispatch(minusPoint(item.price * count));
-                    //카운트 1로 디스패치 추가해주기
 
                     API.post('/useritem/buy', {
                       email,
@@ -99,8 +93,7 @@ function Item({ setItem, item, purpose }: any) {
                       quantity: count,
                   });
 
-                  // dataRefetch();
-
+                  alert('구매 완료 하였습니다. 내아이템에서 확인해보세요!')
                   } 
 
                   else if (isPurchase && point < item.price * count) {
@@ -142,7 +135,6 @@ function ItemList({ category, inputValue, purpose, setItem }: any) {
         return (
           <Item
             item={item}
-            setItem={setItem}
             purpose={purpose}
             key={item._id}
           ></Item>
