@@ -51,7 +51,7 @@ export default function AllCharacters() {
                                 show={
                                     myPokemons.map((p:any) => p._id !== pokemon._id ? "mine" : null)
                                 }>
-                                    <img src={pokemon.image.front_default} />
+                                    <img src={pokemon.image.imageSprites.front_default} />
                                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
                                 </AllChaBox> 
                             </>)

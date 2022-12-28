@@ -75,7 +75,7 @@ export const MonsterImageContainer = styled.div`
     height: 15rem;
     background-color: aliceblue;
     border-radius: 50%;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
 
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
@@ -104,6 +104,7 @@ export const MonsterStatus = styled.div`
     height: 10rem;
     border-radius: 1rem;
     padding: 1rem;
+    margin-top: 1rem;
 
     display: flex;
     flex-direction: column;
