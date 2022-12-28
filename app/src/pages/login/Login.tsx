@@ -23,33 +23,30 @@ export const Login = () => {
     try {
       const data = await API.post('/register/login', userInfo);
       console.log(data);
-      const { calendarId } = data.calendar;
       const { auth, point, nickname } = data.loginUser;
-      const { accessToken, accessExp, refreshExp } = data;
-      if (accessToken) {
-        const user: IUser = {
-          email,
-          nickname,
-          point,
-          auth,
-          calendarId,
-        };
-        //store에 로그인 유저 정보 저장
-        dispatch(login(user));
-        //토큰 로컬 스토리지 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('accessExp', accessExp);
-        localStorage.setItem('refreshExp', refreshExp);
-        debugger;
-        alert(`안녕하세요😁 ${nickname}님`);
-
-        //경로확인하기
-        //관리자,일반사용자 구분해서 경로 변경
-        if (auth === 'user') {
+      if (auth === 'user') {
+        const { calendarId } = data.calendar;
+        const { accessToken, accessExp, refreshExp } = data;
+        if (accessToken) {
+          const user: IUser = {
+            email,
+            nickname,
+            point,
+            auth,
+            calendarId,
+          };
+          //store에 로그인 유저 정보 저장
+          dispatch(login(user));
+          //토큰 로컬 스토리지 저장
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('accessExp', accessExp);
+          localStorage.setItem('refreshExp', refreshExp);
+          debugger;
+          alert(`안녕하세요😁 ${nickname}님`);
           navigate('/calendar');
-        } else if (auth === 'admin') {
-          navigate('/admin');
         }
+      } else {
+        navigate('/admin');
       }
     } catch (error) {
       if (error.status === 401) {
