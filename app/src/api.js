@@ -6,8 +6,10 @@ async function get(endpoint) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
     const response = await axios.get(apiUrl, {
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
     });
     //응답 값 데이터만 전송
     return response.data;
@@ -62,7 +64,7 @@ async function put(endpoint, data) {
         'Content-type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
-    })
+    });
     return response.data;
   } catch (error) {
     if (error.response) {
