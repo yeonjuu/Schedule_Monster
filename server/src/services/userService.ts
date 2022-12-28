@@ -98,7 +98,7 @@ class UserService {
     };
 
     const refreshPayload = {};
-    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
+    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '7d' });
     const refreshToken = jwt.sign(refreshPayload, secretKey, {
       expiresIn: '30d',
     });
@@ -293,7 +293,7 @@ class UserService {
               };
               if (!secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
 
-              const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
+              const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '7d' });
               const { exp: accessExpMS } = jwt.decode(accessToken) as {
                 exp: number;
               };
