@@ -90,6 +90,7 @@ function Item({ setItem, item, purpose }: any) {
                       price: item.price,
                       exp: item.exp,
                       categoryName: item.categoryName,
+                      quantity: count,
                   });
 
                   } 
