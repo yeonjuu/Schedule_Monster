@@ -1,10 +1,8 @@
-import React,{useEffect} from 'react';
+import React,{ useEffect, useState } from 'react';
 import { MonsterContainer, MonsterImage, MonsterImageContainer, MonsterLine, MonsterStatus } from './StoreStyle';
 import { mainProfile, secondProfile, thirdProfile, mainName, mainAffection, characterId } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-// import { IoBatteryDeadOutline, IoBatteryHalfOutline, IoBatteryFullOutline } from 'react-icons/io';
-import { FaBatteryEmpty, FaBatteryHalf, FaBatteryFull } from 'react-icons/fa';
 
 import * as API from '../../api';
 import styled from 'styled-components';
@@ -23,10 +21,10 @@ export default function MonsterProfile() {
   const secondImage = useSelector((state:any) => state.statusReducer.secondImage);
   const thirdImage = useSelector((state:any) => state.statusReducer.thirdImage);
 
+  const [isFull, setIsFull] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
-        //api주소 변경 필요     `/characterlist/pick/${email}`
         const data = await API.get(`/characterlist/pick/${email}`);
 
         dispatch(mainName(data.nameKo));
@@ -40,22 +38,38 @@ export default function MonsterProfile() {
     fetchData();
   }, []);
 
+  const buttonHandler = (e:any) => {
+    console.dir(e.target);
+  };
+
 
     return (
         <>
           <MonsterContainer>
-                <MonsterImageContainer>
-                  <MonsterImage src={
-                    affection >= 50 && affection < 100 ? secondImage : affection >= 100 ? thirdImage : mainImage
-                  }
-                  />
-                </MonsterImageContainer>
-                <div style={{display:'flex', justifyContent:'space-around'}}>
-                <ImageButton>⬅</ImageButton>
-                <ImageButton>➡</ImageButton>
-                </div>
+            {affection >= 100 ? 
+            (
+              <>
+            <MonsterImageContainer>
+              <MonsterImage src={thirdImage}
+              />
+            </MonsterImageContainer>
 
+            <div style={{display:'flex', justifyContent:'space-around'}}>
+            <ImageButton>⬅</ImageButton>
+            <ImageButton onClick={buttonHandler}>➡</ImageButton>
+            </div>
+            
+            </>
 
+            )
+            : 
+              <MonsterImageContainer>
+                <MonsterImage src={
+                  affection >= 50 && affection < 100 ? secondImage : affection >= 100 ? thirdImage : mainImage
+                }
+                />
+              </MonsterImageContainer>
+            }
 
                 <MonsterStatus>
                   <ul>
@@ -93,5 +107,10 @@ const ButtonContainer = styled.div`
 `
 
 const ImageButton = styled.button`
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 1rem;
   border: none;
+  border-radius: 20%;
 `

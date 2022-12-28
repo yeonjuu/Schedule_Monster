@@ -20,7 +20,6 @@ export default function AllCharacters() {
         async function fetchData() {
             const alldata = await API.get('/characters/all');
             setAllPokemons(alldata);
-            console.log(allPokemons);
             setIsLoading(!isLoading);
         }
         fetchData();
@@ -74,9 +73,24 @@ const AllChaContainer = styled.div`
     height: 90%;
 
     display: flex;
+    justify-content: flex-start;
     flex-wrap: wrap;
     overflow-y: scroll;
+    scroll-behavior: smooth;
     padding: 1rem;
+
+    &::-webkit-scrollbar {
+    width: 0.7rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #A2BCFF;
+    }
+
+    &::-webkit-scrollbar-track {
+    background-color: aliceblue;
+    }
 
     box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);
     -webkit-box-shadow: 7px 10px 22px -8px rgba(0,0,0,0.55);

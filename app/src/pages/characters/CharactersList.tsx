@@ -30,11 +30,8 @@ export default function CharactersList() {
         setPokemons(data);
         setIsLoading(!isLoading);
     }
-    console.log(pokemons);
     fetchData();
   }, []);
-
-  console.log(pokemons);
 
   return (
     <StoreContainer>

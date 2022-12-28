@@ -83,6 +83,7 @@ export default function MyitemList ({ myItems, setMyItems, category, inputValue 
                     </div>
 
                     <div style={{alignSelf:'center'}}>{myitems.itemName}</div>
+                    <img style={{alignSelf:'center', width:'2rem', height:'2rem'}} src={myitems.itemImage}/>
 
                     <div
                         style={{
