@@ -14,6 +14,7 @@ import * as API from '../../api';
 import Navbar from 'components/characters/Navbar';
 import { RootState } from '../../store/store';
 import Loading from 'components/characters/Loading';
+import { setMainCharacter } from 'pages/calendar/slice/mainCharacter';
 
 export default function CharactersList() {
   const dispatch = useDispatch();
@@ -59,6 +60,8 @@ export default function CharactersList() {
                         dispatch(mainName(clicked.nameKo));
                         dispatch(mainAffection(clicked.myExp));
                         dispatch(characterId(clicked._id));
+                        //캘린더 메인케릭터 지정
+                        // dispatch(setMainCharacter(clicked.));
 
                         API.put('/characterlist/pick',{ 
                           email,
