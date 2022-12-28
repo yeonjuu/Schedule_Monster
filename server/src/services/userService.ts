@@ -6,6 +6,7 @@ import { JWT_SECRET_KEY } from '../utils/config';
 import { generateRandomString } from '../utils/generateRandomString';
 import nodemailer from 'nodemailer';
 import { calendarService } from './calendarService';
+import { tokenParsing } from '../utils/tokenParsing';
 class UserService {
   private User: userModelType;
   constructor(userModel: userModelType) {
@@ -96,7 +97,7 @@ class UserService {
     };
 
     const refreshPayload = {};
-    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
+    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '2m' });
     const refreshToken = jwt.sign(refreshPayload, secretKey, {
       expiresIn: '30d',
     });
@@ -109,7 +110,7 @@ class UserService {
 
     const accessExp = accessExpMS * 1000;
     const refreshExp = refreshExpMS * 1000;
-    console.log(new Date(accessExp).toLocaleString(), new Date(refreshExp).toLocaleString());
+    // console.log(new Date(accessExp).toLocaleString(), new Date(refreshExp).toLocaleString());
     //DB에 refresh token 저장
     const loginUser = await this.User.findOneAndUpdate(
       { email: user.email },
@@ -254,11 +255,16 @@ class UserService {
     else return true;
   }
   async expandAccToken(token: string, email: string) {
-    console.log('expandAccToken 함수 진입');
+    const secretKey = JWT_SECRET_KEY;
+    const { email: tokenEmail } = tokenParsing(token);
+    if (tokenEmail !== email) throw new Error('type:BadRequest,content:토큰과 입력하신 이메일은 일치하지 않습니다');
+
+    if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
+    //토큰에 들어있는 이메일 정보와 사용자가 보낼때 보낸 이메일이 다르면 에러처리
+
     try {
-      const secretKey = JWT_SECRET_KEY;
-      if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
       jwt.verify(token, secretKey);
+      // 토큰이 아직 유효한 상태는 에러 안 던짐
       const { exp: tokenExp } = jwt.decode(token) as {
         exp: number;
       };
@@ -277,8 +283,8 @@ class UserService {
             };
 
             const dateDiff = refreshExpMS * 1000 - Date.now();
-            console.log('리프레시 토큰 만료날짜가 ', new Date(refreshExpMS * 1000).toLocaleString());
-            console.log(refreshExpMS, dateDiff);
+            // console.log('리프레시 토큰 만료날짜가 ', new Date(refreshExpMS * 1000).toLocaleString());
+            // console.log(refreshExpMS, dateDiff);
             if (dateDiff >= 0) {
               const secretKey = process.env.JWT_SECRET_KEY;
               const accessPayload = {
@@ -295,7 +301,7 @@ class UserService {
 
               return { accessToken, accessExp };
             } else {
-              throw new Error('type:Forbidden,content:refresh토큰이 만료되었습니다');
+              throw new Error('type:Forbidden,content:refresh토큰이 만료되었습니다 다시 요청해주세요');
             }
           }
         } else if (error.message === 'invalid token') {
