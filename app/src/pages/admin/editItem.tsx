@@ -1,200 +1,236 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import produce from 'immer';
 import * as API from '../../api';
-
-const EditItemBox = styled.div`
-  background-color: white;
+import { asyncitemListFetch } from './slice/itemListSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { ItemType } from 'types/shopTypes';
+import {
+  EditItemBoxContainer,
+  UploadFileBox,
+  InputBox,
+  AddAndEditBtn,
+  DelBtn,
+} from './adminCss';
+import { resetItem } from './util/util';
+import { AppDispatch, RootState } from 'store/store';
+const ImgBox = styled.div`
+  display: flex;
+  justify-content: center;
 `;
-const ImgBox = styled.div``;
 const Img = styled.img`
   height: 150px;
   width: 150px;
+  border-radius: 0.5rem;
+  border: 0.5px solid #a2bcff; ;
 `;
 
-function EditItem() {
-  const itemListReducer = useSelector((state: any) => state.itemListReducer);
-  const itemList = itemListReducer.itemList;
-  const categoryListReducer = useSelector(
-    (state: any) => state.categoryListReducer,
-  );
-  const categoryList = categoryListReducer.categoryList;
-  const { id } = useParams();
-  const selectItem = itemList.find((item: any): any => {
-    return item._id === id;
+function EditItem({ itemData }: any) {
+  const urlInput = useRef<any>();
+  const dispatch = useDispatch<AppDispatch>();
+  const categoryList = useSelector((state: RootState) => {
+    return state.categoryListReducer.categoryList;
   });
-  const initialstate =
-    id === 'normal'
-      ? {
-          _id: '',
-          itemName: '',
-          price: '',
-          exp: '',
-          image: '',
-          info: '',
-          category: '',
-        }
-      : {
-          _id: selectItem._id,
-          itemName: selectItem.itemName,
-          price: selectItem.price,
-          exp: selectItem.exp,
-          image: selectItem.imgage,
-          info: selectItem.info,
-          category: selectItem.categoryName,
-        };
+  const [check, setCheck] = useState(false);
+  const [itemState, setItemState] = useState<ItemType>({
+    _id: itemData._id,
+    itemName: itemData.itemName,
+    price: itemData.price,
+    exp: itemData.exp,
+    itemImage: itemData.itemImage,
+    itemInfo: itemData.itemInfo,
+    categoryName: itemData.categoryName,
+  });
 
-  const [itemState, setItemState] = useState(initialstate);
-  const [previewImg, setPreviewImg] = useState(initialstate.image);
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: ItemType) => {
         draft.itemName = e.target.value;
       }),
     );
   };
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: ItemType) => {
         draft.price = e.target.value;
       }),
     );
   };
   const onChangeInfo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setItemState(
-      produce((draft) => {
-        draft.info = e.target.value;
+      produce((draft: ItemType) => {
+        draft.itemInfo = e.target.value;
       }),
     );
   };
-  const onChangeImg = (e: any) => {
-    setPreviewImg(URL.createObjectURL(e.target.files[0]));
-
+  const onChangeImg = () => {
     setItemState(
-      produce((draft) => {
-        draft.image = '';
+      produce((draft: ItemType) => {
+        draft.itemImage = urlInput.current.value;
       }),
     );
   };
   const onChangeExp = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemState(
-      produce((draft) => {
+      produce((draft: ItemType) => {
         draft.exp = e.target.value;
       }),
     );
   };
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemState(
-      produce((draft) => {
-        draft.category = e.target.value;
+      produce((draft: ItemType) => {
+        draft.categoryName = e.target.value;
       }),
     );
   };
-  useEffect((): void => {
-    setItemState(initialstate);
-    setPreviewImg(initialstate.image);
-  }, [id]);
-  return (
-    <EditItemBox>
-      <form>
-        <ImgBox>
-          <Img src={previewImg}></Img>
-        </ImgBox>
-        <div>이미지업로드</div>
-        <input type="file" onChange={onChangeImg} required />
-        <div>이름</div>
-        <input
-          type="text"
-          value={itemState.itemName}
-          onChange={onChangeName}
-          required
-        />
-        <div>가격</div>
-        <input
-          type="text"
-          value={itemState.price}
-          onChange={onChangePrice}
-          required
-        />
-        <div>애정도</div>
-        <input
-          type="text"
-          value={itemState.exp}
-          onChange={onChangeExp}
-          required
-        />
-        <div>카테고리</div>
-        <select onChange={onChangeCategory} value={itemState.category}>
-          {categoryList.map((category: any): JSX.Element => {
-            return (
-              <option key={category._id} value={category.categoryName}>
-                {category.categoryName}
-              </option>
-            );
-          })}
-        </select>
-        <div>상세설명</div>
-        <textarea
-          name=""
-          cols={30}
-          rows={10}
-          value={itemState.info}
-          onChange={onChangeInfo}
-          required
-        ></textarea>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            if (confirm('수정 or 삭제 하시겠습니까?')) {
-              console.log(itemState);
+  useEffect(() => {
+    setItemState({
+      _id: itemData._id,
+      itemName: itemData.itemName,
+      price: itemData.price,
+      exp: itemData.exp,
+      itemImage: itemData.itemImage,
+      itemInfo: itemData.itemInfo,
+      categoryName: itemData.categoryName,
+    });
+    urlInput.current.value = itemData.itemImage;
+  }, [itemData]);
 
-              id === 'normal'
-                ? API.post(
-                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/register',
-                    {
-                      itemName: itemState.itemName,
-                      price: itemState.price,
-                      exp: itemState.exp,
-                      categoryName: itemState.category,
-                    },
-                  )
-                : API.put(
-                    'https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/update',
-                    {
-                      _id: id,
-                      itemName: itemState.itemName,
-                      price: itemState.price,
-                      exp: itemState.exp,
-                      categoryName: itemState.category,
-                    },
-                  );
-              location.replace('/admin/item/normal');
+  useEffect(() => {
+    setCheck(false);
+    dispatch(asyncitemListFetch());
+    setItemState(resetItem);
+    urlInput.current.value = '';
+  }, [check]);
+
+  return (
+    <EditItemBoxContainer>
+      <ImgBox>
+        <Img
+          src={itemState.itemImage}
+          alt="이미지가 없거나  이미지 파일이 아닙니다"
+        ></Img>
+      </ImgBox>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (
+            window.confirm(
+              `${
+                itemState._id === '' ? '추가하시겠습니까?' : '수정하시겠습니까?'
+              }`,
+            )
+          ) {
+            try {
+              if (itemState._id === '') {
+                API.post('/items/register', {
+                  itemName: itemState.itemName,
+                  itemImage: itemState.itemImage,
+                  itemInfo: itemState.itemInfo,
+                  price: itemState.price,
+                  exp: itemState.exp,
+                  categoryName: itemState.categoryName,
+                });
+              } else {
+                API.put('/items/update', {
+                  _id: itemState._id,
+                  itemName: itemState.itemName,
+                  itemImage: itemState.itemImage,
+                  price: itemState.price,
+                  exp: itemState.exp,
+                  categoryName: itemState.categoryName,
+                  itemInfo: itemState.itemInfo,
+                });
+              }
+            } catch {
+            } finally {
+              setCheck(true);
             }
-          }}
-        >
-          {id === 'normal' ? '추가' : '수정'}
-        </button>
-        {id === 'normal' ? (
+          }
+        }}
+      >
+        <UploadFileBox>
+          <label htmlFor="upload">이미지url업로드</label>
+          <input
+            type="text"
+            defaultValue={itemState.itemImage}
+            id="upload"
+            ref={urlInput}
+            required
+          />
+          <button type="button" onClick={onChangeImg}>
+            url 이미지 가져오기
+          </button>
+        </UploadFileBox>
+        <InputBox>
+          <div>이름</div>
+          <input
+            type="text"
+            value={itemState.itemName}
+            onChange={onChangeName}
+            required
+          />
+          <div>가격</div>
+          <input
+            type="number"
+            value={itemState.price}
+            onChange={onChangePrice}
+            required
+          />
+          <div>애정도</div>
+          <input
+            type="number"
+            value={itemState.exp}
+            onChange={onChangeExp}
+            required
+          />
+          <div>카테고리</div>
+          <select onChange={onChangeCategory} value={itemState.categoryName}>
+            <option value="">==선택하세요==</option>
+            {categoryList.map((category: any): JSX.Element => {
+              return (
+                <option key={category._id} value={category.categoryName}>
+                  {category.categoryName}
+                </option>
+              );
+            })}
+          </select>
+          <div>상세설명</div>
+          <textarea
+            name=""
+            cols={30}
+            rows={10}
+            value={itemState.itemInfo}
+            onChange={onChangeInfo}
+            required
+          ></textarea>
+        </InputBox>
+
+        <AddAndEditBtn>{itemState._id === '' ? '추가' : '수정'}</AddAndEditBtn>
+        {itemState._id === '' ? (
           <></>
         ) : (
-          <button
+          <DelBtn
+            type="button"
             onClick={(e) => {
-              if (confirm('삭제 하시겠습니까?')) {
-                e.preventDefault();
-                API.delete(
-                  `https://port-0-schedulemonster-883524lbq4l3iv.gksl2.cloudtype.app/items/delete/${id}`,
-                );
+              if (window.confirm('삭제 하시겠습니까?')) {
+                try {
+                  e.preventDefault();
+
+                  API.delete(`/items/delete/${itemState._id}`);
+                } catch {
+                } finally {
+                  setCheck(true);
+                }
               }
-              location.replace('/admin/item/normal');
             }}
           >
             삭제
-          </button>
+          </DelBtn>
         )}
       </form>
-    </EditItemBox>
+    </EditItemBoxContainer>
   );
 }
 

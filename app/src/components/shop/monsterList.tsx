@@ -1,29 +1,32 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import filterCategory from '../../util/filterCategory';
-
+import { CharacterBox } from './../../components/characters/StoreStyle';
 import { createFuzzyMatcher } from '../../util/filterHangul';
-function MonsterList({ category, inputValue }: any) {
-  const data = useSelector((state: any) => state.monsters);
-  const itemList =
-    inputValue === ''
-      ? filterCategory(category, 'monsters', data)
-      : data.filter((val: any) => {
-          return createFuzzyMatcher(inputValue, val.characterName);
-        });
-
+function MonsterList({ inputValue, setMonster }: any) {
+  const monsterList = useSelector(
+    (state: any) => state.monsterListReducer.monsterList,
+  );
+  const data = monsterList;
+  const itemList = data.filter((val: any) => {
+    return createFuzzyMatcher(inputValue, val.nameKo);
+  });
   return (
-    <ul>
+    <>
       {itemList.map((item: any): JSX.Element => {
         return (
-          <li key={item.characterId}>
-            <div>{item.characterName}</div>
-            <img src={item.image.image1} alt="" />
-          </li>
+          <CharacterBox
+            key={item._id}
+            onClick={(): void => {
+              setMonster(item);
+            }}
+          >
+            <img src={item.image.imageSprites.front_default} />
+            <h4 style={{ alignSelf: 'center' }}>{item.nameKo}</h4>
+          </CharacterBox>
         );
       })}
-    </ul>
+    </>
   );
 }
 export default MonsterList;

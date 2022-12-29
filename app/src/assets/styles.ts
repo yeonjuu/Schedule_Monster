@@ -1,0 +1,11 @@
+export const hintMsg = '#8e8e8e';
+export const errorMsg = '#d47171';
+export const mainColor = '#a2bcfe';
+export const subColor1 = ' #85A6FC';
+export const subColor2 = '#2661F9';
+export const hoverDark = '#85A6FC';
+export const hoverLight = '#c4d3f8';
+export const basicFont = '15px';
+export const largeFont = '20px';
+export const hintFont = '13px';
+export const smallFont = '13px';

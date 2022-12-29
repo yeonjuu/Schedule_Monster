@@ -3,6 +3,7 @@ export interface IUser {
   email: string;
   point: number;
   auth: string;
+  calendarId: string;
 }
 
 export interface ILogin {
@@ -10,8 +11,9 @@ export interface ILogin {
   password: string;
 }
 
-export interface IRegister {
+export interface IAdmin {
   nickname: string;
   email: string;
   password: string;
+  auth: string;
 }

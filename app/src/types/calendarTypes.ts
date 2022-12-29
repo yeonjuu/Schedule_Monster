@@ -1,4 +1,7 @@
-interface Holiday {
+import { ArrowFunction } from 'typescript';
+import { Calendar } from './../pages/calendar/CalendarStyles';
+
+export interface Holiday {
   kind: string;
   etag: string;
   id: string;
@@ -19,29 +22,77 @@ interface Holiday {
   eventType: string;
 }
 
-interface Creator {
+export interface Creator {
   email: string;
   displayName: string;
   self: boolean;
 }
 
-interface End {
+export interface End {
   date: Date;
 }
 
-interface DateData {
+export interface DateData {
   name: string;
   description: string;
   date: string;
 }
 
-interface Days {
+export interface Days {
   nextMonth: boolean;
   prevMonth: boolean;
   today: boolean;
   week: string;
   date: Date;
-  dateData: Array<DateData>;
+  holidayData: Array<DateData>;
 }
 
-export { Holiday, DateData, Days };
+export interface Controller {
+  date: Date;
+  onClick: onClickObj;
+}
+
+export type onClickObj = {
+  prev: () => void;
+  next: () => void;
+  up: () => void;
+  down: () => void;
+  now: () => void;
+};
+
+export type checkTodo={
+  title: string,
+  calendar: string,
+
+}
+
+export interface checkDate{
+  prevMonth : boolean
+  nextMonth : boolean
+  today : boolean
+  week :string
+  date : Date
+  holidayData : DateData[]
+}
+
+export interface todoData{
+  calendarId :string,
+createdAt: string,
+endYYYYMM :number,
+endYYYYMMDD:number,
+isCompleted:boolean,
+isTodo :boolean,
+labelColor: string,
+scheduleId: string,
+startYYYYMM: number,
+startYYYYMMDD : number,
+title : string,
+updatedAt : string,
+__v : number,
+_id: string
+}
+
+export interface scheduleData extends todoData{
+  endTime : number,
+  startTime: number
+}

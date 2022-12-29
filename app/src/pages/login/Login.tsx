@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import * as API from '../../api';
 import * as Style from './form';
 import { useDispatch } from 'react-redux';
-import { login } from './userSlice';
-import { IUser, ILogin } from '../../types/userInterface';
+import { login, adminlogin } from './userSlice';
+import { IUser, ILogin, IAdmin } from '../../types/userInterface';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
@@ -20,37 +20,53 @@ export const Login = () => {
     userInfo = { email, password: pw };
     console.log('userInfo :', userInfo);
 
-    //로그인 토큰 확인 후 정보 있으면 ok 없으면 정보 없음 띄어주기
-    //에러 항목 어떻게 오는지 보고 띄워주기
-    //현재 틀린 정보는 500 error로 반환
     try {
-      const data = await API.post('/users/login', userInfo);
+      const data = await API.post('/register/login', userInfo);
+      console.log(data);
       const { auth, point, nickname } = data.loginUser;
-      const { accessToken, refreshToken } = data;
-      if (accessToken) {
-        const user: IUser = {
-          email,
-          nickname,
-          point,
-          auth,
-        };
-        //store에 로그인 유저 정보 저장
-        dispatch(login(user));
-        //토근 로컬 스토리지 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        alert(`안녕하세요😁 ${nickname}님`);
-
-        //경로확인하기
-        //관리자,일반사용자 구분해서 경로 변경
-        if (auth === 'user') {
+      const { accessToken, accessExp, refreshExp } = data;
+      if (auth === 'user') {
+        const { calendarId } = data.calendar;
+        if (accessToken) {
+          const user: IUser = {
+            email,
+            nickname,
+            point,
+            auth,
+            calendarId,
+          };
+          //store에 로그인 유저 정보 저장
+          dispatch(login(user));
+          //토큰 로컬 스토리지 저장
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('accessExp', accessExp);
+          localStorage.setItem('refreshExp', refreshExp);
+          alert(`안녕하세요😁 ${nickname}님`);
           navigate('/calendar');
-        } else if (auth === 'admin') {
+        }
+      } else {
+        if (accessToken) {
+          const admin: IAdmin = {
+            email,
+            password: pw,
+            nickname,
+            auth,
+          };
+          dispatch(adminlogin(admin));
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('accessExp', accessExp);
+          localStorage.setItem('refreshExp', refreshExp);
+          alert(`안녕하세요😁 ${nickname} 관리자님`);
           navigate('/admin');
         }
       }
     } catch (error) {
-      console.log(error);
+      if (error.status === 401) {
+        const msg = error.data.message.split('.')[0];
+        setErrorContent(msg);
+      } else {
+        alert('로그인 실패');
+      }
     }
   };
 
@@ -70,9 +86,10 @@ export const Login = () => {
         name="userPw"
         placeholder="비밀번호를 입력해주세요"
         required
+        autoComplete="off"
         onChange={(e) => setPw(e.target.value)}
       />
-      {errorContent}
+      <Style.Message error>{errorContent}</Style.Message>
       <Style.SubminInput type="submit" value="로그인" />
     </Style.Form>
   );
