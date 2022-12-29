@@ -54,7 +54,7 @@ export const CalendarList = () => {
     const id = event.target.value;
     const changed = list.find((calendar) => calendar.calendarId === id);
     if (changed) {
-      console.log('changed', changed.calendarId);
+      // console.log('changed', changed.calendarId);
       setSelected(changed.calendarName);
       dispatch(changeCalendarId(changed.calendarId));
     }
