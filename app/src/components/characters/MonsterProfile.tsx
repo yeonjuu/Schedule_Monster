@@ -6,6 +6,7 @@ import { RootState } from '../../store/store';
 
 import * as API from '../../api';
 import styled from 'styled-components';
+import ImageSlider from './ImageSlider';
 
 export default function MonsterProfile() {
 
@@ -55,8 +56,9 @@ export default function MonsterProfile() {
             </MonsterImageContainer>
 
             <div style={{display:'flex', justifyContent:'space-around'}}>
-            <ImageButton>⬅</ImageButton>
-            <ImageButton onClick={buttonHandler}>➡</ImageButton>
+            {/* <ImageButton>⬅</ImageButton>
+            <ImageButton onClick={buttonHandler}>➡</ImageButton> */}
+            <ImageSlider></ImageSlider>
             </div>
             
             </>

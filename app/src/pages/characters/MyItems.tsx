@@ -42,7 +42,7 @@ export default function MyItems() {
               purpose={'상점'}
             ></BannerItem>
 
-            <Search setState={setInputState}></Search>
+            <Search placeholder={'아이템 검색'} setState={setInputState}></Search>
 
             <ItemContainer>
               <CategoryBox>

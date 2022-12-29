@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ItemBox, ItemButton } from './StoreStyle';
 import * as API from '../../api';
-import { applyItem, mainAffection } from 'pages/characters/statusReducer';
+import { applyItem } from 'pages/characters/statusReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import filterCategory from '../../util/filterCategory';
@@ -20,7 +20,6 @@ export default function MyitemList({
   inputValue: any;
 }): JSX.Element {
   const dispatch = useDispatch<any>();
-  const currentCoin = useSelector((state: any) => state.statusReducer.coin);
 
   const [isLoading, setIsLoading] = useState(true);
   const [modalCheck, setModalCheck] = useState(false);
@@ -33,7 +32,7 @@ export default function MyitemList({
   const mainId = useSelector((state: any) => state.statusReducer.mainId);
 
   const user = useSelector((state: RootState) => state.persistedReducer);
-  const { email, point } = user;
+  const { email } = user;
 
   useEffect(() => {
     async function fetchData() {
@@ -45,14 +44,11 @@ export default function MyitemList({
     dispatch(asyncCategoryListFetch());
   }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      //테스트 데이터
-      const data = await API.get(`/useritem/detail/${email}`);
-      setMyItems(data);
-    }
-    fetchData();
-  }, []);
+
+  async function refetchData () {
+    const useData = await API.get(`/useritem/detail/${email}`);
+    setMyItems(useData);
+  }
 
   //검색기능
   const myitemList =
@@ -116,6 +112,7 @@ export default function MyitemList({
                   <>
                     <ItemButton
                       onClick={() => {
+
                         const isEgg = myitems.categoryName == '알';
 
                         if (mainImage !== '/pokeball.png' || isEgg) {
@@ -129,21 +126,29 @@ export default function MyitemList({
                             affection < 100 &&
                             mainImage !== '/pokeball.png'
                           ) {
+
                             dispatch(applyItem(myitems.exp));
                             alert(`${myitems.exp}만큼 애정도가 채워졌습니다😊`);
 
-                            API.post('/useritem/use', {
+                            const updateUse = API.post('/useritem/use', {
                               email,
-                              itemId: myitems._id, //사용하려는 아이템의 id
-                              characterId: mainId, // 아이템효과를 적용하려는 캐릭터의 id
+                              itemId: myitems._id, 
+                              characterId: mainId, 
                             });
+
+                            updateUse.then(refetchData);
+
+
+
                           } else if (!isEgg && isUse && affection >= 100) {
                             alert('애정도가 이미 가득 채워졌습니다');
+
                           } else if (isEgg && isUse) {
                             const newI: any = API.post('/useritem/egg', {
                               email,
                               itemId: myitems._id,
                             });
+                            newI.then(refetchData);
                             newI.then((monster: any) => {
                               let copy = { ...monsterData };
                               copy.characterName = monster.nameKo;
