@@ -38,7 +38,7 @@ export const Main = () => {
               애정도를 다 채웠을때 포켓몬의 모습을 확인하세요 빛이 날 수 있어요
             </div>
           </Container>
-          <Gif src="/banner/banner02.gif" alt="메인화면배너2" />
+          <Gif src="/banner/banner02_high.gif" alt="메인화면배너2" />
           <Character src="/banner/banner02_01.png" alt="애정도메인베너2" />
         </Banner>
       </div>
@@ -136,9 +136,9 @@ const Gif = styled.img`
   bottom: 20px;
   left: 0;
   z-index: -1;
-  max-width: 600px;
+  max-width: 650px;
   width: 60%;
-  height: auto;
+  height: 75%;
 `;
 
 const Title = styled.h1<{ position: string; top?: boolean }>`
