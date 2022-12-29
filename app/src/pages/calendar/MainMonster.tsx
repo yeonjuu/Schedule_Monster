@@ -1,36 +1,55 @@
 import { RootState } from 'store/store';
 import { Monster, MonsterBox } from './CalendarStyles';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import * as API from 'api';
+import { setMainCharacter } from './slice/mainCharacter';
 
 const MainMonster = () => {
+  const dispatch = useDispatch();
   const monster = useSelector(
     (state: RootState) => state.mainCharacterSlice.main,
   );
   const [move, setMove] = useState<string>('/MonsterGoing.gif');
-  const [number, setNum] = useState<number>(1600);
+  const [number, setNum] = useState<number>(1000);
+  const email = useSelector((state: RootState) => state.persistedReducer.email);
+  //최초 number State만큼 로딩 이미지 보여준 후에 setInterval 시간 재설정
 
-//최초 number State만큼 로딩 이미지 보여준 후에 setInterval 시간 재설정
-  setTimeout(() => {
-    setNum(4500);
-  }, number);
+  const getMainChar = async () => {
+    try {
+      const mainChar = await API.get(`/characterlist/pick/${email}`);
+      dispatch(setMainCharacter(mainChar.image.imageGifs));
+    } catch (e) {
+      setMove('/pokeball.png');
+    }
+  };
 
-    //useEffect로 랜덤 숫자의 범위에 따라 다른 이미지 링크를 img태그에 넣음
   useEffect(() => {
+    getMainChar();
+    const time = setTimeout(() => {
+      setNum(5000);
+    }, number);
+
+    return () => clearTimeout(time);
+  }, []);
+
+  useEffect(() => {
+    if (!move) {
+      
+      if(!monster.front_default){
+        setMove('/pokeball.png');
+      }else{
+      setMove(monster.front_default);}
+    }
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
-      if (num <= 1) {
-        setMove(monster.image.versions.blackwhite.animated.front_default);
-      } else if (2 <= num && num < 4) {
-        setMove(monster.image.front_default);
-      } else if (4 <= num && num < 6) {
-        setMove(monster.image.back_default);
-      } else if (6 <= num && num < 8) {
-        setMove(monster.image.versions.blackwhite.animated.front_shiny);
-      } else if (8 <= num && num < 10) {
-        setMove(monster.image.versions.blackwhite.animated.back_default);
+      if (num <= 3) {
+        setMove(monster.front_default);
+      } else if (4 <= num && num < 7) {
+        setMove(monster.front_shiny);
+      } else if (7 <= num && num < 10) {
+        setMove(monster.back_default);
       }
-      console.log(move);
     }, number);
 
     return () => clearInterval(interval);
@@ -38,7 +57,7 @@ const MainMonster = () => {
 
   return (
     <MonsterBox>
-      <Monster  src={move} alt="" />
+      <Monster src={move} alt="" />
     </MonsterBox>
   );
 };

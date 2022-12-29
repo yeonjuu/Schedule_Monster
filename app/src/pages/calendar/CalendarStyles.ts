@@ -92,7 +92,7 @@ export const Day = styled.p<{
       ${(props) =>
     props.today &&
     css`
-      background-color: yellow;
+      background-color: #F9F871;
     `}
     ${(props) =>
     props.week === 'Sun'
@@ -128,6 +128,8 @@ export const Layout = styled.div`
 export const Container = styled.div`
   width: 84vw;
   height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,26 +137,28 @@ export const Container = styled.div`
 `;
 
 export const CalendarController = styled.div`
-
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: 40px;
   width: 100%;
+ 
   font-size: 18px;
-  margin: 20px 0 50px 0;
-  & > svg {
+  margin: 20px auto;
+  & > div > svg {
     cursor: pointer;
     border: none;
     width: 25px;
-    height: 25px;
+    height: 30px;
     background-color: transparent;
     color: #414656;
     font-size: 22px;
-    padding: 0 5px;
+    padding: 0 11px;
   }
   & > div {
     display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -162,25 +166,25 @@ export const MonsterBox = styled.div`
   position: absolute;
   top: 0px;
   background-color: transparent;
-  height: 160px;
-  width: 84vw;
+  height: 80px;
+  width: 20%;
   z-index: -1;
 `;
 
 export const HolidayLabel = styled.div<{ description: string }>`
-  height: 15%;
+  height: 17%;
   width: 100%;
   border-radius: 9px;
   margin-top: 2px;
-
+  max-height: 23px;
   color: white;
   & > p {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
     font-size: 13px;
-    font-weight: 550;
-    line-height: 19px;
+    font-weight: 600;
+    line-height: 23px;
   }
 
   ${(props) =>
@@ -199,7 +203,10 @@ export const ScheduleLabel = styled.div<{
 }>`
   display: flex;
   cursor: pointer;
-  height: 15%;
+  text-indent: 15px;
+
+  max-height: 23px;
+  height: 17%;
   width: 100%;
   margin-top: 2px;
   background-color: ${(props) => props.labelColor};
@@ -215,13 +222,13 @@ export const ScheduleLabel = styled.div<{
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 13px;
-    font-weight: 550;
-    line-height: 19px;
+    font-weight: 600;
+    line-height: 23px;
   }
 `;
 
 export const TodoLabel = styled(ScheduleLabel)`
-  border-radius: 6px;
+  border-radius: 10px;
 `;
 
 export const PickCalBox = styled.div`
@@ -233,27 +240,25 @@ export const PickCalBox = styled.div`
 
 const png = keyframes`
 
-5%{
-  transform: scaleX(-1);
+from{
+ top: 0;
 }
-    10%{
-        top: 10px;
-        transform: scaleX(1);
-    }
-    to{
-
-    }
+to{
+ top: 30px;
+}
   
 `;
 
 export const Monster = styled.img<{ src: string }>`
-z-index: 10;
+  width: 75px;
+  height: 75px;
+  z-index: 10;
   position: relative;
   left: 50%;
   top: 40%;
   ${(props) =>
-    props.src.lastIndexOf('.png') > 0 &&
+    props.src.indexOf('MonsterGoing') > 0 &&
     css`
-      animation: ${png} 4500ms infinite alternate ease-in-out;
+      animation: ${png} 1s infinite alternate ease-in-out;
     `}
 `;

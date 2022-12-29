@@ -13,3 +13,11 @@ export interface ThirdImage {
 export interface MainName {
   name : string;
 }
+
+export interface MainAffection {
+  affection : number;
+}
+
+export interface MainId {
+  mainId : string;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 //인자로 들어가는 value는 useEffect에서 deps가 되는 요소. time은 기본적으로 200ms
-const useDebounce = (value: any, time = 200) => {
+const useDebounce = (value: any, time = 150) => {
   const [debounceVal, setDebounceVal] = useState(value);
   useEffect(() => {
     const timer = setTimeout(() => {

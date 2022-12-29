@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import statusReducer from 'pages/characters/statusReducer';
 import userReducer from '../pages/login/userSlice';
-import { items, monsterCategories, monsters, itemCategories } from './mockData';
 import {
   persistStore,
   persistReducer,
@@ -31,10 +30,7 @@ const store = configureStore({
   reducer: {
     statusReducer,
     persistedReducer,
-    items,
-    monsterCategories,
-    itemCategories,
-    monsters,
+
     userListReducer: userListSlice.reducer,
     itemListReducer: itemListSlice.reducer,
     categoryListReducer: categoryListSlice.reducer,
@@ -54,3 +50,4 @@ const store = configureStore({
 export default store;
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -4,6 +4,7 @@ import { RootState } from '../../store/store';
 import { logout } from '../../pages/login/userSlice';
 import * as Nav from './nav';
 import { useNavigate } from 'react-router-dom';
+import * as API from 'api';
 
 type IProps = {
   nickname: string;
@@ -15,14 +16,17 @@ export const NavBar = () => {
   const user = useSelector((state: RootState) => state.persistedReducer);
   const point = useSelector((state: RootState) => state.persistedReducer.point);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { nickname, auth, isLogin } = user;
 
-  const clickLogoutHandler = () => {
+  const clickLogoutHandler = async () => {
     const isLogout = window.confirm('로그아웃하시겠습니까?');
     if (isLogout) {
+      await API.put('/users/user', { point: point });
       dispatch(logout());
-      localStorage.removeItem('accessToken');
+      window.localStorage.clear();
+      navigate('/login');
     }
     return;
   };
@@ -31,7 +35,11 @@ export const NavBar = () => {
     <Nav.Wrapper>
       {isLogin ? (
         auth === 'admin' ? (
-          <StateAdminLogin nickname={nickname} onClick={clickLogoutHandler} />
+          <StateAdminLogin
+            nickname={nickname}
+            point={point}
+            onClick={clickLogoutHandler}
+          />
         ) : (
           <StateUserLogin
             nickname={nickname}
@@ -46,11 +54,18 @@ export const NavBar = () => {
   );
 };
 
-const StateUserLogin = ({ nickname, point, onClick }: IProps) => {
+const StateUserLogin = ({ point, onClick }: IProps) => {
   const navigate = useNavigate();
 
   return (
     <Nav.TabWrapper>
+      <Nav.Tab
+        onClick={() => {
+          navigate('/calendar');
+        }}
+      >
+        캘린더
+      </Nav.Tab>
       <Nav.Tab
         onClick={() => {
           navigate('/mypage');
@@ -87,10 +102,33 @@ const StateLogout = () => {
   );
 };
 
-const StateAdminLogin = ({ nickname, onClick }: IProps) => {
+const StateAdminLogin = ({ nickname, point, onClick }: IProps) => {
+  const navigate = useNavigate();
+
   return (
     <Nav.TabWrapper>
-      <Nav.Tab nolink>{nickname} 관리자님</Nav.Tab>
+      <Nav.Tab
+        onClick={() => {
+          navigate('/admin');
+        }}
+      >
+        {nickname} 관리자님
+      </Nav.Tab>
+      <Nav.Tab
+        onClick={() => {
+          navigate('/calendar');
+        }}
+      >
+        캘린더
+      </Nav.Tab>
+      <Nav.Tab
+        onClick={() => {
+          navigate('/store');
+        }}
+      >
+        상점
+      </Nav.Tab>
+      <Nav.Tab nolink>💰{point}</Nav.Tab>
       <Nav.Tab onClick={onClick}>로그아웃</Nav.Tab>
     </Nav.TabWrapper>
   );

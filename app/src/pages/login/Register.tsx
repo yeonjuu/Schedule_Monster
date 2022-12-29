@@ -37,6 +37,7 @@ export const Register = () => {
     checked: false,
   });
   const [emailErr, setEmailErr] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -75,7 +76,7 @@ export const Register = () => {
     }
 
     //사용자 등록
-    const data = await API.post('/users', {
+    const data = await API.post('/register', {
       nickname,
       email,
       password: pw,
@@ -83,21 +84,25 @@ export const Register = () => {
     alert(`${data.nickname}님 환영합니다🙂`);
 
     //로그인 연결
-    const resData = await API.post('/users/login', { email, password: pw });
-    console.log(resData);
+    const resData = await API.post('/register/login', { email, password: pw });
+    // console.log(resData);
+    const { calendarId } = resData.calendar;
     const { auth, point, nickname: resNickname } = resData.loginUser;
-    const { accessToken } = resData;
+    const { accessToken, accessExp, refreshExp } = resData;
     if (accessToken) {
       const user: IUser = {
         email,
         nickname: resNickname,
         point,
         auth,
+        calendarId,
       };
       //store에 로그인 유저 정보 저장
       dispatch(login(user));
       //토근 로컬 스토리지 저장
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('accessExp', accessExp);
+      localStorage.setItem('refreshExp', refreshExp);
 
       //경로확인하기
       //관리자,일반사용자 구분해서 경로 변경
@@ -115,7 +120,7 @@ export const Register = () => {
   };
 
   const checkNicknameHandler = async () => {
-    const isRight = await API.get(`/users/nickname/${nickname}`);
+    const isRight = await API.get(`/register/nickname/${nickname}`);
     if (isRight) {
       setMsg({
         content: '사용가능한 닉네임입니다.',
@@ -137,13 +142,18 @@ export const Register = () => {
     }
     //이메일 인증 api
     try {
-      const { authNum } = await API.get(`/users/auth/${email}`);
-      console.log('response : ', authNum);
+      setIsLoading(true);
+      const { authNum } = await API.get(`/register/auth/${email}`);
+      setEmailErr('');
+      // console.log('response : ', authNum);
+      alert('이메일로 인증번호가 전송되었습니다.');
+
       setOnAuth(true);
       setResAuthNum(authNum);
     } catch (error) {
       setEmailErr(error.data.message);
     }
+    setIsLoading(false);
   };
 
   const checkAuthCodeHandler = () => {
@@ -207,6 +217,7 @@ export const Register = () => {
           type="button"
           onClick={checkEmailHandler}
           value="이메일인증"
+          disabled={isLoading}
         />
       </Style.InputWrapper>
       <Style.Message color={errorMsg}>{emailErr}</Style.Message>

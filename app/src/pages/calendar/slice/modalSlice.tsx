@@ -7,6 +7,7 @@ const modalSlice = createSlice({
     doorPalette: false,
     doorTodo: false,
     doorSchedule: false,
+    doorHow: false,
   },
   reducers: {
     openModal: (state) => {
@@ -18,11 +19,17 @@ const modalSlice = createSlice({
     togglePalette: (state) => {
       state.doorPalette = !state.doorPalette;
     },
-    toggleTodo: (state) => {
-      state.doorTodo = !state.doorTodo;
+    openTodo: (state) => {
+      state.doorTodo = true;
+    },
+    closeTodo: (state) => {
+      state.doorTodo = false;
     },
     toggleSchedule: (state) => {
       state.doorSchedule = !state.doorSchedule;
+    },
+    toggleHow: (state) => {
+      state.doorHow = !state.doorHow;
     },
   },
 });
@@ -33,6 +40,8 @@ export const {
   openModal,
   closeModal,
   togglePalette,
-  toggleTodo,
+  openTodo,
   toggleSchedule,
+  closeTodo,
+  toggleHow,
 } = modalSlice.actions;

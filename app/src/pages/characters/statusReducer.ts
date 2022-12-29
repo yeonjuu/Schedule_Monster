@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MainImage, MainName, SecondImage, ThirdImage } from './storeInterface';
+import { MainImage, MainName, SecondImage, ThirdImage, MainAffection, MainId } from './storeInterface';
 
 const initialState = {
   name: '스몬',
@@ -8,6 +8,7 @@ const initialState = {
   mainImage : '/pokeball.png',
   secondImage : '/pokeball.png',
   thirdImage : '/pokeball.png',
+  mainId : '',
 };
 
 //상점에서 보여지는 대표 캐릭터 상태
@@ -21,21 +22,27 @@ const statusSlice = createSlice({
     applyItem: (state: any, action: PayloadAction<number>) => {
       state.affection += action.payload;
     },
-    mainImage: (state: any, action: PayloadAction<MainImage>) => {
+    mainProfile: (state: any, action: PayloadAction<MainImage>) => {
       state.mainImage = action.payload;
     },
-    secondImage: (state: any, action: PayloadAction<SecondImage>) => {
+    secondProfile: (state: any, action: PayloadAction<SecondImage>) => {
       state.secondImage = action.payload;
     },
-    thirdImage: (state: any, action: PayloadAction<ThirdImage>) => {
+    thirdProfile: (state: any, action: PayloadAction<ThirdImage>) => {
       state.thirdImage = action.payload;
     },
     mainName: (state: any, action: PayloadAction<MainName>) => {
       state.name = action.payload;
+    },
+    mainAffection: (state: any, action: PayloadAction<MainAffection>) => {
+      state.affection = action.payload;
+    },
+    characterId: (state: any, action: PayloadAction<MainId>) => {
+      state.mainId= action.payload;
     }
   },
 });
 
-export const { buyItem, applyItem, mainImage, mainName, secondImage, thirdImage } =
+export const { buyItem, applyItem, mainProfile, mainName, secondProfile, thirdProfile, mainAffection, characterId } =
   statusSlice.actions;
 export default statusSlice.reducer;

@@ -10,7 +10,12 @@ import React, { Dispatch, useState } from 'react';
 import { DateData, Days, todoData } from '../../types/calendarTypes';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal, openModal, toggleSchedule, toggleTodo } from './slice/modalSlice';
+import {
+  closeModal,
+  openModal,
+  openTodo,
+  toggleSchedule,
+} from './slice/modalSlice';
 import { RootState } from 'store/store';
 import { AnyAction } from 'redux';
 
@@ -23,7 +28,7 @@ const checkHoliday = (holiday: Array<DateData>) => {
         key={`${holiday[i].date}-${i}`}
         description={holiday[i].description}
       >
-      <p>{holiday[i].name}</p>
+        <p>{holiday[i].name}</p>
       </HolidayLabel>,
     );
   }
@@ -39,15 +44,13 @@ const checkTodo = (
   for (let i = 0; i < todo.length; i++) {
     arr.push(
       <TodoLabel
-      
-      isCompleted={todo[i].isCompleted}
-        key={`${todo[i].startDate}-${i}`}
+        isCompleted={todo[i].isCompleted}
+        key={`${todo[i].startYYYYMMDD}-${i}`}
         labelColor={todo[i].labelColor}
-        onClick={(e:React.MouseEvent) => {
+        onClick={(e: React.MouseEvent) => {
           e.preventDefault();
-         
-          dispatch(toggleTodo());
-          navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
+          dispatch(openTodo());
+          navigate(`/calendar/todos/todo/${todo[i].scheduleId}`);
         }}
       >
         <p>{todo[i].title}</p>
@@ -57,23 +60,25 @@ const checkTodo = (
   return arr;
 };
 
-const checkSchedule = ( dispatch: Dispatch<AnyAction>,
-  navigate: NavigateFunction,todo: Array<todoData>) => {
+const checkSchedule = (
+  dispatch: Dispatch<AnyAction>,
+  navigate: NavigateFunction,
+  todo: Array<todoData>,
+) => {
   const arr = [];
   // const [disabled, setDisabled]=useState(false);
   for (let i = 0; i < todo.length; i++) {
     arr.push(
       <ScheduleLabel
-      isCompleted={todo[i].isCompleted}
-        key={`${todo[i].startDate}-${i}`}
+        isCompleted={todo[i].isCompleted}
+        key={`${todo[i].startYYYYMMDD}-${i}`}
         labelColor={todo[i].labelColor}
-        onClick={(e:React.MouseEvent) => {
+        onClick={(e: React.MouseEvent) => {
           e.preventDefault();
-          
-          setTimeout(()=>{ dispatch(toggleTodo());}
-          ,20) 
-         
-          navigate(`/calendar/todos/${todo[i].isTodo}/${todo[i].scheduleId}`);
+
+          dispatch(openTodo());
+
+          navigate(`/calendar/todos/schedule/${todo[i].scheduleId}`);
         }}
       >
         <p>{todo[i].title}</p>
@@ -91,7 +96,6 @@ const Dates = ({
   date,
   holidayData,
 }: Days) => {
-  
   const todoData = useSelector((state: RootState) => state.todoSlice.todoList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -99,24 +103,24 @@ const Dates = ({
   const todosToday = format(date, 'yyyyMMdd');
   const holidayArr = holidayData.filter((item) => item.date === holidayToday);
   const todosArr = todoData.filter(
-    (item) => item.isTodo && item.startDate.slice(0, 8) === todosToday,
+    (item) => item.isTodo && item.startYYYYMMDD.toString() === todosToday,
   ); //캘린더별 일정 목록에서 할일만 분리한 배열
   const scheduleArr = todoData.filter(
     (item) =>
       !item.isTodo &&
-      item.startDate.slice(0, 8) <= todosToday &&
-      item.endDate.slice(0, 8) >= todosToday,
+      item.startYYYYMMDD.toString() <= todosToday &&
+      item.endYYYYMMDD.toString() >= todosToday,
   ); //캘린더별 일정 목록에서 일정만 분리한 배열
 
   const day = format(date, 'd');
   return (
     <DateContainer
-      onDoubleClick={(e:React.MouseEvent<HTMLDivElement>) => {
+      onDoubleClick={(e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
-       
-        setTimeout(()=>{dispatch(openModal());}
-        ,15) 
-        navigate(`/calendar/todos/${format(date, 'yyyy-MM-dd')}`);
+
+        dispatch(openModal());
+
+        navigate(`/calendar/todos/${todosToday}`);
       }}
     >
       <Day

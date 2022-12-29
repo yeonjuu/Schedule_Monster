@@ -1,7 +1,17 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
-import { mainColor } from 'assets/styles';
+import { largeFont, mainColor } from 'assets/styles';
+
+
+const modalAction=keyframes`
+from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
 
 export const ModalContainer = styled.div`
   width: 397px;
@@ -24,6 +34,7 @@ export const ModalContainer = styled.div`
   background-color: white;
   border: 1px solid black;
   border-radius: 14px;
+  animation: ${modalAction} 0.5s ease-in-out
 `;
 
 export const BtnBox = styled.div`
@@ -93,3 +104,10 @@ export const Background = styled.div`
   opacity: 0.5;
   z-index: 20;
 `;
+
+export const About = styled.div`
+font-size: ${largeFont};
+text-align: center;
+padding: 15px 4px;
+
+`

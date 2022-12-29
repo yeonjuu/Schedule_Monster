@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 import { ItemBox, ItemButton, QuanButton, Tooltip } from './../characters/StoreStyle';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-import { buyItem, applyItem } from 'pages/characters/statusReducer';
 import { useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+import * as API from '../../api';
+import { minusPoint } from 'pages/login/userSlice';
 
-function Item({ setItem, item, purpose }: any) {
+function Item({ item, purpose }: any) {
   const dispatch = useDispatch<any>();
-  const currentCoin = useSelector((state: any) => state.statusReducer.coin);
+  // const currentCoin = useSelector((state: any) => state.statusReducer.coin);
   const [count, setCount] = useState(1);
 
   const user = useSelector((state: RootState) => state.persistedReducer);
-  const { point } = user;
+  const { point, email } = user;
+
+  useEffect( 
+    () => setCount(1)
+    ,[point])
 
   return (
-    <ItemBox
-      onClick={(): void => {
-        setItem(item);
-      }}
-    >
+    <ItemBox>
       <div
         style={{
           display: 'flex',
@@ -30,12 +31,16 @@ function Item({ setItem, item, purpose }: any) {
         }}
       >
         {purpose === '구매' ? (
+          <>
           <span style={{ fontSize: '15px' }}>💰 {item.price}</span>
+          {item.categoryName !== '알' ? <span style={{fontSize:'15px'}}>+❤️ {item.exp}</span> : null}
+          </>
+
         ) : null}
-        {/* <span style={{fontSize:'15px'}}>+ ❤️{item.exp}</span> */}
       </div>
 
       <div style={{alignSelf:'center'}}>{item.itemName}</div>
+      <img style={{alignSelf:'center', width:'2rem', height:'2rem'}} src={item.itemImage}/>
 
       <div
         style={{
@@ -71,14 +76,27 @@ function Item({ setItem, item, purpose }: any) {
 
             <ItemButton
               onClick={() => {
-
-                if(point > item.price) {
+                if(point >= item.price * count) {
                   const isPurchase = window.confirm(
                     `'${item.itemName}' 아이템을 구매하시겠습니까?`,
                   );
 
                   if (isPurchase && point >= item.price * count) {
-                    dispatch(buyItem(item.price * count));
+
+                    dispatch(minusPoint(item.price * count));
+
+                    API.post('/useritem/buy', {
+                      email,
+                      itemName: item.itemName,
+                      itemImage: item.itemImage,
+                      itemInfo: item.itemInfo,
+                      price: item.price,
+                      exp: item.exp,
+                      categoryName: item.categoryName,
+                      quantity: count,
+                  });
+
+                  alert('구매 완료 하였습니다. 내아이템에서 확인해보세요!')
                   } 
 
                   else if (isPurchase && point < item.price * count) {
@@ -120,7 +138,6 @@ function ItemList({ category, inputValue, purpose, setItem }: any) {
         return (
           <Item
             item={item}
-            setItem={setItem}
             purpose={purpose}
             key={item._id}
           ></Item>

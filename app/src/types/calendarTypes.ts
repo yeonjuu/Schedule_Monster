@@ -76,16 +76,31 @@ export interface checkDate{
 }
 
 export interface todoData{
-  _id: string;
-    calendarId: string;
-    scheduleId: string;
-    startDate: string;
-    endDate: string;
-    title: string;
-    labelColor: string;
-    isTodo: boolean;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-    isCompleted: boolean;
+  calendarId :string,
+createdAt: string,
+endYYYYMM :number,
+endYYYYMMDD:number,
+isCompleted:boolean,
+isTodo :boolean,
+labelColor: string,
+scheduleId: string,
+startYYYYMM: number,
+startYYYYMMDD : number,
+title : string,
+updatedAt : string,
+__v : number,
+_id: string
+}
+
+export interface scheduleData extends todoData{
+  endTime : number,
+  startTime: number
+}
+
+export interface mainMonster {
+  back_default: string,
+
+  front_default: string,
+
+  front_shiny: string,
 }

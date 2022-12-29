@@ -6,7 +6,7 @@ export const Input = styled.input<{
   errors: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
   type: string;
 }>`
-  width: 100%;
+  width: calc(100% - 65px);
   height: 33px;
   text-indent: 13px;
   border: 0.5px solid #a2bcfe;
