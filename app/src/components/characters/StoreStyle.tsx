@@ -18,8 +18,6 @@ export const StoreContainer = styled.div`
 export const ContentsBox = styled.div`
   background-color: #85a6fc;
   border-radius: 1rem;
-  /* border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem; */
   width: 84vw;
   height: 75vh;
 
@@ -162,6 +160,7 @@ export const ItemContainer = styled.div`
 export const CategoryBox = styled.div`
   background-color: #a2bcfe;
   box-sizing: border-box;
+  padding-left: 0.5rem;
   width: 100%;
   height: 100%;
   border-radius: 1rem;
@@ -219,6 +218,7 @@ export const CharacterContainer = styled.div`
   -webkit-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.55);
   -moz-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.55);
 `;
+
 export const CharacterBox = styled.div`
   background-color: aliceblue;
   width: 120px;
@@ -295,6 +295,7 @@ export const QuanButton = styled.button`
   background-color: #a2bcff;
   font-size: large;
   font-weight: 500;
+
   &:hover {
     background-color: #84a5f8;
   }
