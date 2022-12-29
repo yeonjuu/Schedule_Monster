@@ -76,7 +76,7 @@ function Item({ item, purpose }: any) {
 
             <ItemButton
               onClick={() => {
-                if(point > item.price) {
+                if(point >= item.price * count) {
                   const isPurchase = window.confirm(
                     `'${item.itemName}' 아이템을 구매하시겠습니까?`,
                   );
