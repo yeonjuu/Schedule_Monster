@@ -144,8 +144,10 @@ export const Register = () => {
     try {
       setIsLoading(true);
       const { authNum } = await API.get(`/register/auth/${email}`);
+      setEmailErr('');
       // console.log('response : ', authNum);
       alert('이메일로 인증번호가 전송되었습니다.');
+
       setOnAuth(true);
       setResAuthNum(authNum);
     } catch (error) {
