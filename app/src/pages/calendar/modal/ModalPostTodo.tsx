@@ -107,7 +107,6 @@ dispatch(updateCalendar(getThisCalendar));
             color={color}
             onChangeComplete={(color) => {
               setColor(color.hex);
-              setOpen((curr) => !curr);
             }}
             triangle={'top-right'}
             width={'380px'}

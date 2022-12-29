@@ -108,6 +108,6 @@ export const Background = styled.div`
 export const About = styled.div`
 font-size: ${largeFont};
 text-align: center;
-padding: 12px 4px;
+padding: 15px 4px;
 
 `

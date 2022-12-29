@@ -87,10 +87,10 @@ const CalendarWrapper = styled.div`
 
 const Select = styled.select`
   width: 100%;
-  height: 30px;
+  height: 34px;
   text-indent: 10px;
   font-size: ${basicFont};
-  border: 2px solid #aaa;
+  border: 2px solid buttonface;
   border-radius: 8px;
   box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
 
