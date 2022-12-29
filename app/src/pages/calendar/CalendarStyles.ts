@@ -92,7 +92,7 @@ export const Day = styled.p<{
       ${(props) =>
     props.today &&
     css`
-      background-color: yellow;
+      background-color: #F9F871;
     `}
     ${(props) =>
     props.week === 'Sun'
@@ -246,10 +246,12 @@ to{
 `;
 
 export const Monster = styled.img<{ src: string }>`
+  width: 75px;
+  height: 75px;
   z-index: 10;
   position: relative;
   left: 50%;
-  top: 20%;
+  top: 40%;
   ${(props) =>
     props.src.indexOf('MonsterGoing') > 0 &&
     css`
