@@ -129,7 +129,7 @@ const ScheduleContent = ({
       };
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
       dispatch(updateCalendar(getThisCalendar));
-      alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
+      alert('할 일을 완료하였습니다! 💰50포인트가 지급됩니다.');
       dispatch(addPoint(50));
      
     
@@ -148,7 +148,7 @@ const ScheduleContent = ({
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
 
       dispatch(updateCalendar(getThisCalendar));
-      alert('일정을 취소하였습니다. 포인트를 회수합니다.');
+      alert('일정을 취소하였습니다. 지급된 포인트가 회수됩니다.');
       dispatch(minusPoint(50));
      
     }
@@ -267,7 +267,6 @@ const ScheduleContent = ({
             color={color}
             onChangeComplete={(color) => {
               setColor(color.hex);
-              setOpen((curr) => !curr);
             }}
             triangle={'top-right'}
             width={'380px'}

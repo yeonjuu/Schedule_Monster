@@ -33,6 +33,7 @@ import MainMonster from './MainMonster';
 import * as API from 'api';
 import { updateCalendar } from './slice/todoSlice';
 import { Navigate } from 'react-router-dom';
+import ModalHow from './modal/ModalHow';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -51,6 +52,7 @@ const CalendarPage = () => {
   const debounce = useDebounce(format(date, 'MM'));
   const door = useSelector((state: RootState) => state.modalSlice.door);
   const doorTodo = useSelector((state: RootState) => state.modalSlice.doorTodo);
+  const doorHow = useSelector((state: RootState) => state.modalSlice.doorHow);
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
@@ -179,6 +181,7 @@ const CalendarPage = () => {
               <Calendar>{renderDay(day, endDay)}</Calendar>
               {door && <Modal />}
               {doorTodo && <TodosModal />}
+              {doorHow && <ModalHow/>}
             </Container>
           </Layout>
         </>
