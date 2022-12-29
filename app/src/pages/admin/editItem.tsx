@@ -144,7 +144,6 @@ function EditItem({ itemData }: any) {
                 });
               }
             } catch {
-              console.log('에러');
             } finally {
               setCheck(true);
             }
@@ -221,7 +220,6 @@ function EditItem({ itemData }: any) {
 
                   API.delete(`/items/delete/${itemState._id}`);
                 } catch {
-                  console.log('에러');
                 } finally {
                   setCheck(true);
                 }

@@ -1,13 +1,9 @@
 import React from 'react';
 import { Container } from './adminCss';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { asyncCategoryListFetch } from './slice/categoryListSlice';
-import { AppDispatch } from 'store/store';
 
 function Banner() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   return (
     <>
       <Container>

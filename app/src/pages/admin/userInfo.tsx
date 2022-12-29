@@ -19,10 +19,6 @@ function UserInfo({ user, email }: any) {
           <span>닉네임: </span>
           <span>{user.nickname}</span>
         </div>
-        <div>
-          <span>_id: </span>
-          <span>{user._id}</span>
-        </div>
       </div>
       <div>
         <div>

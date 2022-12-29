@@ -37,10 +37,6 @@ function EditMonster({ monsterData }: any) {
     );
   };
   const put = async () => {
-    console.log({
-      characterId: monster.characterId,
-      nameKo: monster.characterName,
-    });
     await API.put('/characters/update', {
       characterId: monster.characterId,
       nameKo: monster.characterName,

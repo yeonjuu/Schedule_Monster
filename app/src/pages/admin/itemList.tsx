@@ -3,7 +3,18 @@ import { useSelector } from 'react-redux';
 import filterCategory from '../../util/filterCategory';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 import { CharacterBox } from '../../components/characters/StoreStyle';
-
+import styled from 'styled-components';
+const Img = styled.img`
+  height: 70px;
+  width: 70px;
+  display: inline;
+`;
+const Box = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
 function Item({ setItem, item }: any) {
   return (
     <CharacterBox
@@ -11,7 +22,9 @@ function Item({ setItem, item }: any) {
         setItem(item);
       }}
     >
-      <img src={item.itemImage} />
+      <Box>
+        <Img src={item.itemImage} />
+      </Box>
       <h4 style={{ alignSelf: 'center' }}>{item.itemName}</h4>
     </CharacterBox>
   );
