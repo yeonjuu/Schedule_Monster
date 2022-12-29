@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components';
 export const User = styled.div`
   width: 84vw;
   margin: 0 auto;
-  max-width: 1280px;
   display: flex;
   flex-direction: column;
   height: 90%;
