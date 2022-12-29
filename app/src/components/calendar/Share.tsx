@@ -69,7 +69,6 @@ export const Share = () => {
 
   return (
     <Style.Wrapper>
-      <div>{calendarId}</div>
       <Style.Button type="button" onClick={clickHandler} value="공유" />
       {isOpen && (
         <Modal member={member} onChange={changeHandler} setIsOpen={setIsOpen} />
