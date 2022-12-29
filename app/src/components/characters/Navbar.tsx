@@ -45,7 +45,7 @@ export default function Navbar() {
                 }}
                 active={current === '수집도감'}
                 >수집도감</NavMenu>
-                {mainImage !== '/pokeball.png' ? 
+                {mainImage === '/pokeball.png' ? 
                 <Tooltip
                 selected={myPokemon === true}
                 >포켓몬을 클릭해서 대표 캐릭터로 지정해보세요!</Tooltip> : null}
