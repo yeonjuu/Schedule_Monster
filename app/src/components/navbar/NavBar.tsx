@@ -107,20 +107,19 @@ const StateAdminLogin = ({ nickname, point, onClick }: IProps) => {
 
   return (
     <Nav.TabWrapper>
-      <Nav.Tab nolink>{nickname} 관리자님</Nav.Tab>
+      <Nav.Tab
+        onClick={() => {
+          navigate('/admin');
+        }}
+      >
+        {nickname} 관리자님
+      </Nav.Tab>
       <Nav.Tab
         onClick={() => {
           navigate('/calendar');
         }}
       >
         캘린더
-      </Nav.Tab>
-      <Nav.Tab
-        onClick={() => {
-          navigate('/mypage');
-        }}
-      >
-        마이페이지
       </Nav.Tab>
       <Nav.Tab
         onClick={() => {
