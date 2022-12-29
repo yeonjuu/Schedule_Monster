@@ -15,7 +15,7 @@ const initialState = {
     share: true,
    
     url: null,
-    __v: 1,
+    __v: 0,
     _id: "",
   }
   ],
@@ -39,6 +39,8 @@ const userSlice = createSlice({
       state.email = '';
       state.point = 0;
       state.auth = '';
+      state.calendarId='';
+      state.calendarList=[];
       state.isLogin = false;
     },
     addPoint: (state, action: PayloadAction<number>) => {

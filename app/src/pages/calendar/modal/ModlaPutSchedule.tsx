@@ -34,7 +34,7 @@ const ScheduleContent = ({
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
- 
+
   //전역 State에서 특정 날짜 값을 가져온다
   const tmp: scheduleData | undefined = useSelector(
     (state: RootState) => state.todoSlice.todoList,
@@ -69,7 +69,12 @@ const ScheduleContent = ({
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string | undefined>(content?.labelColor);
   const [Content, setContent] = useState(content);
-  const [compltedCheck, setCompleted]=useState<boolean|undefined>(content.isCompleted);
+  const [compltedCheck, setCompleted] = useState<boolean | undefined>(
+    content.isCompleted,
+  );
+  const userPoint=useSelector(
+    (state: RootState) => state.persistedReducer.point,
+  );
   const {
     watch,
     setError,
@@ -111,7 +116,7 @@ const ScheduleContent = ({
   };
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      console.log('체크하기 이전꺼',compltedCheck);
+      console.log('체크하기 이전꺼', compltedCheck);
       setCompleted(true);
       const data = {
         scheduleId: content.scheduleId,
@@ -127,24 +132,26 @@ const ScheduleContent = ({
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
       dispatch(addPoint(50));
+      await API.put('/users/user', { point: userPoint });
+    
     } else {
-      console.log('체크하기 이후',compltedCheck);
-        setCompleted(false);
-        const data = {
-          scheduleId: content.scheduleId,
-        };
-  
-        await API.put(`/schedule/iscompleted`, data);
-        
-        const monthData = {
-          calendarId: `${calendarId}`,
-          startYearMonth: `${Content.startYYYYMM}`,
-        };
-        const getThisCalendar = await API.post(`/schedule/month`, monthData);
-        
-        dispatch(updateCalendar(getThisCalendar));
-        alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
-        dispatch(minusPoint(50));
+      setCompleted(false);
+      const data = {
+        scheduleId: content.scheduleId,
+      };
+
+      await API.put(`/schedule/iscompleted`, data);
+
+      const monthData = {
+        calendarId: `${calendarId}`,
+        startYearMonth: `${Content.startYYYYMM}`,
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
+
+      dispatch(updateCalendar(getThisCalendar));
+      alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
+      dispatch(minusPoint(50));
+      await API.put('/users/user', { point: userPoint });
     }
   };
 
