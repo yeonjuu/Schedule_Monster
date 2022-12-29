@@ -10,7 +10,6 @@ import ItemList2 from 'components/shop/ItemList';
 import BannerItem from 'components/shop/categories';
 import Search from 'components/shop/search';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import MonsterProfile from '../../components/characters/MonsterProfile';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
@@ -36,7 +35,6 @@ export default function Items() {
   return (
     <StoreContainer>
       <ContentsBox>
-        <Navbar/>
 
         <Contents>
           <ItemList>

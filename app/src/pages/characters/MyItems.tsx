@@ -20,11 +20,9 @@ import Navbar from 'components/characters/Navbar';
 
 export default function MyItems() {
   const [myItems, setMyItems] = useState([]);
-  const dispatch = useDispatch<any>();
 
   const [category, setCategory] = useState('all');
   const [inputState, setInputState] = useState('');
-  const { id } = useParams();
   const itemCategoryList = useSelector(
     (state: any): any => state.itemCategories,
   );
@@ -32,7 +30,6 @@ export default function MyItems() {
   return (
     <StoreContainer>
       <ContentsBox>
-        <Navbar />
 
         <Contents>
           <ItemList>

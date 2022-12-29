@@ -19,7 +19,7 @@ import { setMainCharacter } from 'pages/calendar/slice/mainCharacter';
 export default function CharactersList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pokemons, setPokemons] = useState<any[]>([]);
 
   const user = useSelector((state: RootState) => state.persistedReducer);
@@ -37,7 +37,6 @@ export default function CharactersList() {
   return (
     <StoreContainer>
       <ContentsBox>
-        <Navbar />
         
         <Contents>
           <CharacterContainer>

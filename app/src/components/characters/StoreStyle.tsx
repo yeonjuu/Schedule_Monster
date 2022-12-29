@@ -18,11 +18,12 @@ export const StoreContainer = styled.div`
 export const ContentsBox = styled.div`
   background-color: #85a6fc;
   border-radius: 1rem;
+  /* border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem; */
   width: 84vw;
-  height: 80vh;
+  height: 75vh;
 
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
   align-items: center;
 
@@ -40,7 +41,7 @@ export const Contents = styled.div`
   justify-content: center;
   align-items: center;
   width: 95%;
-  height: 90%;
+  height: 98%;
 `;
 
 //몬스터 프로필
