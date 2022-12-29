@@ -32,6 +32,7 @@ import { Header } from 'components/header/Header';
 import MainMonster from './MainMonster';
 import * as API from 'api';
 import { updateCalendar } from './slice/todoSlice';
+import { Navigate } from 'react-router-dom';
 
 const CalendarPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -53,14 +54,12 @@ const CalendarPage = () => {
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
-  const todoList = useSelector(
-    (state: RootState) => state.todoSlice.todoList,
+  const todoList = useSelector((state: RootState) => state.todoSlice.todoList);
+  const isLogin = useSelector(
+    (state: RootState) => state.persistedReducer.isLogin,
   );
-
   const dispatch = useDispatch();
 
-
-  
   const session = () => {
     if (thisMonth === '12') {
       return {
@@ -94,7 +93,7 @@ const CalendarPage = () => {
           session().start
         }T00:00:00Z&timeMax=${session().next}T00:00:00Z`,
       );
-      
+
       const data = res.data.items.map((item: Holiday) => {
         return {
           name: item.summary,
@@ -102,16 +101,16 @@ const CalendarPage = () => {
           date: item.start.date,
         };
       });
-      const monthData={
+      const monthData = {
         calendarId: `${calendarId}`,
         startYearMonth: `${thisYear}${thisMonth}`,
-      }
-      const getThisCalendar = await API.post(`/schedule/month`,monthData);
+      };
+      const getThisCalendar = await API.post(`/schedule/month`, monthData);
       setHolidayData(data);
       dispatch(updateCalendar(getThisCalendar));
     };
     getHoliday();
-  }, [debounce,calendarId]);
+  }, [debounce, calendarId]);
 
   const onClick: onClickObj = {
     prev: () => {
@@ -161,23 +160,31 @@ const CalendarPage = () => {
 
   return (
     <>
-      <Layout>
-        <Container>
-          <Header></Header>
-          <MainMonster />
+      {isLogin ? (
+        <>
+          <Layout>
+            <Container>
+              <Header></Header>
+              <MainMonster />
 
-          <DateController date={date} onClick={onClick} />
+              <DateController date={date} onClick={onClick} />
 
-          <HeaderCalendar>
-            {['일', '월', '화', '수', '목', '금', '토'].map((names, index) => {
-              return <p key={`${names}-${index}`}>{names}</p>;
-            })}
-          </HeaderCalendar>
-          <Calendar>{renderDay(day, endDay)}</Calendar>
-          {door && <Modal />}
-          {doorTodo && <TodosModal />}
-        </Container>
-      </Layout>
+              <HeaderCalendar>
+                {['일', '월', '화', '수', '목', '금', '토'].map(
+                  (names, index) => {
+                    return <p key={`${names}-${index}`}>{names}</p>;
+                  },
+                )}
+              </HeaderCalendar>
+              <Calendar>{renderDay(day, endDay)}</Calendar>
+              {door && <Modal />}
+              {doorTodo && <TodosModal />}
+            </Container>
+          </Layout>
+        </>
+      ) : (
+        <Navigate to="/login" replace={true} />
+      )}
     </>
   );
 };
