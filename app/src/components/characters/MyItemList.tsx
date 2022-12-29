@@ -44,7 +44,6 @@ export default function MyitemList({
     dispatch(asyncCategoryListFetch());
   }, []);
 
-
   async function refetchData () {
     const useData = await API.get(`/useritem/detail/${email}`);
     setMyItems(useData);
