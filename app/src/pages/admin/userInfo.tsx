@@ -1,8 +1,13 @@
 import React from 'react';
 import { UserInfoBox } from './adminCss';
 import * as API from '../../api';
+import { UpdateButton } from 'pages/mypage/style';
+import { asyncUserListFetch } from './slice/userListSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'store/store';
 
 function UserInfo({ user, email }: any) {
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <UserInfoBox>
       <div>
@@ -32,15 +37,20 @@ function UserInfo({ user, email }: any) {
         </div>
       </div>
       <div>
-        <button
+        <UpdateButton
+          type="button"
+          value={'삭제'}
+          del
           onClick={(e) => {
             if (window.confirm('삭제하시겠습니까?')) {
-              API.delete(`/users/user/${user.email}`);
+              try {
+                API.delete(`/users/user/${user.email}`);
+              } finally {
+                dispatch(asyncUserListFetch(email));
+              }
             }
           }}
-        >
-          삭제
-        </button>
+        ></UpdateButton>
       </div>
     </UserInfoBox>
   );
