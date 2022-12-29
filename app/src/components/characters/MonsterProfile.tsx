@@ -14,14 +14,10 @@ export default function MonsterProfile() {
 
   const dispatch = useDispatch();
   const name = useSelector((state:any) => state.statusReducer.name);
-  // const mainId = useSelector((state:any) => state.statusReducer.mainId);
-  // const coin = useSelector((state:any) => state.statusReducer.coin);
   const affection = useSelector((state:any) => state.statusReducer.affection);
   const mainImage = useSelector((state:any) => state.statusReducer.mainImage);
   const secondImage = useSelector((state:any) => state.statusReducer.secondImage);
   const thirdImage = useSelector((state:any) => state.statusReducer.thirdImage);
-
-  const [isFull, setIsFull] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,25 +34,56 @@ export default function MonsterProfile() {
     fetchData();
   }, []);
 
-  const buttonHandler = (e:any) => {
-    console.dir(e.target);
+  useEffect(
+    () => setCurrentIndex(0)
+    ,[mainImage])
+
+  const slides:any = [thirdImage, mainImage, secondImage];
+  const prevSlides:any = [secondImage, mainImage];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const previousHandler = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? slides.length-1 : currentIndex-1;
+    setCurrentIndex(newIndex);
   };
 
+  const nextHandler = () => {
+    const isLastSlide = currentIndex === slides.length -1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const halfPreviousHandler = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? prevSlides.length-1 : currentIndex-1;
+    setCurrentIndex(newIndex);
+  };
+
+  const halfNextHandler = () => {
+    const isLastSlide = currentIndex === prevSlides.length -1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
 
     return (
         <>
           <MonsterContainer>
-            {affection >= 100 ? 
+            {affection >= 100 || affection >= 50 && affection <100 ? 
             (
               <>
             <MonsterImageContainer>
-              <MonsterImage src={thirdImage}
+              <MonsterImage src={affection >= 100 ? slides[currentIndex] : prevSlides[currentIndex]}
               />
             </MonsterImageContainer>
 
-            <div style={{display:'flex', justifyContent:'space-around'}}>
-            <ImageButton>⬅</ImageButton>
-            <ImageButton onClick={buttonHandler}>➡</ImageButton>
+            <div>
+
+            <ImageButton onClick={affection >= 100 ? previousHandler : halfPreviousHandler}>
+              ◀︎
+            </ImageButton>
+            <ImageButton onClick={affection >= 100 ? nextHandler: halfNextHandler}>▶︎</ImageButton>
+            
             </div>
             
             </>
@@ -75,16 +102,6 @@ export default function MonsterProfile() {
                   <ul>
                     <MonsterLine>이름 : {name}</MonsterLine>
                     <MonsterLine>애정도 : ❤️ {affection > 100 ? 100 : affection}</MonsterLine>
-                    {/* <MonsterLine>애정도 : {affection >= 50 && affection < 100 ? ' ❤️ ❤️ ' : affection >= 100 ? ' ❤️ ❤️ ❤️ ❤️ ' : '🖤'}</MonsterLine> */}
-                    {/* <MonsterLine>
-                      <div style={{display:'flex', alignItems:'center'}}>
-                        애정도 ❤️ :  
-                        <AffectionStatus />
-                        <AffectionStatus />
-                        <AffectionStatus />
-                        <AffectionStatus /> 
-                        {affection > 100 ? 100 : `${affection}`}
-                      </div></MonsterLine> */}
                     <MonsterLine>보유 코인 : 💰 {point}</MonsterLine>
                   </ul>
                 </MonsterStatus>
@@ -93,24 +110,26 @@ export default function MonsterProfile() {
     );
 }
 
-const AffectionStatus = styled.div`
-  background-color: #85a6fc;
-  border-radius: 20%;
-  margin-left: 3px;
-  width: 1.2rem;
-  height: 0.7rem;
-`
-
-const ButtonContainer = styled.div`
-  display: flex;
-
-`
 
 const ImageButton = styled.button`
   cursor: pointer;
+  background-color: aliceblue;
+  color: #85a6fc;
+  font-size: 20px;
   width: 2rem;
   height: 2rem;
-  margin: 0 1rem;
+  margin: 0 1.5rem;
   border: none;
-  border-radius: 20%;
+  border-radius: 30%;
+
+  box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.55);
+  -webkit-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.55);
+
+  &:hover {
+    color: #668ff7;
+    box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.77);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.77);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.77);
+  }
 `

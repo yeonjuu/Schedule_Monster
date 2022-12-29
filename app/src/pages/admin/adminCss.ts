@@ -24,22 +24,28 @@ export const BuyButton = styled.button`
   background-color: blue;
   color: white;
   border-radius: 30px;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const UserInfoBox = styled.div`
-  display: flex;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 50% 20% 10% 15%;
   align-items: center;
   justify-content: space-around;
-  margin: 20px 0px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
-export const UserPageContainer = styled.div`
-  height: 300px;
-`;
 export const EditItemBoxContainer = styled.div`
   background-color: white;
   width: 25%;
-  height: 80%;
+  height: 90%;
   border-radius: 1rem;
   padding: 1rem;
   margin-left: 1rem;
@@ -81,6 +87,7 @@ export const InputBox = styled.div`
     border: 0.5px solid #a2bcff;
     border-radius: 1rem;
     margin-bottom: 0.5rem;
+    padding: 10px;
   }
 `;
 const Btn = styled.button`
@@ -89,12 +96,35 @@ const Btn = styled.button`
   border: none;
   border-radius: 20px;
   background-color: #a2bcff;
+  :hover {
+    cursor: pointer;
+  }
 `;
 export const AddAndEditBtn = styled(Btn)``;
 export const DelBtn = styled(Btn)``;
 export const SearchResetBox = styled.div`
-  height: 100%;
-  border: 1px solid black;
+  width: 80%;
+  min-width: 600px;
+
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  > input {
+    width: 80%;
+    margin-bottom: 0px;
+    margin-right: 20px;
+  }
+  > button {
+    border-radius: 1rem;
+    background-color: #a2bcff;
+    height: 50px;
+    width: 80px;
+    border: none;
+    :hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 export const EditMonsterBox = styled.div`
@@ -161,18 +191,29 @@ export const CategoryAddBtn = styled.button`
 `;
 export const CategoryListBox = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 export const CategoryInfo = styled.div`
-  display: flex;
-  height: 8%;
-  margin: 5px 0px;
-  > input {
+  display: grid;
+  grid-template-columns: 70% 15% 15%;
+
+  margin: 10px 0px;
+  > input:nth-child(1) {
     border-radius: 1rem;
     border: 0.2px solid black;
     width: 100%;
     margin-right: 10px;
+    padding-left: 10px;
+  }
+  > input:nth-child(2) {
+    width: 100%;
+    margin-left: 15px;
+  }
+  > input:nth-child(3) {
+    width: 100%;
+    margin-left: 20px;
   }
 `;

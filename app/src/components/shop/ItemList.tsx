@@ -31,9 +31,12 @@ function Item({ item, purpose }: any) {
         }}
       >
         {purpose === '구매' ? (
+          <>
           <span style={{ fontSize: '15px' }}>💰 {item.price}</span>
+          {item.categoryName !== '알' ? <span style={{fontSize:'15px'}}>+❤️ {item.exp}</span> : null}
+          </>
+
         ) : null}
-        {/* <span style={{fontSize:'15px'}}>+ ❤️{item.exp}</span> */}
       </div>
 
       <div style={{alignSelf:'center'}}>{item.itemName}</div>

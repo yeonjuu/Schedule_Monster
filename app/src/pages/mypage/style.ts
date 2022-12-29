@@ -1,13 +1,23 @@
 import { mainColor, basicFont } from 'assets/styles';
 import styled, { css } from 'styled-components';
 
+export const User = styled.div`
+  width: 84vw;
+  margin: 0 auto;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+`;
 export const InfoWrapper = styled.div`
   display: grid;
   margin: 0 auto;
-  grid-template-rows: 50px 150px;
+  grid-template-rows: 50px 1fr;
   width: 84vw;
   position: relative;
   background-color: #a2bcfe;
+  height: 30%;
+  border: 1px solid #f2f2f2;
 `;
 export const Head = styled.h3`
   font-size: 20px;
@@ -25,8 +35,12 @@ export const StaticHead = styled.h3`
 `;
 
 export const Infos = styled.div`
-  border: 1px solid #f2f2f2;
-  padding: 5px 0 0 20px;
+  padding-left: 20px;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const StaticWrapper = styled.div`
@@ -35,26 +49,27 @@ export const StaticWrapper = styled.div`
   margin: 0 auto;
   grid-template-areas:
     'h h'
-    'a a'
     'b c';
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 50px 1fr 1fr;
-  background-color: #c4d3f8;
+  grid-template-rows: 50px 1fr;
+  justify-content: center;
+  align-items: center;
+  height: 65%;
+  border: 1px solid #f2f2f2;
 `;
 
 export const TodoBlock = styled.div`
   grid-area: a;
-  border: 1px solid #f2f2f2;
 `;
 
 export const MonsterBlock = styled.div`
   grid-area: b;
-  border: 1px solid #f2f2f2;
   position: relative;
+  height: 100%;
+  border-right: 1px solid #f2f2f2;
 `;
 export const RankBlock = styled.div`
   grid-area: c;
-  border: 1px solid #f2f2f2;
   height: auto;
 `;
 export const BlockTitle = styled.p`
@@ -75,10 +90,17 @@ export const Navigate = styled.div`
   }
 `;
 
-export const Info = styled.div`
+export const Info = styled.div<{ bottom?: boolean }>`
   font-size: 15px;
-  padding: 10px;
+  padding: 20px;
   position: relative;
+  padding-bottom: 0px;
+  ${(props) =>
+    props.bottom &&
+    css`
+      padding-top: 0;
+      padding-bottom: 20px;
+    `}
 `;
 
 export const UpdateButton = styled.input<{ type: 'button'; del?: boolean }>`
@@ -109,9 +131,11 @@ export const ButtonWrapper = styled.div`
 export const Wrapper = styled.div`
   width: 80%;
   display: flex;
+  margin-top: 10%;
   margin: 0 auto;
   justify-content: center;
   align-items: baseline;
+  padding-top: 10%;
 `;
 
 export const MyChar = styled.span`
@@ -133,9 +157,7 @@ export const Button = styled.input<{ type: 'button' }>`
 `;
 
 export const Message = styled.div`
-  position: absolute;
-  bottom: -5px;
-  left: 70px;
+  margin-left: 60px;
   font-size: 13px;
   color: #d23e3e;
 `;

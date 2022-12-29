@@ -13,6 +13,7 @@ import {
   DelBtn,
 } from './adminCss';
 import { resetItem } from './util/util';
+import { AppDispatch, RootState } from 'store/store';
 const ImgBox = styled.div`
   display: flex;
   justify-content: center;
@@ -26,8 +27,8 @@ const Img = styled.img`
 
 function EditItem({ itemData }: any) {
   const urlInput = useRef<any>();
-  const dispatch = useDispatch<any>();
-  const categoryList = useSelector((state: any) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const categoryList = useSelector((state: RootState) => {
     return state.categoryListReducer.categoryList;
   });
   const [check, setCheck] = useState(false);
@@ -95,12 +96,14 @@ function EditItem({ itemData }: any) {
     });
     urlInput.current.value = itemData.itemImage;
   }, [itemData]);
+
   useEffect(() => {
-    dispatch(asyncitemListFetch());
     setCheck(false);
+    dispatch(asyncitemListFetch());
     setItemState(resetItem);
     urlInput.current.value = '';
-  }, [check, dispatch]);
+  }, [check]);
+
   return (
     <EditItemBoxContainer>
       <ImgBox>
@@ -109,123 +112,124 @@ function EditItem({ itemData }: any) {
           alt="이미지가 없거나  이미지 파일이 아닙니다"
         ></Img>
       </ImgBox>
-      <UploadFileBox>
-        <label htmlFor="upload">이미지url업로드</label>
-        <input
-          type="text"
-          defaultValue={itemState.itemImage}
-          id="upload"
-          ref={urlInput}
-          required
-        />
-        <button onClick={onChangeImg}>url 이미지 가져오기</button>
-      </UploadFileBox>
-      <InputBox>
-        <div>이름</div>
-        <input
-          type="text"
-          value={itemState.itemName}
-          onChange={onChangeName}
-          required
-        />
-        <div>가격</div>
-        <input
-          type="number"
-          value={itemState.price}
-          onChange={onChangePrice}
-          required
-        />
-        <div>애정도</div>
-        <input
-          type="number"
-          value={itemState.exp}
-          onChange={onChangeExp}
-          required
-        />
-        <div>카테고리</div>
-        <select onChange={onChangeCategory} value={itemState.categoryName}>
-          <option value="">==선택하세요==</option>
-          {categoryList.map((category: any): JSX.Element => {
-            return (
-              <option key={category._id} value={category.categoryName}>
-                {category.categoryName}
-              </option>
-            );
-          })}
-        </select>
-        <div>상세설명</div>
-        <textarea
-          name=""
-          cols={30}
-          rows={10}
-          value={itemState.itemInfo}
-          onChange={onChangeInfo}
-          required
-        ></textarea>
-      </InputBox>
-
-      <AddAndEditBtn
-        onClick={(e) => {
+      <form
+        onSubmit={(e) => {
           e.preventDefault();
-          if (window.confirm('수정 or 추가 하시겠습니까?')) {
-            console.log({
-              itemName: itemState.itemName,
-              itemImage: itemState.itemImage,
-              itemInfo: itemState.itemInfo,
-              price: itemState.price,
-              exp: itemState.exp,
-              categoryName: itemState.categoryName,
-            });
+          if (
+            window.confirm(
+              `${
+                itemState._id === '' ? '추가하시겠습니까?' : '수정하시겠습니까?'
+              }`,
+            )
+          ) {
             try {
-              itemState._id === ''
-                ? API.post('/items/register', {
-                    itemName: itemState.itemName,
-                    itemImage: itemState.itemImage,
-                    itemInfo: itemState.itemInfo,
-                    price: itemState.price,
-                    exp: itemState.exp,
-                    categoryName: itemState.categoryName,
-                  })
-                : API.put('/items/update', {
-                    _id: itemState._id,
-                    itemName: itemState.itemName,
-                    itemImage: itemState.itemImage,
-                    price: itemState.price,
-                    exp: itemState.exp,
-                    categoryName: itemState.categoryName,
-                    itemInfo: itemState.itemInfo,
-                  });
+              if (itemState._id === '') {
+                API.post('/items/register', {
+                  itemName: itemState.itemName,
+                  itemImage: itemState.itemImage,
+                  itemInfo: itemState.itemInfo,
+                  price: itemState.price,
+                  exp: itemState.exp,
+                  categoryName: itemState.categoryName,
+                });
+              } else {
+                API.put('/items/update', {
+                  _id: itemState._id,
+                  itemName: itemState.itemName,
+                  itemImage: itemState.itemImage,
+                  price: itemState.price,
+                  exp: itemState.exp,
+                  categoryName: itemState.categoryName,
+                  itemInfo: itemState.itemInfo,
+                });
+              }
             } catch {
-              console.log('에러');
             } finally {
               setCheck(true);
             }
           }
         }}
       >
-        {itemState._id === '' ? '추가' : '수정'}
-      </AddAndEditBtn>
-      {itemState._id === '' ? (
-        <></>
-      ) : (
-        <DelBtn
-          onClick={(e) => {
-            if (window.confirm('삭제 하시겠습니까?')) {
-              try {
-                e.preventDefault();
+        <UploadFileBox>
+          <label htmlFor="upload">이미지url업로드</label>
+          <input
+            type="text"
+            defaultValue={itemState.itemImage}
+            id="upload"
+            ref={urlInput}
+            required
+          />
+          <button type="button" onClick={onChangeImg}>
+            url 이미지 가져오기
+          </button>
+        </UploadFileBox>
+        <InputBox>
+          <div>이름</div>
+          <input
+            type="text"
+            value={itemState.itemName}
+            onChange={onChangeName}
+            required
+          />
+          <div>가격</div>
+          <input
+            type="number"
+            value={itemState.price}
+            onChange={onChangePrice}
+            required
+          />
+          <div>애정도</div>
+          <input
+            type="number"
+            value={itemState.exp}
+            onChange={onChangeExp}
+            required
+          />
+          <div>카테고리</div>
+          <select onChange={onChangeCategory} value={itemState.categoryName}>
+            <option value="">==선택하세요==</option>
+            {categoryList.map((category: any): JSX.Element => {
+              return (
+                <option key={category._id} value={category.categoryName}>
+                  {category.categoryName}
+                </option>
+              );
+            })}
+          </select>
+          <div>상세설명</div>
+          <textarea
+            name=""
+            cols={30}
+            rows={10}
+            value={itemState.itemInfo}
+            onChange={onChangeInfo}
+            required
+          ></textarea>
+        </InputBox>
 
-                API.delete(`/items/delete/${itemState._id}`);
-              } catch {
-                console.log('에러');
-              } finally {
-                setCheck(true);
+        <AddAndEditBtn>{itemState._id === '' ? '추가' : '수정'}</AddAndEditBtn>
+        {itemState._id === '' ? (
+          <></>
+        ) : (
+          <DelBtn
+            type="button"
+            onClick={(e) => {
+              if (window.confirm('삭제 하시겠습니까?')) {
+                try {
+                  e.preventDefault();
+
+                  API.delete(`/items/delete/${itemState._id}`);
+                } catch {
+                } finally {
+                  setCheck(true);
+                }
               }
-            }
-          }}
-        >
-          삭제
-        </DelBtn>
-      )}
+            }}
+          >
+            삭제
+          </DelBtn>
+        )}
+      </form>
     </EditItemBoxContainer>
   );
 }

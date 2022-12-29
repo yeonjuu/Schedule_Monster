@@ -96,7 +96,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({ nickname, email }) => {
           )}
           <Style.Message>{checkMsg}</Style.Message>
         </Style.Info>
-        <Style.Info>
+        <Style.Info bottom>
           이메일
           <Style.InfoInput type="text" value={email} disabled />
         </Style.Info>

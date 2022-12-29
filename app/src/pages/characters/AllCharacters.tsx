@@ -5,7 +5,7 @@ import styled from "styled-components"
 import * as API from '../../api';
 import Loading from "components/characters/Loading";
 import { RootState } from '../../store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function AllCharacters() {
 
@@ -36,8 +36,6 @@ export default function AllCharacters() {
     return(
         <StoreContainer>
             <ContentsBox>
-
-                <Navbar />
 
                 <Contents>
                     <AllChaContainer>
@@ -119,8 +117,3 @@ const AllChaBox = styled.div<any>`
     }
 `
 
-
-{/* <AllChaBox show="all" >
-    <img src={pokemon.image.front_default} />
-    <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
-</AllChaBox> */}

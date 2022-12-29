@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import filterCategory from '../../util/filterCategory';
 import { CharacterBox } from './../../components/characters/StoreStyle';
-import { ItemBox } from 'components/characters/StoreStyle';
 import { createFuzzyMatcher } from '../../util/filterHangul';
 function MonsterList({ inputValue, setMonster }: any) {
   const monsterList = useSelector(
@@ -23,7 +21,7 @@ function MonsterList({ inputValue, setMonster }: any) {
               setMonster(item);
             }}
           >
-            <img src={item.image.front_default} />
+            <img src={item.image.imageSprites.front_default} />
             <h4 style={{ alignSelf: 'center' }}>{item.nameKo}</h4>
           </CharacterBox>
         );

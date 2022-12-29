@@ -87,7 +87,7 @@ export const Register = () => {
     console.log(resData);
     const { calendarId } = resData.calendar;
     const { auth, point, nickname: resNickname } = resData.loginUser;
-    const { accessToken } = resData;
+    const { accessToken, accessExp, refreshExp } = resData;
     if (accessToken) {
       const user: IUser = {
         email,
@@ -100,6 +100,8 @@ export const Register = () => {
       dispatch(login(user));
       //토근 로컬 스토리지 저장
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('accessExp', accessExp);
+      localStorage.setItem('refreshExp', refreshExp);
 
       //경로확인하기
       //관리자,일반사용자 구분해서 경로 변경
