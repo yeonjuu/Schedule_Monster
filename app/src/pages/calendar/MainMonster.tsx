@@ -20,7 +20,7 @@ const MainMonster = () => {
       const mainChar = await API.get(`/characterlist/pick/${email}`);
       dispatch(setMainCharacter(mainChar.image.imageGifs));
     } catch (e) {
-      alert(e);
+      setMove('/pokeball.png');
     }
   };
 
@@ -35,7 +35,11 @@ const MainMonster = () => {
 
   useEffect(() => {
     if (!move) {
-      setMove(monster.front_default);
+      
+      if(!monster.front_default){
+        setMove('/pokeball.png');
+      }else{
+      setMove(monster.front_default);}
     }
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
