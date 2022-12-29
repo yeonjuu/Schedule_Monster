@@ -9,7 +9,6 @@ class CharacterListService {
 
   // 관리자용 : 전체 사용자 캐릭터 리스트 전체 조회
   async getCharacterLists(email: string) {
-    console.log(email);
     const user = await userModel.findOne({ email });
     if (!user) throw new Error('type:Forbidden,content:사용자가 존재하지 않거나 요청이 정상적이지 않습니다');
     if (user.auth === 'user') new Error('type:Forbidden,message:해당 관리 권한으로는 서비스 요청을 할 수 없습니다');
@@ -20,6 +19,15 @@ class CharacterListService {
   // 특정 사용자 캐릭터 리스트 상세 조회
   async getCharacterList(email: string) {
     const result = await this.characterList.find({ email: email }).sort({characterId: "asc"});
+    return result;
+  }
+
+  // 수집된 캐릭터 수를 기준으로 사용자 정렬
+  async getUserOrder() {
+    const result = await this.characterList.aggregate( [{$project: { _id:1, email: 1}}, {$group: {
+        _id: "$email",
+        count: { $sum: 1 }
+      }} ]).sort({count: "desc"} );
     return result;
   }
 

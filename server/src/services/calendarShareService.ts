@@ -1,5 +1,6 @@
 import { calendarShareModel, calendarShareModelType } from '../models';
 import { CalendarShareInterface } from '../models/schemas/CalendarShare';
+import { calendarService } from './calendarService';
 class CalendarShareService {
   private calendarshare: calendarShareModelType;
 
@@ -11,9 +12,17 @@ class CalendarShareService {
     const result = await this.calendarshare.find({ calendarId });
     return result;
   }
+
+  async getCalendarShareByFriend(email: string) {
+    // 친구가 추가해버린 내 이메일로 찾아서 반환
+    const result = await this.calendarshare.find({ friendEmail: email });
+    return result;
+  }
   async postCalendarShare(postInfo: CalendarShareInterface) {
     const { email, calendarId, friendEmail } = postInfo;
-    const result = await this.calendarshare.create({ email, calendarId, friendEmail });
+    const calendar = await calendarService.getCalendarById(calendarId);
+    const { calendarName } = calendar;
+    const result = await this.calendarshare.create({ email, calendarName, calendarId, friendEmail });
     return result;
   }
   async deleteCalendarShare(calendarId: string, friendEmail: string) {

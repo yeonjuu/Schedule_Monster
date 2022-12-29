@@ -5,6 +5,7 @@ import {
 } from '../models/schemas/UserItem';
 import { characterModel } from '../models/schemas/Character';
 import { userModel, characterListModel } from '../models/';
+import {UserInterface} from "../models/schemas/User";
 
 class UserItemService {
     private UserItem: userItemModelType;
@@ -36,13 +37,21 @@ class UserItemService {
     //=================================================================
     // POST localhost:5000/userItem/buy
 
-    // 아이템 구매 (= 사용자 수집 아이템목록에는 추가, 사용자의 포인트는 차감)
-    async buyUserItem(itemInfo: UserItemInterface) {
-        const {email, price} = itemInfo
-        // 1. 수집 아이템 목록에 추가
+    // #1. 수집 아이템 목록에 추가 (아이템 수량만큼 반복)
+    updateItem = async (itemInfo: UserItemInterface) => {
         const itemResult = await this.UserItem.create(itemInfo);
+        return itemResult
+    }
+    // #2. 사용자 포인트 변경
+    updateUserPoint = async (userData: UserInterface, price:number) => {
+        const userResult = await userModel.findOneAndUpdate({email: userData.email}, {point: price }, {returnOriginal: false},)
+        return userResult
+    }
 
-        // 사용자 정보 가져옴
+    // 아이템 구매 (= 사용자 수집 아이템목록에는 추가, 사용자의 포인트는 차감)
+    async buyUserItem(itemInfo: UserItemInterface, quantity: number) {
+        const {email, price} = itemInfo
+       // 사용자 정보 가져옴
         const userData = await userModel.findOne({ email: email })
         if(!userData){
             const message = {
@@ -51,8 +60,6 @@ class UserItemService {
             }
             return message
         }
-
-        // // 2. 사용자 포인트에서 아이템 금액만큼 차감 후 업데이트
         const userPoint = +userData.point
         if (userPoint < price){
             const message = {
@@ -61,11 +68,12 @@ class UserItemService {
             }
             return message
         }
-        const newPoint = userPoint - +price
-        // 사용자 정보 중에서 업데이트 할 부분(금액) 수정
-        const userResult = await userModel.findOneAndUpdate({ email: email },{ point: newPoint },{ returnOriginal: false },)
-
-        return userResult
+        const newPoint = userPoint - +price*quantity
+        for (let i = 0; i < quantity; i++) {
+            await this.updateItem(itemInfo)
+        }
+        const result = await this.updateUserPoint(userData, newPoint)
+        return result
     }
 
     //=================================================================
@@ -78,7 +86,7 @@ class UserItemService {
         if(!itemResult) {
             const message = {
                 "status": false,
-                "message": '아이템 오류 - 해당 아이템은 존재하지하지 않습니다.'
+                "message": '아이템 오류 - 해당 아이템은 존재하지 않습니다.'
             }
             return message
         }
@@ -87,7 +95,7 @@ class UserItemService {
         if(!characterListResult) {
             const message = {
                 "status": false,
-                "message": '캐릭터 오류 - 해당 캐릭터는 존재하지하지 않습니다.'
+                "message": '캐릭터 오류 - 해당 캐릭터는 존재하지 않습니다.'
             }
             return message
         }
@@ -117,6 +125,18 @@ class UserItemService {
     //=================================================================
     // POST localhost:5000/userItem/egg
 
+
+    // 캐릭터 랜덤추가 함수
+    randomCharacter = async () => {
+        const random = await characterModel.aggregate(
+            [
+                { $sample: { size: 1 } }
+            ],
+        );
+        const randomCharacter = random[0]
+        return randomCharacter
+    }
+
     // 알 깨기 (=사용자 수집 아이템 목록에서 알 삭제, 수집한 캐릭터리스트에 추가)
     async breakEgg(email: string, itemId: string) {
         // 아이템 정보 받아옴
@@ -132,19 +152,22 @@ class UserItemService {
         }
 
         if (itemResult.categoryName == '알') {
-            console.log(itemResult, itemResult.categoryName)
             // 1. 사용자가 수집한 캐릭터에 랜덤으로 하나 추가
-            const random = await characterModel.aggregate(
-                [
-                    { $sample: { size: 1 } }
-                ],
-            );
-            const randomCharacter = random[0]
-            delete randomCharacter["_id"]
-            randomCharacter.email = email
-            randomCharacter.myExp = 0 // 애정도 초기값 0
-            randomCharacter.onePick = (characterCount == 0) // 최초 캐릭터가 대표캐릭터
-            const result = await characterListModel.create(randomCharacter);
+            let newCharacter = await this.randomCharacter()
+            while(true){
+                let alreadyHave = await characterListModel.find({email: email, characterId: newCharacter.characterId})
+                if (alreadyHave.length == 0) {
+                    break;
+                }
+                else{
+                    newCharacter = await this.randomCharacter()
+                }
+            }
+            delete newCharacter["_id"]
+            newCharacter.email = email
+            newCharacter.myExp = 0
+            newCharacter.onePick = (characterCount == 0)
+            const result = await characterListModel.create(newCharacter);
 
             // 2. 사용자수집아이템 리스트에서 삭제
             await this.UserItem.remove({ _id: itemId });

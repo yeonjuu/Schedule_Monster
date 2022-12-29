@@ -9,26 +9,28 @@ interface scheduleControllerInterface {
   getScheduleByCalendarId: AsyncRequestHandler;
   getTodoByCalendarId: AsyncRequestHandler;
   getAllByCalendarId: AsyncRequestHandler;
+  deleteAllByCalendarId: AsyncRequestHandler;
+  updateIsCompletedOrNot: AsyncRequestHandler;
 }
 
 export const scheduleController: scheduleControllerInterface = {
   // 월별 일병 조회
   async getScheduleByMonth(req, res) {
-    const { calendarId, startDate } = req.body;
-    const schedules = await scheduleService.getScheduleByMonth(calendarId, startDate);
+    const { calendarId, startYearMonth } = req.body;
+    const schedules = await scheduleService.getScheduleByMonth(calendarId, startYearMonth);
     res.json(schedules);
   },
   // 일자별 일정 조회
   async getScheduleByDay(req, res) {
-    const { calendarId, startDate } = req.params;
-    const schedules = await scheduleService.getScheduleByDay(calendarId, startDate);
+    const { calendarId, startDay } = req.body;
+    const schedules = await scheduleService.getScheduleByDay(calendarId, startDay);
     res.json(schedules);
   },
   // 일정 생성
   async postScheduleByDay(req, res) {
     const { calendarId, ...update } = req.body;
-    const user = await scheduleService.postScheduleByDay(calendarId, update);
-    res.json(user);
+    const schedules = await scheduleService.postScheduleByDay(calendarId, update);
+    res.json(schedules);
   },
   // 일정 수정
   async updateScheduleByDay(req, res) {
@@ -59,5 +61,15 @@ export const scheduleController: scheduleControllerInterface = {
     const { calendarId } = req.params;
     const data = await scheduleService.getAllByCalendarId(calendarId);
     return res.json(data);
+  },
+  async deleteAllByCalendarId(req, res) {
+    const { calendarId } = req.params;
+    const data = await scheduleService.deleteAllByCalendarId(calendarId);
+    return res.json(data);
+  },
+  async updateIsCompletedOrNot(req, res) {
+    const { scheduleId } = req.body;
+    const result = await scheduleService.updateIsCompletedOrNot(scheduleId);
+    return res.json(result);
   },
 };

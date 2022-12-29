@@ -15,7 +15,7 @@ export const characterController: characterControllerInterface = {
         res.json(characters);
     },
     async getCharacter(req, res) {
-        const { characterId } = req.body;
+        const { characterId } = req.params;
         const character = await characterService.getCharacter(characterId);
         res.json(character);
     },

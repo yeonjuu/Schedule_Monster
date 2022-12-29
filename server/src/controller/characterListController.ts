@@ -4,6 +4,7 @@ import { AsyncRequestHandler } from '../types';
 interface characterListControllerInterface {
   getCharacterList: AsyncRequestHandler;
   getCharacterLists: AsyncRequestHandler;
+  getUserOrder: AsyncRequestHandler;
   createCharacterList: AsyncRequestHandler;
   updateCharacterList: AsyncRequestHandler;
   getOnePick: AsyncRequestHandler;
@@ -22,6 +23,10 @@ export const characterListController: characterListControllerInterface = {
     const { email } = req.params;
     const lists = await characterListService.getCharacterLists(email);
     return res.json(lists);
+  },
+  async getUserOrder(req, res) {
+    const list = await characterListService.getUserOrder();
+    return res.json(list);
   },
   async createCharacterList(req, res) {
     const result = await characterListService.createCharacterList(req.body);

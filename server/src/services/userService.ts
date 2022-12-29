@@ -6,6 +6,7 @@ import { JWT_SECRET_KEY } from '../utils/config';
 import { generateRandomString } from '../utils/generateRandomString';
 import nodemailer from 'nodemailer';
 import { calendarService } from './calendarService';
+import { tokenParsing } from '../utils/tokenParsing';
 class UserService {
   private User: userModelType;
   constructor(userModel: userModelType) {
@@ -14,8 +15,9 @@ class UserService {
 
   async getUser(email: string) {
     const user = await this.User.findOne({ email });
-    if (!user)
+    if (!user) {
       throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
+    }
     return user;
   }
   // 관리자용 전체 사용자 조회
@@ -24,7 +26,7 @@ class UserService {
     if (!user)
       throw new Error('type:Forbidden,content:입력하신 이메일의 가입 내역이 없습니다. 다시 한 번 확인 바랍니다');
     const { auth } = user;
-    if (auth !== 'manager') throw new Error('type:Forbidden,content:해당 요청에 대한 접근 권한이 존재하지 않습니다.');
+    if (auth !== 'admin') throw new Error('type:Forbidden,content:해당 요청에 대한 접근 권한이 존재하지 않습니다.');
     return await this.User.find({});
   }
   async createUser(userInfo: RegisterInterface) {
@@ -53,14 +55,9 @@ class UserService {
   }
 
   async updateUser(updateInfo: UpdateInterface) {
-    const { email, password, nickname, point } = updateInfo;
+    const { email, nickname, point } = updateInfo;
     const user = await this.User.findOne({ email });
     if (!user) throw new Error('type:Forbidden,content:비정상적인 요청으로 확인되어 해당 요청을 차단합니다.');
-
-    const correctPasswordHash = user.password;
-    const isPasswordCorrect = await bcrypt.compare(password, correctPasswordHash);
-    if (!isPasswordCorrect)
-      throw new Error('type:Forbidden,content:비정상적인 요청으로 확인되어 해당 요청을 차단합니다.');
 
     const updateData = {
       ...(nickname && { nickname }),
@@ -101,7 +98,7 @@ class UserService {
     };
 
     const refreshPayload = {};
-    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
+    const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '7d' });
     const refreshToken = jwt.sign(refreshPayload, secretKey, {
       expiresIn: '30d',
     });
@@ -114,7 +111,7 @@ class UserService {
 
     const accessExp = accessExpMS * 1000;
     const refreshExp = refreshExpMS * 1000;
-    console.log(new Date(accessExp).toLocaleString(), new Date(refreshExp).toLocaleString());
+    // console.log(new Date(accessExp).toLocaleString(), new Date(refreshExp).toLocaleString());
     //DB에 refresh token 저장
     const loginUser = await this.User.findOneAndUpdate(
       { email: user.email },
@@ -124,7 +121,9 @@ class UserService {
 
       { returnOriginal: false },
     );
-    return { loginUser, accessToken, accessExp, refreshExp };
+
+    const calendar = await calendarService.getCalendar(email);
+    return { loginUser, accessToken, accessExp, refreshExp, calendar: calendar[0] };
   }
 
   // 계정 로그아웃
@@ -134,34 +133,9 @@ class UserService {
     return await this.User.findOneAndUpdate(filter, { $unset: { refreshToken: '' } }, option);
   }
 
-  async addCharater(characterData: CharaterListInterface) {
-    const { email, id, level, exp } = characterData;
-
-    if (!(email && id && level && exp))
-      throw new Error('type:BadRequest,content:요청이 정상적으로 수신되지 않아 추가할 수 없습니다.');
-
-    const user = await this.User.findOne({ email });
-    if (!user) throw new Error('type:BadRequest,content:요청이 정상적으로 수신되지 않아 추가할 수 없습니다.');
-
-    const filter = { email };
-
-    let charaterList: Array<object> = [];
-    const charaterSet = {
-      id,
-      level,
-      exp,
-    };
-    charaterList.push(charaterSet);
-    await this.User.findOneAndUpdate(filter, {
-      $push: { characterlist: charaterList },
-    });
-    const result = await this.User.findOne({ email });
-    return result;
-  }
-
   async postManager(userInfo: RegisterInterface) {
     const { email, password, nickname } = userInfo;
-    const auth = 'manager';
+    const auth = 'admin';
     const point = 0;
     const hashedPassword = await bcrypt.hash(password, 10);
     const active = true;
@@ -266,7 +240,7 @@ class UserService {
       return false;
     }
     const { auth } = user;
-    if (auth === 'manager') return true;
+    if (auth === 'admin') return true;
     else false;
   }
 
@@ -281,12 +255,16 @@ class UserService {
     if (!isPasswordCorrect) return false;
     else return true;
   }
-  async expandAccToken(token: string, email: string) {
-    console.log('expandAccToken 함수 진입');
+  async expandAccToken(token: string) {
+    const secretKey = JWT_SECRET_KEY;
+    const { email } = tokenParsing(token);
+
+    if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
+    //토큰에 들어있는 이메일 정보와 사용자가 보낼때 보낸 이메일이 다르면 에러처리
+
     try {
-      const secretKey = process.env.JWT_SECRET_KEY;
-      if (!token || !secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
       jwt.verify(token, secretKey);
+      // 토큰이 아직 유효한 상태는 에러 안 던짐
       const { exp: tokenExp } = jwt.decode(token) as {
         exp: number;
       };
@@ -305,8 +283,8 @@ class UserService {
             };
 
             const dateDiff = refreshExpMS * 1000 - Date.now();
-            console.log('리프레시 토큰 만료날짜가 ', new Date(refreshExpMS * 1000).toLocaleString());
-            console.log(refreshExpMS, dateDiff);
+            // console.log('리프레시 토큰 만료날짜가 ', new Date(refreshExpMS * 1000).toLocaleString());
+            // console.log(refreshExpMS, dateDiff);
             if (dateDiff >= 0) {
               const secretKey = process.env.JWT_SECRET_KEY;
               const accessPayload = {
@@ -315,7 +293,7 @@ class UserService {
               };
               if (!secretKey) throw new Error('type:BadRequest,content:요청 중에 전달된 데이터를 찾을 수 없습니다');
 
-              const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '1d' });
+              const accessToken = jwt.sign(accessPayload, secretKey, { expiresIn: '7d' });
               const { exp: accessExpMS } = jwt.decode(accessToken) as {
                 exp: number;
               };
@@ -323,7 +301,7 @@ class UserService {
 
               return { accessToken, accessExp };
             } else {
-              throw new Error('type:Forbidden,content:refresh토큰이 만료되었습니다');
+              throw new Error('type:Forbidden,content:refresh토큰이 만료되었습니다 다시 요청해주세요');
             }
           }
         } else if (error.message === 'invalid token') {
@@ -335,6 +313,29 @@ class UserService {
         throw new Error('type:BadRequest,content:토큰을 확인 하는 중에 비정상적인 오류가 발생했습니다.');
       }
     }
+  }
+  async expandRefToken(email: string) {
+    const secretKey = JWT_SECRET_KEY;
+    const refreshPayload = {};
+    const refreshToken = jwt.sign(refreshPayload, secretKey, {
+      expiresIn: '30d',
+    });
+
+    const { exp: refreshExpMS } = jwt.decode(refreshToken) as {
+      exp: number;
+    };
+
+    const refreshExp = refreshExpMS * 1000;
+    const updateUser = await this.User.findOneAndUpdate(
+      { email },
+      {
+        refreshToken: refreshToken,
+      },
+
+      { returnOriginal: false },
+    );
+
+    return { updateUser, refreshExp };
   }
 }
 const userService = new UserService(userModel);

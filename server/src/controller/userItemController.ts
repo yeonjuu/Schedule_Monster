@@ -31,7 +31,8 @@ export const userItemController: userItemControllerInterface = {
         res.json(response);
     },
     async buyUserItem(req, res) {
-        const response = await userItemService.buyUserItem(req.body);
+        const {quantity} = req.body
+        const response = await userItemService.buyUserItem(req.body, quantity);
         res.json(response);
     },
     async useUserItem(req, res) {

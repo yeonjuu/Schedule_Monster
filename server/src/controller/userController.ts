@@ -9,7 +9,6 @@ interface userControllerInterface {
   deleteUser: AsyncRequestHandler;
   loginUser: AsyncRequestHandler;
   logoutUser: AsyncRequestHandler;
-  addCharater: AsyncRequestHandler;
   postManager: AsyncRequestHandler;
   authEmail: AsyncRequestHandler;
   resetPassword: AsyncRequestHandler;
@@ -61,12 +60,6 @@ export const userController: userControllerInterface = {
     const logoutResult = await userService.logoutUser(email);
     res.json(logoutResult);
   },
-
-  async addCharater(req, res) {
-    const addCharaterResult = await userService.addCharater(req.body);
-    res.json(addCharaterResult);
-  },
-
   async postManager(req, res) {
     const user = await userService.postManager(req.body);
     res.json(user);
@@ -94,11 +87,10 @@ export const userController: userControllerInterface = {
   },
   async expandAccToken(req, res) {
     const Token = req.headers.authorization?.split(' ')[1];
-    const { email } = req.body;
     if (!Token) {
       errorResponse(res, 'BadRequest', '토큰이 전달되지 않았습니다');
     } else {
-      const accToken = await userService.expandAccToken(Token, email);
+      const accToken = await userService.expandAccToken(Token);
       res.json(accToken);
     }
   },
