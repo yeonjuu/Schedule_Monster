@@ -30,7 +30,7 @@ export const Share = () => {
   const [member, setMember] = useState([email]);
   //캘린더아이디로 공유된 사용자 담아오기
   //처음에 한번만 변경하면 됨!
-  console.log(calendarId);
+  // console.log(calendarId);
   const getMembers = async () => {
     const data: shareRes[] = await API.get(`/share/${calendarId}`);
     if (data.length !== 0) {
@@ -46,7 +46,6 @@ export const Share = () => {
   }, [calendarId]);
 
   const clickHandler = () => {
-    console.log('is open', isOpen);
     setIsOpen(!isOpen);
   };
 
@@ -59,7 +58,6 @@ export const Share = () => {
         friendEmail: femail,
       });
       if (res) {
-        console.log('사용자 추가', femail);
         let newArr = [...member];
         newArr.push(femail);
         setMember(newArr);

@@ -18,19 +18,22 @@ type res = {
   _id: string;
 };
 
-export const Plus = ({setList}:{setList: React.Dispatch<React.SetStateAction<res[]>>}) => {
+export const Plus = ({
+  setList,
+}: {
+  setList: React.Dispatch<React.SetStateAction<res[]>>;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const email = useSelector((state: RootState) => state.persistedReducer.email);
-const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const clickHandler = () => {
     setIsOpen(!isOpen);
   };
 
   const addHandler = async (name: string) => {
-
     //캘린더추가 api로 캘린더 추가하기
-    const data = await API.post('/calendar', { email, calendarName: name })
-   const list= await API.get(`/calendar/${email}`)
+    const data = await API.post('/calendar', { email, calendarName: name });
+    const list = await API.get(`/calendar/${email}`);
     window.alert(`${data.calendarName} 추가완료📣`);
     setList(list); //부모의 list state에 추가
     dispatch(postCalendarList(list));
@@ -61,7 +64,7 @@ const Modal: React.FC<modalType> = ({ onChange, onSave }) => {
       setError(true);
       return;
     }
-    console.log('캘린더이름:', name);
+    // console.log('캘린더이름:', name);
     setError(false);
     onSave(name);
     onChange(false);
