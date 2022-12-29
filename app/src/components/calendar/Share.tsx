@@ -108,7 +108,7 @@ const Modal: React.FC<MProps> = ({ member, onChange, setIsOpen }) => {
   }, []);
 
   return (
-    <Style.Container ref={modal}>
+    <Style.Container ref={modal} share>
       <Style.Title>캘린더공유</Style.Title>
       <Style.InputContainer>
         <Style.Input

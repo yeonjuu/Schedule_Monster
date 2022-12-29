@@ -13,8 +13,7 @@ export const Wrapper = styled.div`
   height: auto;
 `;
 
-export const Container = styled.div`
-
+export const Container = styled.div<{ share?: Boolean }>`
   width: auto;
   height: auto;
   padding: 10px 20px;
@@ -26,6 +25,11 @@ export const Container = styled.div`
   left: 4px;
   z-index: 99;
   box-sizing: border-box;
+  ${(props) =>
+    props.share &&
+    css`
+      left: -393px;
+    `}
 `;
 
 export const Button = styled.input<Props>`
@@ -47,9 +51,8 @@ export const Button = styled.input<Props>`
   ${(props) =>
     props.del &&
     css`
-      background-color: ${Common.errorMsg};
       :hover {
-        background-color: #d32f2f;
+        background-color: ${Common.errorMsg};
       }
     `}
 `;
