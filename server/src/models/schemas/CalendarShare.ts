@@ -4,6 +4,7 @@ import { Schema } from 'mongoose';
 export interface CalendarShareInterface {
   email: string;
   calendarId: string;
+  calendarName: string;
   friendEmail: string;
 }
 
@@ -15,6 +16,10 @@ export const CalendarShareSchema = new Schema<CalendarShareInterface>(
       required: true,
     },
     calendarId: {
+      type: String,
+      required: true,
+    },
+    calendarName: {
       type: String,
       required: true,
     },
