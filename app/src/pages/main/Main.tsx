@@ -5,7 +5,6 @@ import { hoverDark } from 'assets/styles';
 
 export const Main = () => {
   const navigate = useNavigate();
-  //사용자유저토큰이 있으면 캘린더 화면으로 라우팅해주면 좋곘다
   const startClickHandler = () => {
     navigate('/login');
   };
@@ -21,7 +20,8 @@ export const Main = () => {
             <Title position="start" top>
               공유가능한 캘린더
             </Title>
-            <div>친구, 가족과 캘린더를 공유해서 일정을 관리하세요.</div>
+            <div>친구, 가족과 캘린더를 공유해서 일정을 관리하세요</div>
+            <div>일정과 할 일을 완료하면 포인트가 지급됩니다</div>
             <StartButton onClick={startClickHandler}>시작하기</StartButton>
           </TopContainer>
           <Image src="/banner/banner01.png" alt="메인화면베너1" />
@@ -31,13 +31,15 @@ export const Main = () => {
         <Banner>
           <Title position="end">일정과 할 일로 수집할 수 있는 포켓몬</Title>
           <Container>
+            <div>포켓몬을 모으고, 계획도 실천하는 습관을 만들어 보세요 </div>
+            <div>포켓몬을 수집하며 애정도를 높여보세요</div>
+            <div>애정도에 따라 다른 모습의 포켓몬을 볼 수 있습니다</div>
             <div>
-              계획을 실천하는 습관도 들이고, 캐릭터를 수집하며 애정도를
-              높여보세요.
+              애정도를 다 채웠을때 포켓몬의 모습을 확인하세요 빛이 날 수 있어요
             </div>
-            <div>새로운 포켓몬들이 습관의 동기부여가 될 거에요.</div>
           </Container>
           <Gif src="/banner/banner02.gif" alt="메인화면배너2" />
+          <Character src="/banner/banner02_01.png" alt="애정도메인베너2" />
         </Banner>
       </div>
       <div style={{ width: '100%', backgroundColor: '#cecece' }}>
@@ -161,7 +163,7 @@ const Container = styled.div`
 
 const TopContainer = styled.div`
   display: flex;
-  padding: 15% 0 0 10%;
+  padding: 10% 0 0 10%;
   flex-direction: column;
   > div {
     margin-top: 20px;
@@ -175,5 +177,15 @@ const Image = styled.img`
   position: absolute;
   top: 50%;
   right: 2em;
+  transform: translateY(-50%);
+`;
+
+const Character = styled.img`
+  width: 60%;
+  max-width: 500px;
+  height: auto;
+  position: absolute;
+  bottom: -60px;
+  right: 0;
   transform: translateY(-50%);
 `;
