@@ -25,8 +25,8 @@ const DateController = ({ date, onClick }: Controller) => {
       <FontAwesomeIcon onClick={onClick.next} icon={faCaretRight} />
       <FontAwesomeIcon onClick={onClick.now} icon={faRotateRight} />
       </div>
-       <Share/>
-   
+       
+      <Share/>
     </CalendarController>
   );
 };

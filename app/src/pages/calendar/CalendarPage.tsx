@@ -94,6 +94,7 @@ const CalendarPage = () => {
           session().start
         }T00:00:00Z&timeMax=${session().next}T00:00:00Z`,
       );
+      
       const data = res.data.items.map((item: Holiday) => {
         return {
           name: item.summary,

@@ -166,11 +166,11 @@ export const MonsterBox = styled.div`
   background-color: transparent;
   height: 80px;
   width: 20%;
-  z-index: 800;
+  z-index: -1;
 `;
 
 export const HolidayLabel = styled.div<{ description: string }>`
-  height: 15%;
+  height: 17%;
   width: 100%;
   border-radius: 9px;
   margin-top: 2px;
@@ -181,8 +181,8 @@ export const HolidayLabel = styled.div<{ description: string }>`
     text-overflow: ellipsis;
     text-align: center;
     font-size: 13px;
-    font-weight: 550;
-    line-height: 19px;
+    font-weight: 600;
+    line-height: 23px;
   }
 
   ${(props) =>
@@ -201,7 +201,8 @@ export const ScheduleLabel = styled.div<{
 }>`
   display: flex;
   cursor: pointer;
-  height: 15%;
+  text-indent: 15px;
+  height: 17%;
   width: 100%;
   margin-top: 2px;
   background-color: ${(props) => props.labelColor};
@@ -217,13 +218,13 @@ export const ScheduleLabel = styled.div<{
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 13px;
-    font-weight: 550;
-    line-height: 19px;
+    font-weight: 600;
+    line-height: 23px;
   }
 `;
 
 export const TodoLabel = styled(ScheduleLabel)`
-  border-radius: 6px;
+  border-radius: 10px;
 `;
 
 export const PickCalBox = styled.div`

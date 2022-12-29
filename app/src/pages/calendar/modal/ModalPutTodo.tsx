@@ -36,7 +36,12 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
-  const [compltedCheck, setCompleted]=useState<boolean|undefined>(content.isCompleted);
+  const userPoint=useSelector(
+    (state: RootState) => state.persistedReducer.point,
+  );
+  const [compltedCheck, setCompleted] = useState<boolean | undefined>(
+    content.isCompleted,
+  );
 
   const {
     watch,
@@ -71,7 +76,6 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     //api 통신 달아줄 것
     if (e.target.checked) {
-     
       setCompleted(true);
       const data = {
         scheduleId: content.scheduleId,
@@ -86,8 +90,8 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
       dispatch(addPoint(50));
+     
     } else {
-      
       setCompleted(false);
       const data = {
         scheduleId: content.scheduleId,
@@ -102,6 +106,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
       dispatch(minusPoint(50));
+      
     }
   };
 
