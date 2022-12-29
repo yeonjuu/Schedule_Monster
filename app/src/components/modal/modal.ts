@@ -36,6 +36,7 @@ export const Button = styled.input<Props>`
   border: none;
   border-radius: 8px;
   padding: 5px 13px;
+  cursor: pointer;
   font-size: ${Common.largeFont};
   margin-left: 10px;
   ${(props) =>
