@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import * as API from '../../api';
 import * as Style from '../../components/modal/modal';
 import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
 
 export const Plus = ({ setCheck }: any) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,10 +40,7 @@ const Modal: React.FC<modalType> = ({ onChange, onSave }) => {
   );
   const findCategory = (): any => {
     for (let i = 0; i < categoryList.length; i++) {
-      console.log(categoryList[i].categoryName);
-      console.log(categoryList);
       if (categoryList[i].categoryName === name) {
-        console.log(categoryList[i].categoryName);
         return false;
       }
     }

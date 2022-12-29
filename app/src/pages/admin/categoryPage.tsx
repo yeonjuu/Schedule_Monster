@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  InputCategory,
-  CategoryAddBox,
-  CategoryAddBtn,
-  CategoryListBox,
-  CategoryInfo,
-} from './adminCss';
+import { CategoryListBox, CategoryInfo } from './adminCss';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncCategoryListFetch } from './slice/categoryListSlice';
 import { UpdateButton } from 'pages/mypage/style';
@@ -53,7 +47,6 @@ function CategoryItem({ category, setCheck }: any) {
                 categoryName: categoryName,
               });
             } catch {
-              console.log('에러');
             } finally {
               setCheck(true);
             }
@@ -70,7 +63,6 @@ function CategoryItem({ category, setCheck }: any) {
               try {
                 API.delete(`/category/delete/${category._id}`);
               } catch {
-                console.log('에러');
               } finally {
                 setCheck(true);
               }
@@ -90,30 +82,21 @@ function CategoryPage() {
   const categoryList = useSelector(
     (state: any) => state.categoryListReducer.categoryList,
   );
-  const [categoryName, setCategoryName] = useState('');
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryName(e.target.value);
-  };
-  const findCategory = (): any => {
-    for (let i = 0; i < categoryList.length; i++) {
-      console.log(categoryList[i].categoryName);
-      console.log(categoryList);
-      if (categoryList[i].categoryName === categoryName) {
-        console.log(categoryList[i].categoryName);
-        return false;
-      }
-    }
-    return true;
-  };
+
   useEffect(() => {
     dispatch(asyncCategoryListFetch());
     setCheck(false);
-    setCategoryName('');
   }, [check]);
   return (
     <StoreContainer>
       <ContentsBox>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '15px',
+          }}
+        >
           <div>카테고리 추가하기</div>
           <Plus setCheck={setCheck}></Plus>
         </div>

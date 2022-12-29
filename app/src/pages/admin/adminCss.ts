@@ -1,6 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-import { Form } from './../login/form';
-import { subColor2 } from './../../assets/styles';
+import styled from 'styled-components';
 
 export const Container = styled.ul`
   width: 84vw;
@@ -89,6 +87,7 @@ export const InputBox = styled.div`
     border: 0.5px solid #a2bcff;
     border-radius: 1rem;
     margin-bottom: 0.5rem;
+    padding: 10px;
   }
 `;
 const Btn = styled.button`
@@ -105,6 +104,7 @@ export const AddAndEditBtn = styled(Btn)``;
 export const DelBtn = styled(Btn)``;
 export const SearchResetBox = styled.div`
   width: 80%;
+  min-width: 600px;
 
   display: flex;
   align-items: center;
@@ -191,6 +191,7 @@ export const CategoryAddBtn = styled.button`
 `;
 export const CategoryListBox = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -198,8 +199,8 @@ export const CategoryListBox = styled.div`
 export const CategoryInfo = styled.div`
   display: grid;
   grid-template-columns: 70% 15% 15%;
-  height: 6%;
-  margin: 5px 0px;
+
+  margin: 10px 0px;
   > input:nth-child(1) {
     border-radius: 1rem;
     border: 0.2px solid black;
