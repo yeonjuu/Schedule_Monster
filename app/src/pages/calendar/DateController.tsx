@@ -16,7 +16,7 @@ const DateController = ({ date, onClick }: Controller) => {
   return (
     <CalendarController>
      
-      <CalendarList/><Share/>
+      <CalendarList/>
       <div style={{marginRight: '90px'}}>
       <FontAwesomeIcon onClick={onClick.prev} icon={faCaretLeft} />
       {/* <FontAwesomeIcon onClick={onClick.up} icon={faCaretUp} /> */}
@@ -26,7 +26,7 @@ const DateController = ({ date, onClick }: Controller) => {
       <FontAwesomeIcon onClick={onClick.now} icon={faRotateRight} />
       </div>
        
-   
+      <Share/>
     </CalendarController>
   );
 };

@@ -17,34 +17,24 @@ const MainMonster = () => {
 
   const getMainChar = async () => {
     try {
-      const mainChar = await API.put(`/characterlist/pick/${email}`);
+      const mainChar = await API.get(`/characterlist/pick/${email}`);
       dispatch(setMainCharacter(mainChar.image.imageGifs));
       console.log(mainChar.image.imageGifs);
     } catch (e) {
-      setMove('');
+      alert(e);
     }
   };
-useEffect(()=>{
+
+  useEffect(()=>{
   const time=setTimeout(() => {
+    getMainChar();
     setNum(5000);
-    console.log(1);
-    // getMainChar();
   }, number);
   return ()=>clearTimeout(time);
 },[])
-  // const time=setTimeout(() => {
-  //   setNum(5000);
-  //   console.log(1);
-   
-  // }, number);
-
-  //useEffect로 랜덤 숫자의 범위에 따라 다른 이미지 링크를 img태그에 넣음
+ 
   useEffect(() => {
   
-    
-    if (!monster.front_default) {
-      setMove('');
-    }
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
       if (num <= 3) {
