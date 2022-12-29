@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { Form } from './../login/form';
+import { subColor2 } from './../../assets/styles';
 
 export const Container = styled.ul`
   width: 84vw;
@@ -34,10 +35,13 @@ export const UserInfoBox = styled.div`
   width: 100%;
 
   display: grid;
-  grid-template-columns: 50% 20% 10% 10%;
+  grid-template-columns: 50% 20% 10% 15%;
   align-items: center;
   justify-content: space-around;
-  margin: 20px 0px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 export const EditItemBoxContainer = styled.div`
