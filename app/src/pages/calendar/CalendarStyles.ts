@@ -202,6 +202,8 @@ export const ScheduleLabel = styled.div<{
   display: flex;
   cursor: pointer;
   text-indent: 15px;
+  max-width: 20px;
+  max-height: 20px;
   height: 17%;
   width: 100%;
   margin-top: 2px;
