@@ -5,10 +5,34 @@ const cloudDB = process.env.REACT_APP_CLOUD_DB;
 async function get(endpoint) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
+    const accessToken = localStorage.getItem('accessToken');
+    const now = new Date().getTime();
+    if (accessToken !== null) {
+      const accessExp = Number(localStorage.getItem('accessExp'));
+      if (accessExp < now) {
+        try {
+          console.log('액세스토큰만료');
+          const newToken = await axios({
+            method: 'post',
+            url: `${cloudDB}/api/register/expand/token`,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          const { token: newAccessToken, tokenExp: newAccessTokenExp } =
+            newToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          localStorage.setItem('accessExp', newAccessTokenExp);
+        } catch (error) {
+          alert(error);
+        }
+      }
+    }
     const response = await axios.get(apiUrl, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     //응답 값 데이터만 전송
@@ -34,6 +58,30 @@ async function get(endpoint) {
 async function post(endpoint, data) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
   try {
+    const accessToken = localStorage.getItem('accessToken');
+    const now = new Date().getTime();
+    if (accessToken !== null) {
+      const accessExp = Number(localStorage.getItem('accessExp'));
+      if (accessExp < now) {
+        try {
+          console.log('액세스토큰만료');
+          const newToken = await axios({
+            method: 'post',
+            url: `${cloudDB}/api/register/expand/token`,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          const { token: newAccessToken, tokenExp: newAccessTokenExp } =
+            newToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          localStorage.setItem('accessExp', newAccessTokenExp);
+        } catch (error) {
+          alert(error);
+        }
+      }
+    }
     const response = await axios.post(apiUrl, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -58,6 +106,29 @@ async function post(endpoint, data) {
 //기존 데이터 + 바뀌는 데이터 다 작성
 async function put(endpoint, data) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
+  const accessToken = localStorage.getItem('accessToken');
+  const now = new Date().getTime();
+  if (accessToken !== null) {
+    const accessExp = Number(localStorage.getItem('accessExp'));
+    if (accessExp < now) {
+      try {
+        console.log('액세스토큰만료');
+        const newToken = await axios({
+          method: 'post',
+          url: `${cloudDB}/api/register/expand/token`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const { token: newAccessToken, tokenExp: newAccessTokenExp } = newToken;
+        localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('accessExp', newAccessTokenExp);
+      } catch (error) {
+        alert(error);
+      }
+    }
+  }
   try {
     const response = await axios.put(apiUrl, data, {
       headers: {
@@ -82,6 +153,29 @@ async function put(endpoint, data) {
 //변경할 데이터만 작성
 async function patch(endpoint, data) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
+  const accessToken = localStorage.getItem('accessToken');
+  const now = new Date().getTime();
+  if (accessToken !== null) {
+    const accessExp = Number(localStorage.getItem('accessExp'));
+    if (accessExp < now) {
+      try {
+        console.log('액세스토큰만료');
+        const newToken = await axios({
+          method: 'post',
+          url: `${cloudDB}/api/register/expand/token`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const { token: newAccessToken, tokenExp: newAccessTokenExp } = newToken;
+        localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('accessExp', newAccessTokenExp);
+      } catch (error) {
+        alert(error);
+      }
+    }
+  }
   try {
     const response = await axios.patch(apiUrl, data, {
       headers: {
@@ -106,6 +200,29 @@ async function patch(endpoint, data) {
 
 async function del(endpoint) {
   const apiUrl = `${cloudDB}/api${endpoint}`;
+  const accessToken = localStorage.getItem('accessToken');
+  const now = new Date().getTime();
+  if (accessToken !== null) {
+    const accessExp = Number(localStorage.getItem('accessExp'));
+    if (accessExp < now) {
+      try {
+        console.log('액세스토큰만료');
+        const newToken = await axios({
+          method: 'post',
+          url: `${cloudDB}/api/register/expand/token`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const { token: newAccessToken, tokenExp: newAccessTokenExp } = newToken;
+        localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('accessExp', newAccessTokenExp);
+      } catch (error) {
+        alert(error);
+      }
+    }
+  }
   try {
     const response = await axios.delete(apiUrl, {
       headers: {
