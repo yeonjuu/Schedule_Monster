@@ -96,3 +96,11 @@ export interface scheduleData extends todoData{
   endTime : number,
   startTime: number
 }
+
+export interface mainMonster {
+  back_default: string,
+
+  front_default: string,
+
+  front_shiny: string,
+}

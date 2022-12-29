@@ -19,22 +19,24 @@ const MainMonster = () => {
     try {
       const mainChar = await API.get(`/characterlist/pick/${email}`);
       dispatch(setMainCharacter(mainChar.image.imageGifs));
-      console.log(mainChar.image.imageGifs);
     } catch (e) {
       alert(e);
     }
   };
 
-  useEffect(()=>{
-  const time=setTimeout(() => {
-    getMainChar();
-    setNum(5000);
-  }, number);
-  return ()=>clearTimeout(time);
-},[])
- 
   useEffect(() => {
-  
+    getMainChar();
+    const time = setTimeout(() => {
+      setNum(5000);
+    }, number);
+
+    return () => clearTimeout(time);
+  }, []);
+
+  useEffect(() => {
+    if (!move) {
+      setMove(monster.front_default);
+    }
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
       if (num <= 3) {

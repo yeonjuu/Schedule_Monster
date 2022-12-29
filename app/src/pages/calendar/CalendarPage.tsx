@@ -24,12 +24,10 @@ import { DateData, Holiday, onClickObj } from '../../types/calendarTypes';
 import useDebounce from '../../hooks/useDebounce';
 import DateController from './DateController';
 import { Modal } from 'pages/calendar/modal/ModalPost';
-import { NavBar } from 'components/navbar/NavBar';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store/store';
 import { TodosModal } from './modal/ModalPut';
-import { Logo } from 'components/logo/Logo';
 import { Header } from 'components/header/Header';
 import MainMonster from './MainMonster';
 import * as API from 'api';
@@ -61,6 +59,8 @@ const CalendarPage = () => {
 
   const dispatch = useDispatch();
 
+
+  
   const session = () => {
     if (thisMonth === '12') {
       return {

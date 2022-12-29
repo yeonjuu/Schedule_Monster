@@ -116,7 +116,6 @@ const ScheduleContent = ({
   };
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      console.log('체크하기 이전꺼', compltedCheck);
       setCompleted(true);
       const data = {
         scheduleId: content.scheduleId,
@@ -149,7 +148,7 @@ const ScheduleContent = ({
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
 
       dispatch(updateCalendar(getThisCalendar));
-      alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
+      alert('일정을 취소하였습니다. 포인트를 회수합니다.');
       dispatch(minusPoint(50));
      
     }
@@ -218,8 +217,7 @@ const ScheduleContent = ({
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log('실패');
-    console.log(errors);
+    alert('실패');
   };
 
   return (
