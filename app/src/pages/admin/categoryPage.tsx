@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { CategoryListBox, CategoryInfo } from './adminCss';
+import { CategoryListBox, CategoryInfo, SearchResetBox } from './adminCss';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncCategoryListFetch } from './slice/categoryListSlice';
 import { UpdateButton } from 'pages/mypage/style';
 import * as API from '../../api';
 import {
   CategoryBox,
+  Contents,
   ContentsBox,
   ItemContainer,
   ItemList,
@@ -90,17 +91,21 @@ function CategoryPage() {
   return (
     <StoreContainer>
       <ContentsBox>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: '15px',
-          }}
-        >
-          <div>카테고리 추가하기</div>
-          <Plus setCheck={setCheck}></Plus>
-        </div>
         <ItemList>
+          <SearchResetBox>
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <div>카테고리 추가하기</div>
+              <Plus setCheck={setCheck}></Plus>
+            </div>
+          </SearchResetBox>
+
           <ItemContainer>
             <CategoryBox>
               <CategoryListBox>
