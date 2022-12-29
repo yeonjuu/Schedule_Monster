@@ -26,9 +26,6 @@ export const UserStatic: React.FC<UserStaticProps> = ({ email }) => {
   return (
     <Style.StaticWrapper>
       <Style.StaticHead>통계</Style.StaticHead>
-      <Style.TodoBlock>
-        <Style.BlockTitle>할일 완료 통계 자료</Style.BlockTitle>
-      </Style.TodoBlock>
       <Style.MonsterBlock>
         <Style.BlockTitle>현재 수집한 몬스터 수</Style.BlockTitle>
         <Style.Navigate
@@ -44,7 +41,7 @@ export const UserStatic: React.FC<UserStaticProps> = ({ email }) => {
         </Style.Wrapper>
       </Style.MonsterBlock>
       <Style.RankBlock>
-        <div style={{ width: '80%', margin: '0 auto' }}>
+        <div style={{ width: '80%', margin: '0 auto', maxWidth: '400px' }}>
           <img
             src="/serviceNotYet.png"
             alt="서비스 준비중"
