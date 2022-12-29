@@ -125,6 +125,18 @@ class UserItemService {
     //=================================================================
     // POST localhost:5000/userItem/egg
 
+
+    // 캐릭터 랜덤추가 함수
+    randomCharacter = async () => {
+        const random = await characterModel.aggregate(
+            [
+                { $sample: { size: 1 } }
+            ],
+        );
+        const randomCharacter = random[0]
+        return randomCharacter
+    }
+
     // 알 깨기 (=사용자 수집 아이템 목록에서 알 삭제, 수집한 캐릭터리스트에 추가)
     async breakEgg(email: string, itemId: string) {
         // 아이템 정보 받아옴
@@ -140,19 +152,22 @@ class UserItemService {
         }
 
         if (itemResult.categoryName == '알') {
-            console.log(itemResult, itemResult.categoryName)
             // 1. 사용자가 수집한 캐릭터에 랜덤으로 하나 추가
-            const random = await characterModel.aggregate(
-                [
-                    { $sample: { size: 1 } }
-                ],
-            );
-            const randomCharacter = random[0]
-            delete randomCharacter["_id"]
-            randomCharacter.email = email
-            randomCharacter.myExp = 0 // 애정도 초기값 0
-            randomCharacter.onePick = (characterCount == 0) // 최초 캐릭터가 대표캐릭터
-            const result = await characterListModel.create(randomCharacter);
+            let newCharacter = await this.randomCharacter()
+            while(true){
+                let alreadyHave = await characterListModel.find({email: email, characterId: newCharacter.characterId})
+                if (alreadyHave.length == 0) {
+                    break;
+                }
+                else{
+                    newCharacter = await this.randomCharacter()
+                }
+            }
+            delete newCharacter["_id"]
+            newCharacter.email = email
+            newCharacter.myExp = 0
+            newCharacter.onePick = (characterCount == 0)
+            const result = await characterListModel.create(newCharacter);
 
             // 2. 사용자수집아이템 리스트에서 삭제
             await this.UserItem.remove({ _id: itemId });
