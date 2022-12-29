@@ -326,7 +326,7 @@ export const Tooltip = styled.div`
   color: #1616c6;
   font-weight: bolder;
   font-size: 13px;
-  opacity: 90%;
+  opacity: 93%;
   display: flex;
   text-align: center;
   align-items: center;

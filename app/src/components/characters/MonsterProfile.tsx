@@ -79,7 +79,9 @@ export default function MonsterProfile() {
 
             <div>
 
-            <ImageButton onClick={affection >= 100 ? previousHandler : halfPreviousHandler}>◀︎</ImageButton>
+            <ImageButton onClick={affection >= 100 ? previousHandler : halfPreviousHandler}>
+              ◀︎
+            </ImageButton>
             <ImageButton onClick={affection >= 100 ? nextHandler: halfNextHandler}>▶︎</ImageButton>
             
             </div>
@@ -126,5 +128,8 @@ const ImageButton = styled.button`
 
   &:hover {
     color: #668ff7;
+    box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.77);
+    -webkit-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.77);
+    -moz-box-shadow: 7px 10px 22px -8px rgba(0, 0, 0, 0.77);
   }
 `
