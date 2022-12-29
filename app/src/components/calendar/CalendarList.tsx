@@ -37,13 +37,17 @@ export const CalendarList = () => {
 
   const fetchData = async () => {
     const data = await API.get(`/calendar/${email}`);
+    console.log(data);
     setList(data);
     dispatch(postCalendarList(data));
-    dispatch(changeCalendarId(selected));
+    dispatch(changeCalendarId(data[0].calendarId
+      ));
   };
 
   useEffect(() => {
+    
     fetchData();
+  
   }, []);
 
   const changeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {

@@ -153,10 +153,12 @@ export const CalendarController = styled.div`
     background-color: transparent;
     color: #414656;
     font-size: 22px;
-    padding: 0 5px;
+    padding: 0 9px;
   }
   & > div {
     display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -174,7 +176,7 @@ export const HolidayLabel = styled.div<{ description: string }>`
   width: 100%;
   border-radius: 9px;
   margin-top: 2px;
-
+  max-height: 24px;
   color: white;
   & > p {
     overflow: hidden;
@@ -202,8 +204,8 @@ export const ScheduleLabel = styled.div<{
   display: flex;
   cursor: pointer;
   text-indent: 15px;
-  max-width: 20px;
-  max-height: 20px;
+
+  max-height: 24px;
   height: 17%;
   width: 100%;
   margin-top: 2px;
