@@ -6,7 +6,6 @@ import * as API from 'api';
 import { setMainCharacter } from './slice/mainCharacter';
 
 const MainMonster = () => {
-  
   const dispatch = useDispatch();
   const monster = useSelector(
     (state: RootState) => state.mainCharacterSlice.main,
@@ -17,28 +16,27 @@ const MainMonster = () => {
   //최초 number State만큼 로딩 이미지 보여준 후에 setInterval 시간 재설정
 
   const getMainChar = async () => {
-    if(!monster.front_default){
     try {
-     
       const mainChar = await API.get(`/characterlist/pick/${email}`);
       dispatch(setMainCharacter(mainChar.image.imageGifs));
-     
     } catch (e) {
       alert(e);
-    }}
+    }
   };
 
-  useEffect(()=>{
-    getMainChar();
-  const time=setTimeout(() => {
-    setNum(5000);
-  }, number);
-  
-  return ()=>clearTimeout(time);
-},[])
- 
   useEffect(() => {
-   
+    getMainChar();
+    const time = setTimeout(() => {
+      setNum(5000);
+    }, number);
+
+    return () => clearTimeout(time);
+  }, []);
+
+  useEffect(() => {
+    if (!move) {
+      setMove(monster.front_default);
+    }
     const interval = setInterval(() => {
       const num = Math.floor(Math.random() * 10);
       if (num <= 3) {
