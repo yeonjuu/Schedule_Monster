@@ -37,7 +37,7 @@ export const CalendarList = () => {
 
   const fetchData = async () => {
     const data = await API.get(`/calendar/${email}`);
-    console.log(data);
+    //console.log(data);
     setList(data);
     dispatch(postCalendarList(data));
     dispatch(changeCalendarId(data[0].calendarId
