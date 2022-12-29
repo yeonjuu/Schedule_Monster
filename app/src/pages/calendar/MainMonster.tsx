@@ -15,23 +15,33 @@ const MainMonster = () => {
   const email = useSelector((state: RootState) => state.persistedReducer.email);
   //최초 number State만큼 로딩 이미지 보여준 후에 setInterval 시간 재설정
 
-  // const getMainChar = async () => {
-  //   try {
-  //     const mainChar = await API.put(`/characterlist/pick/${email}`);
-  //     dispatch(setMainCharacter(mainChar.image.imageGifs));
-  //     console.log(mainChar.image.imageGifs);
-  //   } catch (e) {
-  //     setMove('');
-  //   }
-  // };
-
-  setTimeout(() => {
+  const getMainChar = async () => {
+    try {
+      const mainChar = await API.put(`/characterlist/pick/${email}`);
+      dispatch(setMainCharacter(mainChar.image.imageGifs));
+      console.log(mainChar.image.imageGifs);
+    } catch (e) {
+      setMove('');
+    }
+  };
+useEffect(()=>{
+  const time=setTimeout(() => {
     setNum(5000);
+    console.log(1);
     // getMainChar();
   }, number);
+  return ()=>clearTimeout(time);
+},[])
+  // const time=setTimeout(() => {
+  //   setNum(5000);
+  //   console.log(1);
+   
+  // }, number);
 
   //useEffect로 랜덤 숫자의 범위에 따라 다른 이미지 링크를 img태그에 넣음
   useEffect(() => {
+  
+    
     if (!monster.front_default) {
       setMove('');
     }
