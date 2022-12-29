@@ -25,7 +25,11 @@ class CalendarService {
     const result = [...myCalendar, ...sharedCalendar];
     return result;
   }
-
+  async getCalendarById(calendarId: string) {
+    const myCalendar = await this.calendar.findOne({ calendarId });
+    if (!myCalendar) throw new Error('type:Forbidden,content:공유받은 캘린더 불러오기 실패하였습니다');
+    return myCalendar;
+  }
   async postCalendar(email: string, calendarName: string) {
     const calendarId = generateRandomString(10);
     const info = {

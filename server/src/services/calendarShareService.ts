@@ -1,5 +1,6 @@
 import { calendarShareModel, calendarShareModelType } from '../models';
 import { CalendarShareInterface } from '../models/schemas/CalendarShare';
+import { calendarService } from './calendarService';
 class CalendarShareService {
   private calendarshare: calendarShareModelType;
 
@@ -19,7 +20,9 @@ class CalendarShareService {
   }
   async postCalendarShare(postInfo: CalendarShareInterface) {
     const { email, calendarId, friendEmail } = postInfo;
-    const result = await this.calendarshare.create({ email, calendarId, friendEmail });
+    const calendar = await calendarService.getCalendarById(calendarId);
+    const { calendarName } = calendar;
+    const result = await this.calendarshare.create({ email, calendarName, calendarId, friendEmail });
     return result;
   }
   async deleteCalendarShare(calendarId: string, friendEmail: string) {
