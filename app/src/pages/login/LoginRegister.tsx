@@ -16,7 +16,7 @@ export const LoginRegister = () => {
   const logoClickHandler = () => {
     navigate('/');
   };
-  console.log(isLogin, auth, isLogin && auth === 'user');
+  // console.log(isLogin, auth, isLogin && auth === 'user');
 
   return (
     <>
