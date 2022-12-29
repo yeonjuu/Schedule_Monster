@@ -15,6 +15,7 @@ export const NavBar = () => {
   const user = useSelector((state: RootState) => state.persistedReducer);
   const point = useSelector((state: RootState) => state.persistedReducer.point);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { nickname, auth, isLogin } = user;
 
@@ -23,6 +24,7 @@ export const NavBar = () => {
     if (isLogout) {
       dispatch(logout());
       window.localStorage.clear();
+      navigate('/login');
     }
     return;
   };

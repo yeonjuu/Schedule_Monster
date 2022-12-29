@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { Provider } from 'react-redux';
 import store, { persistor } from './store/store';
-
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Items from './pages/characters/Items';
 import CalendarPage from './pages/calendar/CalendarPage';
@@ -46,6 +45,7 @@ const router = createBrowserRouter([
   {
     path: '/store',
     element: <Root />,
+
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Items></Items> },
