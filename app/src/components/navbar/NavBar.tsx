@@ -4,6 +4,7 @@ import { RootState } from '../../store/store';
 import { logout } from '../../pages/login/userSlice';
 import * as Nav from './nav';
 import { useNavigate } from 'react-router-dom';
+import * as API from 'api'
 
 type IProps = {
   nickname: string;
@@ -18,9 +19,10 @@ export const NavBar = () => {
 
   const { nickname, auth, isLogin } = user;
 
-  const clickLogoutHandler = () => {
+  const clickLogoutHandler = async() => {
     const isLogout = window.confirm('로그아웃하시겠습니까?');
     if (isLogout) {
+      await API.put('/users/user', { point: point });
       dispatch(logout());
       window.localStorage.clear();
     }

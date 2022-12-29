@@ -90,7 +90,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
       dispatch(addPoint(50));
-      await API.put('/users/user', { point: userPoint });
+     
     } else {
       setCompleted(false);
       const data = {
@@ -106,7 +106,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       dispatch(updateCalendar(getThisCalendar));
       alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
       dispatch(minusPoint(50));
-      await API.put('/users/user', { point: userPoint });
+      
     }
   };
 
