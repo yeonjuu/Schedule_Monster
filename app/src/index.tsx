@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { Provider } from 'react-redux';
 import store, { persistor } from './store/store';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Items from './pages/characters/Items';
 import CalendarPage from './pages/calendar/CalendarPage';
 import MyItems from './pages/characters/MyItems';
@@ -24,8 +20,6 @@ import MonsterPage from 'pages/admin/monsterPage';
 import UserPage from 'pages/admin/userPage';
 import CategoryPage from 'pages/admin/categoryPage';
 import ItemPage from 'pages/admin/itemPage';
-
-const user = localStorage.getItem('accessToken');
 
 const router = createBrowserRouter([
   {
@@ -50,11 +44,8 @@ const router = createBrowserRouter([
   },
   {
     path: '/store',
-    element: (user ? true : false) ? (
-      <Root />
-    ) : (
-      <Navigate to="/login" replace={true} />
-    ),
+    element: <Root />,
+
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Items></Items> },
@@ -86,11 +77,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/mypage',
-    element: (user ? true : false) ? (
-      <MyPage />
-    ) : (
-      <Navigate to="/login" replace={true} />
-    ),
+    element: <MyPage />,
   },
   {
     path: '*',
