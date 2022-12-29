@@ -48,12 +48,7 @@ export const Delete = ({
   };
   return (
     <Style.Wrapper>
-      <Style.Button
-        type="button"
-        value="삭제"
-        onClick={deleteClickHandler}
-        del
-      />
+      <Style.Button type="button" value="-" onClick={deleteClickHandler} del />
     </Style.Wrapper>
   );
 };
