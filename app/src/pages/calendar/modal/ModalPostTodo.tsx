@@ -39,7 +39,6 @@ const Todo = ({ dates }: { dates: string | any }) => {
   const year: number = Number(dates.slice(0, 4));
   const month: number = Number(dates.slice(4, 6));
 
-  
 
   const onValid = async (input: checkTodo) => {
     const data = {
@@ -69,8 +68,8 @@ dispatch(updateCalendar(getThisCalendar));
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log('실패');
-    console.log(errors);
+    alert('실패');
+ 
   };
 
   return (

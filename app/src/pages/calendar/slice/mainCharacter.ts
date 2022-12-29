@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { mainMonster } from 'types/calendarTypes';
 
 const mainCharacterSlice = createSlice({
   name: 'mainCharacter',
@@ -13,7 +14,7 @@ const mainCharacterSlice = createSlice({
   },
 
   reducers: {
-    setMainCharacter: (state, action) => {
+    setMainCharacter: (state, action:PayloadAction<mainMonster> ) => {
       state.main = action.payload;
     },
   },
