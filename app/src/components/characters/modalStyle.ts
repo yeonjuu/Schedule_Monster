@@ -104,7 +104,7 @@ export const MonsterImage = styled.img`
   }
   height: 150px;
   width: 150px;
-  animation: visible 6s;
+  animation: visible 4s 1 ease-in-out;
   animation-fill-mode: both;
   position: absolute;
 `;

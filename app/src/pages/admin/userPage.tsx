@@ -24,14 +24,7 @@ function UserPage() {
   const filterUserList = userList.userList.filter((val: any) => {
     return createFuzzyMatcher(inputState, val.email);
   });
-  // const [user,setUser] = useState();
-  // useEffect(() => {
-  //   async function fetchData() {
-  //       const data = await API.get(`/users/${email}`);
-  //       setUser(data);
-  //   }
-  //   fetchData();
-  // }, []);
+
   return (
     <StoreContainer>
       <ContentsBox>
