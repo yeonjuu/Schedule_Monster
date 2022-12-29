@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { Container } from '../../pages/admin/adminCss';
 import { AppDispatch } from 'store/store';
 
 function CategoryList({ setCategory, purpose }: any) {
+  const [current, setCurrent] = useState('전체');
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(asyncCategoryListFetch());
@@ -21,7 +22,9 @@ function CategoryList({ setCategory, purpose }: any) {
             key={'all'}
             onClick={(): void => {
               setCategory('all');
+              setCurrent('전체');
             }}
+            active={current==='전체'}
           >
             전체
           </Category>
@@ -31,7 +34,9 @@ function CategoryList({ setCategory, purpose }: any) {
                 key={idx}
                 onClick={(): void => {
                   setCategory(itemCategoryList[idx].categoryName);
+                  setCurrent(itemCategoryList[idx]);
                 }}
+                active={current===itemCategoryList[idx]}
               >
                 {category.categoryName}
               </Category>
@@ -44,7 +49,9 @@ function CategoryList({ setCategory, purpose }: any) {
             key={'all'}
             onClick={(): void => {
               setCategory('all');
+              setCurrent('전체');
             }}
+            active={current === '전체'}
           >
             전체
           </Category>
@@ -54,7 +61,9 @@ function CategoryList({ setCategory, purpose }: any) {
                 key={idx}
                 onClick={(): void => {
                   setCategory(itemCategoryList[idx].categoryName);
+                  setCurrent(itemCategoryList[idx])
                 }}
+                active={current === itemCategoryList[idx]}
               >
                 {category.categoryName}
               </Category>
@@ -73,11 +82,16 @@ const BuyContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const Category = styled.li`
+const Category = styled.li<{active:boolean}>`
   color: #404040;
-  opacity: 80%;
+  opacity: 78%;
   margin-right: 1rem;
   font-size: 18px;
+
+  ${(props) => props.active && css`
+    color: black;
+  `}
+
   &:hover {
     opacity: 60%;
     cursor: pointer;

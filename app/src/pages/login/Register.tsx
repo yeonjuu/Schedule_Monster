@@ -37,6 +37,7 @@ export const Register = () => {
     checked: false,
   });
   const [emailErr, setEmailErr] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -84,7 +85,7 @@ export const Register = () => {
 
     //로그인 연결
     const resData = await API.post('/register/login', { email, password: pw });
-    console.log(resData);
+    // console.log(resData);
     const { calendarId } = resData.calendar;
     const { auth, point, nickname: resNickname } = resData.loginUser;
     const { accessToken, accessExp, refreshExp } = resData;
@@ -141,13 +142,16 @@ export const Register = () => {
     }
     //이메일 인증 api
     try {
+      setIsLoading(true);
       const { authNum } = await API.get(`/register/auth/${email}`);
-      console.log('response : ', authNum);
+      // console.log('response : ', authNum);
+      alert('이메일로 인증번호가 전송되었습니다.');
       setOnAuth(true);
       setResAuthNum(authNum);
     } catch (error) {
       setEmailErr(error.data.message);
     }
+    setIsLoading(false);
   };
 
   const checkAuthCodeHandler = () => {
@@ -211,6 +215,7 @@ export const Register = () => {
           type="button"
           onClick={checkEmailHandler}
           value="이메일인증"
+          disabled={isLoading}
         />
       </Style.InputWrapper>
       <Style.Message color={errorMsg}>{emailErr}</Style.Message>

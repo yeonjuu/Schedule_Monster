@@ -14,7 +14,6 @@ import MonsterProfile from '../../components/characters/MonsterProfile';
 import { asyncCategoryListFetch } from 'pages/admin/slice/categoryListSlice';
 import { asyncitemListFetch } from 'pages/admin/slice/itemListSlice';
 import styled from 'styled-components';
-import Navbar from 'components/characters/Navbar';
 
 export default function Items() {
 

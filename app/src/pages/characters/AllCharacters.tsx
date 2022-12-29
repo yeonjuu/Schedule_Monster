@@ -71,7 +71,7 @@ const AllChaContainer = styled.div`
     height: 90%;
 
     display: flex;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
     flex-wrap: wrap;
     overflow-y: scroll;
     scroll-behavior: smooth;

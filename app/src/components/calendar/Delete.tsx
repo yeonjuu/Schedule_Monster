@@ -39,7 +39,7 @@ export const Delete = ({
         //리스트 제일처음에 있는 캘린더 아이디로 변경, list 가공시 변경 필요
 
         dispatch(changeCalendarId(list[0].calendarId));
-        console.log(list);
+        // console.log(list);
         alert('삭제완료');
       } catch (error) {
         alert('삭제실패...');
