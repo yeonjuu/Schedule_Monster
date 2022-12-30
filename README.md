@@ -162,7 +162,7 @@ SMTPPW='{이메일 인증을 위한 Password}'
 </details>
 
 <details><summary>캘린더 페이지</summary>
-![ezgif.com-gif-maker__1_](/uploads/5c2eb3f8e9cfab1621519bb0f9711cb2/ezgif.com-gif-maker__1_.gif)
+![ezgif.com-gif-maker__2_](/uploads/f78d4447e808a8b1ef2d7058dbb5dea2/ezgif.com-gif-maker__2_.gif)
 </details>
 
 <details><summary>캐릭터 페이지</summary>
