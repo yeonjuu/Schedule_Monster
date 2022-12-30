@@ -170,8 +170,8 @@ SMTPPW='{이메일 인증을 위한 Password}'
 </details>
 
 <details><summary>캐릭터 페이지</summary>
-##### 김민경
 ![4](https://im3.ezgif.com/tmp/ezgif-3-6e66a0f807.gif)
+</details>
 
 <details><summary>상점 페이지</summary>
 ![5](https://im3.ezgif.com/tmp/ezgif-3-e0e7774147.gif)
