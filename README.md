@@ -166,6 +166,10 @@ SMTPPW='{이메일 인증을 위한 Password}'
 </details>
 
 <details><summary>캘린더 다른 사용자와 공유하는 기능</summary>
+<img src = '/uploads/93b49903bc6b218b728beaf818b1179b/5.gif' width ="640px" />
+</details>
+
+<details><summary>캘린더 추가</summary>
 <img src = '/uploads/4878030e32a99a83f4ef0e880a537c3d/3.gif' width ="640px" />
 </details>
 
