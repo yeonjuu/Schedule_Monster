@@ -177,12 +177,9 @@ SMTPPW='{이메일 인증을 위한 Password}'
 <img src = 'https://im3.ezgif.com/tmp/ezgif-3-e0e7774147.gif' width ="640px" />
 </details>
 
-<details><summary>수집/도감 페이지</summary>
-##### 박지찬
-</details>
-
 <details><summary>관리자 페이지</summary>
-##### 박지찬
+<img src = '/uploads/5ed7e69f56f17789a61c572a80bc7fe6/8.gif' width ="640px" />
+
 </details>
 
 <br />
