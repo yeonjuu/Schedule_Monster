@@ -162,7 +162,6 @@ SMTPPW='{이메일 인증을 위한 Password}'
 </details>
 
 <details><summary>캘린더 페이지</summary>
-##### 김현율
 ![ezgif.com-gif-maker__1_](/uploads/5c2eb3f8e9cfab1621519bb0f9711cb2/ezgif.com-gif-maker__1_.gif)
 </details>
 
