@@ -136,7 +136,7 @@
 ## 6. env 설정파일
 #### 프론트 .env 파일 설정 예시
 ```bash
-REACT_APP_API_KEY='AIzaSyBiUMnglAkZHUw-Pt9VuoNJW8N6UUdTyF8'
+REACT_APP_API_KEY='AsweSyBiU12ojjkZHUp-Pt9VuoNmkLN6kidT1'
 REACT_APP_CLOUD_DB='http://kdt-sw3-team12.elicecoding.com'
 GENERATE_SOURCEMAP = false
 ```
