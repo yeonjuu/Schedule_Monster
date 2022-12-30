@@ -136,7 +136,7 @@
 ## 6. env 설정파일
 #### 프론트 .env 파일 설정 예시
 ```bash
-REACT_APP_API_KEY='AsweSyBiU12ojjkZHUp-Pt9VuoNmkLN6kidT1'
+REACT_APP_API_KEY='{구글캘린더 연동을 위한 키}'
 REACT_APP_CLOUD_DB='http://kdt-sw3-team12.elicecoding.com'
 GENERATE_SOURCEMAP = false
 ```
@@ -154,27 +154,27 @@ SMTPPW='{이메일 인증을 위한 Password}'
 ### 6. 데모 영상
 
 <details><summary>메인 페이지</summary>
-![1](/uploads/811237270c57ad560b0d117848b0eb25/1.gif)
+<img src = '/uploads/811237270c57ad560b0d117848b0eb25/1.gif' width ="640px" />
 </details>
 
 <details><summary>사용자 마이페이지</summary>
-![2](/uploads/d25c8242424231e56ed07ee55ac5a42e/2.gif)
+<img src = '/uploads/d25c8242424231e56ed07ee55ac5a42e/2.gif' width ="640px" />
 </details>
 
 <details><summary>캘린더 페이지</summary>
-![ezgif.com-gif-maker__2_](/uploads/f78d4447e808a8b1ef2d7058dbb5dea2/ezgif.com-gif-maker__2_.gif)
+<img src = '/uploads/f78d4447e808a8b1ef2d7058dbb5dea2/ezgif.com-gif-maker__2_.gif' width ="640px" />
 </details>
 
 <details><summary>캘린더 다른 사용자와 공유하는 기능</summary>
-![3](/uploads/4878030e32a99a83f4ef0e880a537c3d/3.gif)
+<img src = '/uploads/4878030e32a99a83f4ef0e880a537c3d/3.gif' width ="640px" />
 </details>
 
 <details><summary>캐릭터 페이지</summary>
-![4](https://im3.ezgif.com/tmp/ezgif-3-6e66a0f807.gif)
+<img src = 'https://im3.ezgif.com/tmp/ezgif-3-6e66a0f807.gif' width ="640px" />
 </details>
 
 <details><summary>상점 페이지</summary>
-![5](https://im3.ezgif.com/tmp/ezgif-3-e0e7774147.gif)
+<img src = 'https://im3.ezgif.com/tmp/ezgif-3-e0e7774147.gif' width ="640px" />
 </details>
 
 <details><summary>수집/도감 페이지</summary>
