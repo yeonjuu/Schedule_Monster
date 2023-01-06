@@ -44,18 +44,18 @@
 - 캐릭터/아이템 관리 기능(관리자)
 
 
-
 ## 3. 서비스 구성도
 
 - 서비스 구조도 그림 (사용한 기술 스택)
-<img src = "/uploads/97d91de19ecaa1ef1495aa0c1af8d644/image.png" width="80%" height="80%">
+<img src = "https://user-images.githubusercontent.com/46666765/210979188-91760a61-0707-43c7-a25e-95fa38217bf6.png" width ="60%" >
 
 - 와이어프레임 : [와이어프레임 바로가기](https://mirage-cardboard-868.notion.site/DB-d011b31d832a45258fd8343f303a8a85)
 
 - API 명세서 : [API 명세서 바로가기](https://mirage-cardboard-868.notion.site/API-6605e3921b154407a3179673937b2b1d)
 
-- DB 모델링 : [DB 스키마 바로가기](https://mirage-cardboard-868.notion.site/DB-d011b31d832a45258fd8343f303a8a85)
-<img src = "/uploads/ef4c718f6b119fcac310887e499151e3/image.png" width="80%" height="80%">
+- DB 모델링 : [DB 스키마 바로가기](https://mirage-cardboard-868.notion.site/D
+
+<img src = "https://user-images.githubusercontent.com/46666765/210979932-f2abe408-579c-43e8-94d9-598c67a54187.png" width="60%" height="80%">
 
 ## 4. 프로젝트 팀원 역할 분담
 
