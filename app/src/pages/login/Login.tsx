@@ -18,11 +18,11 @@ export const Login = () => {
   const loginSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     userInfo = { email, password: pw };
-    console.log('userInfo :', userInfo);
+    // console.log('userInfo :', userInfo);
 
     try {
       const data = await API.post('/register/login', userInfo);
-      console.log(data);
+      // console.log(data);
       const { auth, point, nickname } = data.loginUser;
       const { accessToken, accessExp, refreshExp } = data;
       if (auth === 'user') {

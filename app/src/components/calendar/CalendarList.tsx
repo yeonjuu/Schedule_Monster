@@ -37,20 +37,24 @@ export const CalendarList = () => {
 
   const fetchData = async () => {
     const data = await API.get(`/calendar/${email}`);
+    //console.log(data);
     setList(data);
     dispatch(postCalendarList(data));
-    dispatch(changeCalendarId(selected));
+    dispatch(changeCalendarId(data[0].calendarId
+      ));
   };
 
   useEffect(() => {
+    
     fetchData();
+  
   }, []);
 
   const changeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const id = event.target.value;
     const changed = list.find((calendar) => calendar.calendarId === id);
     if (changed) {
-      console.log('changed', changed.calendarId);
+      // console.log('changed', changed.calendarId);
       setSelected(changed.calendarName);
       dispatch(changeCalendarId(changed.calendarId));
     }
@@ -83,10 +87,10 @@ const CalendarWrapper = styled.div`
 
 const Select = styled.select`
   width: 100%;
-  height: 30px;
+  height: 34px;
   text-indent: 10px;
   font-size: ${basicFont};
-  border: 2px solid #aaa;
+  border: 2px solid buttonface;
   border-radius: 8px;
   box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
 

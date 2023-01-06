@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   ModalContainer,
-  Tab,
   ContentBox,
   TabBox,
   Background,
@@ -14,7 +13,6 @@ import ScheduleContent from './ModlaPutSchedule';
 
 const TodosModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   type QuizParams = {

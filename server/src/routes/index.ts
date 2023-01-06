@@ -12,3 +12,8 @@ export * from './characterRouter';
 export * from './characterListRouter';
 export * from './itemRouter';
 export * from './categoryRouter';
+export * from './scheduleRouter';
+export * from './userItemRouter';
+export * from './calendarRouter';
+export * from './calendarShareRouter';
+export * from './registerRouter';

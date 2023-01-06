@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainProfile, secondProfile, thirdProfile, mainName, mainAffection, characterId} from 'pages/characters/statusReducer';
 import * as API from '../../api';
-import Navbar from 'components/characters/Navbar';
 import { RootState } from '../../store/store';
 import Loading from 'components/characters/Loading';
 import { setMainCharacter } from 'pages/calendar/slice/mainCharacter';
@@ -70,7 +69,6 @@ export default function CharactersList() {
 
                     }}
                     key={pokemon._id}
-                    // id={pokemon._id}
                   >
                     <img src={pokemon.myExp >= 50 && pokemon.myExp < 100 ? pokemon.image.imageSprites.front_default : pokemon.myExp >= 100 ? pokemon.image.imageSprites.front_shiny : pokemon.image.imageSprites.back_default} />
                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>

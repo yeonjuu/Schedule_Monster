@@ -88,7 +88,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       };
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
       dispatch(updateCalendar(getThisCalendar));
-      alert('할 일을 완료하였습니다! 포인트가 지급됩니다.');
+      alert('할 일을 완료하였습니다! 💰50포인트가 지급됩니다.');
       dispatch(addPoint(50));
      
     } else {
@@ -104,7 +104,7 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
       };
       const getThisCalendar = await API.post(`/schedule/month`, monthData);
       dispatch(updateCalendar(getThisCalendar));
-      alert('할 일을 취소되었습니다! 포인트를 회수합니다.');
+      alert('일정을 취소하였습니다. 지급된 포인트가 회수됩니다.');
       dispatch(minusPoint(50));
       
     }
@@ -151,8 +151,8 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log('실패');
-    console.log(errors);
+    alert('실패');
+
   };
 
   return (
@@ -202,7 +202,6 @@ const TodosContent = ({ scheduleId }: { scheduleId: string | undefined }) => {
             color={color}
             onChangeComplete={(color) => {
               setColor(color.hex);
-              setOpen((curr) => !curr);
             }}
             triangle={'top-right'}
             width={'380px'}

@@ -17,16 +17,12 @@ class ItemService {
     return result;
   }
   // 아이템 상세 조회
-  async getItem(_id: string) {
-    const result = await this.Item.findOne({ _id: _id });
+  async getItem(id: string) {
+    const result = await this.Item.findOne({ _id: id });
     return result;
   }
 
-  // 카테고리 별 아이템 조회
-  async getItemByCategory(categoryName: string) {
-    const result = await this.Item.find({ categoryName: categoryName });
-    return result;
-  }
+
 
   // 아이템 생성
   async createItem(itemInfo: ItemInterface) {
@@ -35,12 +31,14 @@ class ItemService {
 
   // 아이템 수정
   async updateItem(updateInfo: UpdateItemInterface) {
-    const { _id, itemName, price, exp, categoryName: category } = updateInfo;
+    const { _id, itemName, itemImage, itemInfo, price, exp, categoryName } = updateInfo;
     const toUpdate = {
       ...(itemName && { itemName }),
+      ...(itemImage && { itemImage }),
+      ...(itemInfo && { itemInfo }),
       ...(price && { price }),
       ...(exp && { exp }),
-      ...(category && { category }),
+      ...(categoryName && { categoryName }),
     };
     const result = await this.Item.findOneAndUpdate({ _id: _id }, toUpdate, {
       returnOriginal: false,

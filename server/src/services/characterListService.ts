@@ -1,69 +1,75 @@
-import { characterListModel, characterListModelType } from '../models';
-import { CharacterListInterface } from '../models/schemas/CharacterList';
-import { userModel, userModelType } from '../models';
+import { userModel, characterListModel, characterListModelType } from '../models';
+import {CharacterListInterface, UpdateCharacterListInterface} from '../models/schemas/CharacterList';
 class CharacterListService {
   private characterList: characterListModelType;
-  private user: userModelType;
 
-  constructor(
-    characterListModel: characterListModelType,
-    userModel: userModelType,
-  ) {
+  constructor(characterListModel: characterListModelType) {
     this.characterList = characterListModel;
-    this.user = userModel;
   }
 
-  // 전체 사용자 캐릭터 리스트 전체 조회
+  // 관리자용 : 전체 사용자 캐릭터 리스트 전체 조회
   async getCharacterLists(email: string) {
-    const user = await this.user.findOne({ email });
-    if (!user) throw new Error('사용자가 존재하지 않습니다');
-    if (user?.auth === 'user')
-      return {
-        status: 401,
-        error: 'Unauthorized',
-        message: '해당 관리 권한으로는 서비스 요청을 할 수 없습니다',
-      };
+    const user = await userModel.findOne({ email });
+    if (!user) throw new Error('type:Forbidden,content:사용자가 존재하지 않거나 요청이 정상적이지 않습니다');
+    if (user.auth === 'user') new Error('type:Forbidden,message:해당 관리 권한으로는 서비스 요청을 할 수 없습니다');
 
-    const result = await this.characterList.find({});
+    const result = await this.characterList.find({}).sort({characterId: "asc"});
     return result;
   }
   // 특정 사용자 캐릭터 리스트 상세 조회
   async getCharacterList(email: string) {
-    const result = await this.characterList.findOne({ email });
+    const result = await this.characterList.find({ email: email }).sort({characterId: "asc"});
     return result;
   }
 
-  // 사용자 캐릭터 리스트 최초 추가
-  async addCharacterList(email: string) {
-    return await this.characterList.create({ email });
+  // 수집된 캐릭터 수를 기준으로 사용자 정렬
+  async getUserOrder() {
+    const result = await this.characterList.aggregate( [{$project: { _id:1, email: 1}}, {$group: {
+        _id: "$email",
+        count: { $sum: 1 }
+      }} ]).sort({count: "desc"} );
+    return result;
+  }
+
+  // 사용자 캐릭터 리스트 추가
+  async createCharacterList(characterListInfo: CharacterListInterface) {
+    return await this.characterList.create(characterListInfo);
   }
 
   // 캐릭터 리스트 수정
-  async updateCharacterList(updateInfo: CharacterListInterface) {
-    const { email, characterList } = updateInfo;
-    const origin = await this.characterList.findOne({ email });
-    const originData = origin?.characterList;
+  async updateCharacterList(updateInfo: UpdateCharacterListInterface) {
+    const { _id, myExp, onePick } = updateInfo;
     const toUpdate = {
-      ...(originData && { originData }),
-      ...(characterList && { characterList }),
+      ...(myExp && { myExp }),
+      ...({onePick: onePick})
     };
-    const result = await this.characterList.findOneAndUpdate(
-      { email },
-      toUpdate,
-      { returnOriginal: false },
-    );
+    const result = await this.characterList.findOneAndUpdate({ _id: _id }, toUpdate, { returnOriginal: false });
+    return result;
+  }
+
+  // // 대표캐릭터 조회
+  async getOnePick(email:string) {
+    const filter = {email: email, onePick: true}
+    const result =  await this.characterList.findOne(filter);
+    return result;
+  }
+
+  // 대표캐릭터 변경
+  async changeOnePick(email: string, characterId:string) {
+    // 기존꺼 false
+    const filter = {email: email}
+    await this.characterList.updateMany(filter, {onePick: false});
+    // 현재꺼 true
+    const result =  await this.characterList.findOneAndUpdate({_id: characterId}, {onePick: true});
     return result;
   }
 
   // 해당 사용자 캐릭터 리스트 초기화
   async deleteCharacterList(email: string) {
-    const result = await this.characterList.remove({ email });
+    const result = await this.characterList.remove({ email: email });
     return result;
   }
 }
-const characterListService = new CharacterListService(
-  characterListModel,
-  userModel,
-);
+const characterListService = new CharacterListService(characterListModel);
 
 export { characterListService };

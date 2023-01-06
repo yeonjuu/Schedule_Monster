@@ -111,8 +111,8 @@ dispatch(updateCalendar(getThisCalendar));
   };
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log('실패');
-    console.log(errors);
+    alert('실패');
+   
   };
 
   return (
@@ -153,7 +153,6 @@ dispatch(updateCalendar(getThisCalendar));
             color={color}
             onChangeComplete={(color) => {
               setColor(color.hex);
-              setOpen((curr) => !curr);
             }}
             triangle={'top-right'}
             width={'380px'}

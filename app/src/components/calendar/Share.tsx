@@ -20,34 +20,33 @@ type shareRes = {
   __v: number;
 };
 
-//그러면..공유캘린더로 봐야겠어요..!
 export const Share = () => {
   const [isOpen, setIsOpen] = useState(false);
   const calendarId = useSelector(
     (state: RootState) => state.persistedReducer.calendarId,
   );
   const email = useSelector((state: RootState) => state.persistedReducer.email);
-  const [member, setMember] = useState([email]);
-  //캘린더아이디로 공유된 사용자 담아오기
-  //처음에 한번만 변경하면 됨!
-  console.log(calendarId);
+  const [member, setMember] = useState<string[]>([]);
+
   const getMembers = async () => {
+    let memberlist: string[] = [email];
     const data: shareRes[] = await API.get(`/share/${calendarId}`);
     if (data.length !== 0) {
-      let memberlist = [...member];
-      //데이터의 친구목록만
-      data.map((i) => memberlist.push(i.friendEmail));
-      setMember(memberlist);
+      data.map((each) => {
+        if (email === each.friendEmail) {
+          memberlist.push(each.email);
+        } else {
+          memberlist.push(each.friendEmail);
+        }
+        return memberlist;
+      });
     }
+    setMember(memberlist);
   };
 
-  useEffect(() => {
-    getMembers();
-  }, [calendarId]);
-
   const clickHandler = () => {
-    console.log('is open', isOpen);
     setIsOpen(!isOpen);
+    getMembers();
   };
 
   //공유캘린더에 사용자추가api추가
@@ -59,7 +58,6 @@ export const Share = () => {
         friendEmail: femail,
       });
       if (res) {
-        console.log('사용자 추가', femail);
         let newArr = [...member];
         newArr.push(femail);
         setMember(newArr);

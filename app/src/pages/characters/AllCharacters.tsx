@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Navbar from "components/characters/Navbar"
 import { Contents, ContentsBox, StoreContainer } from "components/characters/StoreStyle"
 import styled from "styled-components"
 import * as API from '../../api';
@@ -42,7 +41,7 @@ export default function AllCharacters() {
                         {isLoading ? <Loading /> : 
                         (<>
                             {allPokemons.map((pokemon: any) => (
-                            <>
+                            
                                 <AllChaBox
                                 key={pokemon._id}
                                 id={pokemon._id}
@@ -52,7 +51,7 @@ export default function AllCharacters() {
                                     <img src={pokemon.image.imageSprites.front_default} />
                                     <h4 style={{ alignSelf: 'center' }}>{pokemon.nameKo}</h4>
                                 </AllChaBox> 
-                            </>)
+                            )
                             )}
                         </>)
                         }
@@ -71,7 +70,7 @@ const AllChaContainer = styled.div`
     height: 90%;
 
     display: flex;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
     flex-wrap: wrap;
     overflow-y: scroll;
     scroll-behavior: smooth;
